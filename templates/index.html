@@ -162,16 +162,38 @@
         .nav-scroll {
             display: flex;
             gap: 7px;
-            overflow-x: auto;
-            overflow-y: hidden;
-            max-width: 700px;
-            margin: 0 auto;
-            scrollbar-width: none;
-        }
+    
 
-        .nav-scroll::-webkit-scrollbar {
-            display: none;
-        }
+        .nav-scroll {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.nav-button {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: #8f98a8;
+    border-radius: 12px;
+    padding: 7px 2px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.nav-button.active {
+    background: #252d3b;
+    color: white;
+}
+
+.nav-icon {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 3px;
+} 
 
         .nav-button {
             flex: 0 0 auto;
