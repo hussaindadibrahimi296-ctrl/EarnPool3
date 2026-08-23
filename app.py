@@ -27,6 +27,12 @@ AD_INTERVAL_HOURS = 12
 
 TASK_REWARD = 1000
 
+# =========================================================
+# ADSGRAM TASK
+# =========================================================
+
+ACTIVE_TASK_ID = "task-44183"
+
 
 # =========================================================
 # HOME
@@ -47,7 +53,8 @@ def status():
     return jsonify({
         "success": True,
         "message": "EarnPool API is working",
-        "database": "connected"
+        "database": "connected",
+        "adsgram_task": ACTIVE_TASK_ID
     })
 
 
@@ -207,7 +214,6 @@ def daily_reward():
 
     try:
 
-        # Lock user row
         cursor.execute("""
             SELECT
                 telegram_id,
@@ -228,12 +234,7 @@ def daily_reward():
             }), 404
 
         now = datetime.utcnow()
-
         last_reward = user["last_daily_reward"]
-
-        # ---------------------------------------------
-        # CHECK 12 HOURS
-        # ---------------------------------------------
 
         if last_reward:
 
@@ -266,10 +267,6 @@ def daily_reward():
                     "next_reward":
                         next_reward_time.isoformat()
                 })
-
-        # ---------------------------------------------
-        # GIVE 1000 COINS
-        # ---------------------------------------------
 
         cursor.execute("""
             UPDATE users
@@ -330,7 +327,6 @@ def ads_status(telegram_id):
 
     try:
 
-        # Make sure user exists
         cursor.execute("""
             SELECT telegram_id
             FROM users
@@ -346,7 +342,6 @@ def ads_status(telegram_id):
                 "message": "User not found"
             }), 404
 
-        # Get current ad window
         cursor.execute("""
             SELECT
                 ads_watched,
@@ -359,7 +354,6 @@ def ads_status(telegram_id):
 
         now = datetime.utcnow()
 
-        # No previous window
         if not usage:
 
             return jsonify({
@@ -377,10 +371,6 @@ def ads_status(telegram_id):
             window_started +
             timedelta(hours=AD_INTERVAL_HOURS)
         )
-
-        # ---------------------------------------------
-        # RESET AFTER 12 HOURS
-        # ---------------------------------------------
 
         if now >= next_window:
 
@@ -487,10 +477,6 @@ def claim_ad():
 
     try:
 
-        # ---------------------------------------------
-        # LOCK USER
-        # ---------------------------------------------
-
         cursor.execute("""
             SELECT
                 telegram_id,
@@ -511,10 +497,6 @@ def claim_ad():
 
         now = datetime.utcnow()
 
-        # ---------------------------------------------
-        # GET AD WINDOW
-        # ---------------------------------------------
-
         cursor.execute("""
             SELECT
                 ads_watched,
@@ -525,10 +507,6 @@ def claim_ad():
         """, (telegram_id,))
 
         usage = cursor.fetchone()
-
-        # ---------------------------------------------
-        # FIRST AD
-        # ---------------------------------------------
 
         if not usage:
 
@@ -555,10 +533,6 @@ def claim_ad():
             ads_watched = usage["ads_watched"]
             window_started = usage["window_started_at"]
 
-            # -----------------------------------------
-            # RESET 12 HOUR WINDOW
-            # -----------------------------------------
-
             if (
                 now - window_started
             ) >= timedelta(
@@ -582,10 +556,6 @@ def claim_ad():
                     now,
                     telegram_id
                 ))
-
-        # ---------------------------------------------
-        # CHECK 10 ADS
-        # ---------------------------------------------
 
         if ads_watched >= MAX_ADS:
 
@@ -627,10 +597,6 @@ def claim_ad():
                     next_window.isoformat()
             })
 
-        # ---------------------------------------------
-        # GIVE 2000 COINS
-        # ---------------------------------------------
-
         cursor.execute("""
             UPDATE users
 
@@ -648,10 +614,6 @@ def claim_ad():
 
         updated_user = cursor.fetchone()
 
-        # ---------------------------------------------
-        # INCREASE AD COUNT
-        # ---------------------------------------------
-
         new_count = ads_watched + 1
 
         cursor.execute("""
@@ -667,10 +629,6 @@ def claim_ad():
             now,
             telegram_id
         ))
-
-        # ---------------------------------------------
-        # SAVE AD CLAIM HISTORY
-        # ---------------------------------------------
 
         cursor.execute("""
             INSERT INTO ad_claims (
@@ -713,6 +671,20 @@ def claim_ad():
 
 
 # =========================================================
+# ADSGRAM TASK INFO
+# =========================================================
+
+@app.route("/api/tasks/active", methods=["GET"])
+def active_task():
+
+    return jsonify({
+        "success": True,
+        "task_id": ACTIVE_TASK_ID,
+        "reward": TASK_REWARD
+    })
+
+
+# =========================================================
 # TASK STATUS
 # =========================================================
 
@@ -738,7 +710,8 @@ def completed_tasks(telegram_id):
 
         return jsonify({
             "success": True,
-            "tasks": tasks
+            "tasks": tasks,
+            "active_task_id": ACTIVE_TASK_ID
         })
 
     except Exception as e:
@@ -758,8 +731,9 @@ def completed_tasks(telegram_id):
 
 # =========================================================
 # CLAIM TASK
+# ADSGRAM TASK
 # 1000 COINS
-# ONE REWARD PER TASK / USER
+# ONE REWARD PER USER / TASK
 # =========================================================
 
 @app.route("/api/tasks/claim", methods=["POST"])
@@ -791,14 +765,25 @@ def claim_task():
             "message": "Task ID is required"
         }), 400
 
+    # -----------------------------------------------------
+    # ONLY ACTIVE ADSGRAM TASK IS ALLOWED
+    # -----------------------------------------------------
+
+    if task_id != ACTIVE_TASK_ID:
+
+        return jsonify({
+            "success": False,
+            "message": "Invalid or inactive task"
+        }), 400
+
     conn = get_db()
     cursor = conn.cursor()
 
     try:
 
-        # ---------------------------------------------
+        # -------------------------------------------------
         # LOCK USER
-        # ---------------------------------------------
+        # -------------------------------------------------
 
         cursor.execute("""
             SELECT
@@ -818,9 +803,9 @@ def claim_task():
                 "message": "User not found"
             }), 404
 
-        # ---------------------------------------------
-        # CHECK WHETHER TASK WAS ALREADY COMPLETED
-        # ---------------------------------------------
+        # -------------------------------------------------
+        # CHECK COMPLETED TASK
+        # -------------------------------------------------
 
         cursor.execute("""
             SELECT id
@@ -830,7 +815,7 @@ def claim_task():
             LIMIT 1
         """, (
             telegram_id,
-            task_id
+            ACTIVE_TASK_ID
         ))
 
         already_completed = cursor.fetchone()
@@ -845,9 +830,9 @@ def claim_task():
                 "already_completed": True
             })
 
-        # ---------------------------------------------
-        # ADD REWARD
-        # ---------------------------------------------
+        # -------------------------------------------------
+        # GIVE 1000 COINS
+        # -------------------------------------------------
 
         cursor.execute("""
             UPDATE users
@@ -866,9 +851,9 @@ def claim_task():
 
         updated_user = cursor.fetchone()
 
-        # ---------------------------------------------
-        # SAVE COMPLETED TASK
-        # ---------------------------------------------
+        # -------------------------------------------------
+        # SAVE TASK COMPLETION
+        # -------------------------------------------------
 
         cursor.execute("""
             INSERT INTO completed_tasks (
@@ -879,7 +864,7 @@ def claim_task():
             VALUES (%s, %s, %s)
         """, (
             telegram_id,
-            task_id,
+            ACTIVE_TASK_ID,
             TASK_REWARD
         ))
 
@@ -887,9 +872,9 @@ def claim_task():
 
         return jsonify({
             "success": True,
-            "message": "Task reward claimed",
+            "message": "Congratulations! Task completed.",
             "reward": TASK_REWARD,
-            "task_id": task_id,
+            "task_id": ACTIVE_TASK_ID,
             "user": updated_user
         })
 
@@ -919,4 +904,4 @@ if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
         port=5000
-)
+    )
