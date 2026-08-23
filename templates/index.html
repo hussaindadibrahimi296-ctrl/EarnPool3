@@ -7,32 +7,166 @@
     <title>EarnPool</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #10131a;
+            color: white;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .welcome {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .balance {
+            background: #191e29;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .balance-title {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .coins {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .menu-button {
+            border: none;
+            border-radius: 16px;
+            padding: 20px 10px;
+            background: #191e29;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .menu-button:active {
+            transform: scale(0.97);
+        }
+
+        .icon {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+            margin-top: 25px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>EarnPool</h1>
+<div class="container">
 
-    <p>Mini App is working!</p>
+    <div class="header">
+        <div class="logo">💰 EarnPool</div>
+        <div class="welcome" id="welcome">
+            خوش آمدید 👋
+        </div>
+    </div>
 
-    <p id="user">در حال دریافت اطلاعات...</p>
+    <div class="balance">
+        <div class="balance-title">موجودی شما</div>
+        <div class="coins">
+            <span id="coins">0</span> 🪙
+        </div>
+    </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
+    <div class="buttons">
 
-        tg.ready();
-        tg.expand();
+        <button class="menu-button">
+            <span class="icon">🎁</span>
+            پاداش روزانه
+        </button>
 
-        const user = tg.initDataUnsafe?.user;
+        <button class="menu-button">
+            <span class="icon">📺</span>
+            دیدن تبلیغات
+        </button>
 
-        if (user) {
-            document.getElementById("user").textContent =
-                `سلام ${user.first_name} 👋`;
-        } else {
-            document.getElementById("user").textContent =
-                "برنامه از داخل تلگرام اجرا نشده است.";
-        }
-    </script>
+        <button class="menu-button">
+            <span class="icon">🎯</span>
+            انجام تسک‌ها
+        </button>
+
+        <button class="menu-button">
+            <span class="icon">👥</span>
+            رفرال
+        </button>
+
+        <button class="menu-button">
+            <span class="icon">💰</span>
+            برداشت
+        </button>
+
+        <button class="menu-button">
+            <span class="icon">👤</span>
+            حساب کاربری
+        </button>
+
+    </div>
+
+    <div class="footer">
+        EarnPool © 2026
+    </div>
+
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+
+    const user = tg.initDataUnsafe?.user;
+
+    if (user) {
+        document.getElementById("welcome").textContent =
+            `سلام ${user.first_name} 👋`;
+    }
+</script>
 
 </body>
 </html>
