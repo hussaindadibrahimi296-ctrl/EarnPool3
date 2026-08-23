@@ -12,7 +12,12 @@
 
     <title>EarnPool</title>
 
+    <!-- Telegram Mini App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- AdsGram -->
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
 
     <style>
 
@@ -219,6 +224,73 @@
 
 
         /* =========================
+           ADS
+        ========================= */
+
+        .ads-panel {
+            margin-top: 20px;
+        }
+
+        .ads-info {
+            background: #111722;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 15px;
+        }
+
+        .ads-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            color: #b5bdc9;
+            font-size: 14px;
+        }
+
+        .ads-row strong {
+            color: white;
+        }
+
+        .watch-ad-button {
+            width: 100%;
+            border: none;
+            background: #2d7dff;
+            color: white;
+            border-radius: 14px;
+            padding: 15px;
+            margin-top: 18px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .watch-ad-button:disabled {
+            background: #303744;
+            color: #8f98a8;
+            cursor: not-allowed;
+        }
+
+        .ads-message {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .ads-success {
+            color: #58d68d;
+        }
+
+        .ads-error {
+            color: #ff7777;
+        }
+
+        .ads-waiting {
+            color: #aeb5c1;
+        }
+
+
+        /* =========================
            BOTTOM NAVIGATION
         ========================= */
 
@@ -411,10 +483,11 @@
             class="content-text"
             id="contentText"
         >
-            Claim your daily reward and earn coins every day.
+            Claim your daily reward and earn coins every 12 hours.
         </div>
 
-        <!-- DAILY REWARD BUTTON -->
+
+        <!-- DAILY BUTTON -->
 
         <button
             id="rewardButton"
@@ -428,6 +501,80 @@
             id="rewardStatus"
             class="reward-status"
         ></div>
+
+
+        <!-- ADS PANEL -->
+
+        <div
+            id="adsPanel"
+            class="ads-panel"
+            style="display:none;"
+        >
+
+            <div class="ads-info">
+
+                <div class="ads-row">
+
+                    <span id="adsWatchedLabel">
+                        Ads watched
+                    </span>
+
+                    <strong>
+                        <span id="adsWatched">
+                            0
+                        </span>
+                        /
+                        <span id="adsLimit">
+                            10
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div class="ads-row">
+
+                    <span id="adsRemainingLabel">
+                        Ads remaining
+                    </span>
+
+                    <strong id="adsRemaining">
+                        10
+                    </strong>
+
+                </div>
+
+
+                <div class="ads-row">
+
+                    <span id="adsRewardLabel">
+                        Reward
+                    </span>
+
+                    <strong>
+                        2,000 🪙
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="watchAdButton"
+                class="watch-ad-button"
+                onclick="watchAd()"
+            >
+                📺 Watch Ad +2,000
+            </button>
+
+
+            <div
+                id="adsMessage"
+                class="ads-message"
+            ></div>
+
+        </div>
 
     </div>
 
@@ -563,9 +710,9 @@
 <script>
 
 
-    /* =========================
+    /* =====================================================
        TELEGRAM
-    ========================= */
+    ===================================================== */
 
     const tg =
         window.Telegram.WebApp;
@@ -575,17 +722,48 @@
     tg.expand();
 
 
-    /* =========================
+    /* =====================================================
        TELEGRAM USER
-    ========================= */
+    ===================================================== */
 
     const user =
         tg.initDataUnsafe?.user || null;
 
 
-    /* =========================
+    /* =====================================================
+       ADSGRAM
+    ===================================================== */
+
+    let AdController = null;
+
+
+    try {
+
+        if (
+            window.Adsgram &&
+            typeof window.Adsgram.init === "function"
+        ) {
+
+            AdController =
+                window.Adsgram.init({
+                    blockId: "44182"
+                });
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "AdsGram initialization error:",
+            error
+        );
+
+    }
+
+
+    /* =====================================================
        BALANCE
-    ========================= */
+    ===================================================== */
 
     let coins = 0;
 
@@ -610,20 +788,14 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        LOAD USER BALANCE
-    ========================= */
+    ===================================================== */
 
     async function loadUserBalance() {
 
         if (!user) {
-
-            console.log(
-                "Telegram user not available."
-            );
-
             return;
-
         }
 
 
@@ -652,11 +824,6 @@
 
                 updateBalance();
 
-                console.log(
-                    "Balance loaded:",
-                    coins
-                );
-
             }
 
         } catch (error) {
@@ -671,35 +838,27 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        TRANSLATIONS
-    ========================= */
+    ===================================================== */
 
     const translations = {
 
-
         en: {
 
-            balance:
-                "Your Balance",
+            balance: "Your Balance",
 
-            daily:
-                "Daily",
+            daily: "Daily",
 
-            ads:
-                "Ads",
+            ads: "Ads",
 
-            tasks:
-                "Tasks",
+            tasks: "Tasks",
 
-            referral:
-                "Referral",
+            referral: "Referral",
 
-            withdraw:
-                "Withdraw",
+            withdraw: "Withdraw",
 
-            account:
-                "Account",
+            account: "Account",
 
             dailyTitle:
                 "Daily Reward",
@@ -748,6 +907,30 @@
 
             waiting:
                 "⏳ Next reward in",
+
+            adsWatched:
+                "Ads watched",
+
+            adsRemaining:
+                "Ads remaining",
+
+            adsReward:
+                "Reward",
+
+            watchAd:
+                "📺 Watch Ad +2,000",
+
+            adSuccess:
+                "🎉 Congratulations! You received 2,000 coins.",
+
+            adLimit:
+                "⏳ You have reached your 10-ad limit.",
+
+            adError:
+                "❌ The ad could not be completed. No coins were added.",
+
+            adsReset:
+                "Next ads available in",
 
             error:
                 "Something went wrong. Please try again."
@@ -826,8 +1009,32 @@
             waiting:
                 "⏳ پاداش بعدی تا",
 
+            adsWatched:
+                "تبلیغات دیده‌شده",
+
+            adsRemaining:
+                "تبلیغات باقی‌مانده",
+
+            adsReward:
+                "پاداش",
+
+            watchAd:
+                "📺 دیدن تبلیغ +۲,۰۰۰",
+
+            adSuccess:
+                "🎉 تبریک! شما ۲,۰۰۰ سکه دریافت کردید.",
+
+            adLimit:
+                "⏳ شما به محدودیت ۱۰ تبلیغ رسیده‌اید.",
+
+            adError:
+                "❌ تبلیغ کامل نشد. سکه‌ای اضافه نشد.",
+
+            adsReset:
+                "تبلیغات بعدی تا",
+
             error:
-                "خطایی رخ داد. لطفاً دوباره تلاش کنید."
+                "خطایی رخ داد. دوباره تلاش کنید."
 
         },
 
@@ -903,6 +1110,30 @@
             waiting:
                 "⏳ المكافأة التالية خلال",
 
+            adsWatched:
+                "الإعلانات المشاهدة",
+
+            adsRemaining:
+                "الإعلانات المتبقية",
+
+            adsReward:
+                "المكافأة",
+
+            watchAd:
+                "📺 شاهد الإعلان +2,000",
+
+            adSuccess:
+                "🎉 مبروك! حصلت على 2,000 عملة.",
+
+            adLimit:
+                "⏳ وصلت إلى حد 10 إعلانات.",
+
+            adError:
+                "❌ لم تكتمل مشاهدة الإعلان. لم تتم إضافة العملات.",
+
+            adsReset:
+                "الإعلانات التالية خلال",
+
             error:
                 "حدث خطأ. حاول مرة أخرى."
 
@@ -911,9 +1142,9 @@
     };
 
 
-    /* =========================
+    /* =====================================================
        SECTION ICONS
-    ========================= */
+    ===================================================== */
 
     const sectionIcons = {
 
@@ -936,9 +1167,9 @@
         "daily";
 
 
-    /* =========================
+    /* =====================================================
        SHOW SECTION
-    ========================= */
+    ===================================================== */
 
     function showSection(
         section,
@@ -980,7 +1211,6 @@
 
         const content = {
 
-
             daily: {
 
                 title:
@@ -990,7 +1220,6 @@
                     t.dailyText
 
             },
-
 
             ads: {
 
@@ -1002,7 +1231,6 @@
 
             },
 
-
             tasks: {
 
                 title:
@@ -1012,7 +1240,6 @@
                     t.tasksText
 
             },
-
 
             referral: {
 
@@ -1024,7 +1251,6 @@
 
             },
 
-
             withdraw: {
 
                 title:
@@ -1034,7 +1260,6 @@
                     t.withdrawText
 
             },
-
 
             account: {
 
@@ -1067,22 +1292,25 @@
             content[section].text;
 
 
-        /*
-         Show Daily Reward button
-         only on Daily section.
-        */
-
         const rewardButton =
             document.getElementById(
                 "rewardButton"
             );
-
 
         const rewardStatus =
             document.getElementById(
                 "rewardStatus"
             );
 
+        const adsPanel =
+            document.getElementById(
+                "adsPanel"
+            );
+
+
+        /*
+         DAILY
+        */
 
         if (section === "daily") {
 
@@ -1092,9 +1320,19 @@
             rewardStatus.style.display =
                 "block";
 
+            adsPanel.style.display =
+                "none";
+
             checkDailyReward();
 
-        } else {
+        }
+
+
+        /*
+         ADS
+        */
+
+        else if (section === "ads") {
 
             rewardButton.style.display =
                 "none";
@@ -1102,21 +1340,42 @@
             rewardStatus.style.display =
                 "none";
 
+            adsPanel.style.display =
+                "block";
+
+            loadAdsStatus();
+
+        }
+
+
+        /*
+         OTHER SECTIONS
+        */
+
+        else {
+
+            rewardButton.style.display =
+                "none";
+
+            rewardStatus.style.display =
+                "none";
+
+            adsPanel.style.display =
+                "none";
+
         }
 
     }
 
 
-    /* =========================
+    /* =====================================================
        LANGUAGE DETECTION
-    ========================= */
+    ===================================================== */
 
     function detectLanguage() {
 
         if (!user) {
-
             return "en";
-
         }
 
 
@@ -1152,9 +1411,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        APPLY LANGUAGE
-    ========================= */
+    ===================================================== */
 
     function applyLanguage(lang) {
 
@@ -1230,6 +1489,38 @@
             t.claim;
 
 
+        document
+            .getElementById(
+                "adsWatchedLabel"
+            )
+            .textContent =
+            t.adsWatched;
+
+
+        document
+            .getElementById(
+                "adsRemainingLabel"
+            )
+            .textContent =
+            t.adsRemaining;
+
+
+        document
+            .getElementById(
+                "adsRewardLabel"
+            )
+            .textContent =
+            t.adsReward;
+
+
+        document
+            .getElementById(
+                "watchAdButton"
+            )
+            .textContent =
+            t.watchAd;
+
+
         const activeButton =
             document.querySelector(
                 ".nav-button.active"
@@ -1244,9 +1535,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        CHANGE LANGUAGE
-    ========================= */
+    ===================================================== */
 
     function changeLanguage(lang) {
 
@@ -1272,9 +1563,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        LANGUAGE MENU
-    ========================= */
+    ===================================================== */
 
     function toggleLanguageMenu() {
 
@@ -1297,7 +1588,6 @@
                 document.getElementById(
                     "languageMenu"
                 );
-
 
             const button =
                 document.getElementById(
@@ -1324,9 +1614,9 @@
     );
 
 
-    /* =========================
-       CHECK DAILY REWARD
-    ========================= */
+    /* =====================================================
+       DAILY REWARD CHECK
+    ===================================================== */
 
     async function checkDailyReward() {
 
@@ -1354,7 +1644,9 @@
                 !data.success ||
                 !data.user
             ) {
+
                 return;
+
             }
 
 
@@ -1455,9 +1747,9 @@
     }
 
 
-    /* =========================
-       WAITING TIME
-    ========================= */
+    /* =====================================================
+       DAILY WAITING TIME
+    ===================================================== */
 
     function updateWaitingTime(
         nextTime
@@ -1483,7 +1775,8 @@
         function update() {
 
             const remaining =
-                nextTime - Date.now();
+                nextTime -
+                Date.now();
 
 
             if (remaining <= 0) {
@@ -1541,16 +1834,14 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        CLAIM DAILY REWARD
-    ========================= */
+    ===================================================== */
 
     async function claimDailyReward() {
 
         if (!user) {
-
             return;
-
         }
 
 
@@ -1591,10 +1882,8 @@
                         method: "POST",
 
                         headers: {
-
                             "Content-Type":
                                 "application/json"
-
                         },
 
                         body:
@@ -1614,10 +1903,6 @@
 
 
             if (data.success) {
-
-                /*
-                 Update balance immediately
-                */
 
                 coins =
                     Number(
@@ -1640,11 +1925,6 @@
                     t.congratulations;
 
 
-                /*
-                 Check again after
-                 successful reward.
-                */
-
                 setTimeout(
                     function() {
 
@@ -1654,12 +1934,10 @@
                     1500
                 );
 
-
             } else {
 
                 button.disabled =
                     true;
-
 
                 button.textContent =
                     t.claimed;
@@ -1714,20 +1992,362 @@
     }
 
 
-    /* =========================
+    /* =====================================================
+       ADS STATUS
+    ===================================================== */
+
+    async function loadAdsStatus() {
+
+        if (!user) {
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/ads/status/" +
+                    encodeURIComponent(
+                        user.id
+                    )
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+                return;
+            }
+
+
+            document
+                .getElementById(
+                    "adsWatched"
+                )
+                .textContent =
+                data.ads_watched;
+
+
+            document
+                .getElementById(
+                    "adsLimit"
+                )
+                .textContent =
+                data.limit;
+
+
+            document
+                .getElementById(
+                    "adsRemaining"
+                )
+                .textContent =
+                data.ads_remaining;
+
+
+            const button =
+                document.getElementById(
+                    "watchAdButton"
+                );
+
+
+            const message =
+                document.getElementById(
+                    "adsMessage"
+                );
+
+
+            const lang =
+                localStorage.getItem(
+                    "language"
+                ) ||
+                detectLanguage();
+
+
+            const t =
+                translations[lang];
+
+
+            if (
+                data.ads_remaining <= 0
+            ) {
+
+                button.disabled =
+                    true;
+
+
+                message.className =
+                    "ads-message ads-waiting";
+
+
+                message.textContent =
+                    t.adLimit +
+                    " " +
+                    t.adsReset +
+                    " " +
+                    data.hours_until_reset +
+                    "h " +
+                    data.minutes_until_reset +
+                    "m";
+
+            } else {
+
+                button.disabled =
+                    false;
+
+                message.textContent =
+                    "";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Ads status error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       WATCH ADSGRAM AD
+    ===================================================== */
+
+    async function watchAd() {
+
+        if (!user) {
+            return;
+        }
+
+
+        const button =
+            document.getElementById(
+                "watchAdButton"
+            );
+
+
+        const message =
+            document.getElementById(
+                "adsMessage"
+            );
+
+
+        const lang =
+            localStorage.getItem(
+                "language"
+            ) ||
+            detectLanguage();
+
+
+        const t =
+            translations[lang];
+
+
+        if (!AdController) {
+
+            message.className =
+                "ads-message ads-error";
+
+
+            message.textContent =
+                t.adError;
+
+
+            return;
+
+        }
+
+
+        button.disabled =
+            true;
+
+
+        message.className =
+            "ads-message ads-waiting";
+
+
+        message.textContent =
+            "⏳ Loading advertisement...";
+
+
+        try {
+
+            const result =
+                await AdController.show();
+
+
+            /*
+             AdsGram Rewarded Ad:
+             done === true means
+             user watched the ad successfully.
+            */
+
+            if (
+                result &&
+                result.done === true
+            ) {
+
+                message.textContent =
+                    "⏳ Processing reward...";
+
+
+                /*
+                 Ask backend to award
+                 the 2,000 coins.
+                */
+
+                const response =
+                    await fetch(
+                        "/api/ads/claim",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    telegram_id:
+                                        user.id
+
+                                })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (data.success) {
+
+                    /*
+                     Update balance
+                    */
+
+                    coins =
+                        Number(
+                            data.user.coins
+                        );
+
+
+                    updateBalance();
+
+
+                    message.className =
+                        "ads-message ads-success";
+
+
+                    message.textContent =
+                        t.adSuccess;
+
+
+                    document
+                        .getElementById(
+                            "adsWatched"
+                        )
+                        .textContent =
+                        data.ads_watched;
+
+
+                    document
+                        .getElementById(
+                            "adsRemaining"
+                        )
+                        .textContent =
+                        data.ads_remaining;
+
+
+                    if (
+                        data.ads_remaining <= 0
+                    ) {
+
+                        button.disabled =
+                            true;
+
+                    } else {
+
+                        button.disabled =
+                            false;
+
+                    }
+
+                } else {
+
+                    message.className =
+                        "ads-message ads-error";
+
+
+                    message.textContent =
+                        data.message ||
+                        t.adError;
+
+
+                    await loadAdsStatus();
+
+                }
+
+            } else {
+
+                /*
+                 Advertisement was not
+                 successfully completed.
+                */
+
+                message.className =
+                    "ads-message ads-error";
+
+
+                message.textContent =
+                    t.adError;
+
+
+                await loadAdsStatus();
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "AdsGram show error:",
+                error
+            );
+
+
+            message.className =
+                "ads-message ads-error";
+
+
+            message.textContent =
+                t.adError;
+
+
+            await loadAdsStatus();
+
+        }
+
+    }
+
+
+    /* =====================================================
        REGISTER USER
-    ========================= */
+    ===================================================== */
 
     async function registerUser() {
 
         if (!user) {
-
-            console.log(
-                "Telegram user not available."
-            );
-
             return;
-
         }
 
 
@@ -1748,10 +2368,8 @@
                         method: "POST",
 
                         headers: {
-
                             "Content-Type":
                                 "application/json"
-
                         },
 
                         body:
@@ -1802,9 +2420,9 @@
     }
 
 
-    /* =========================
-       START USER
-    ========================= */
+    /* =====================================================
+       START
+    ===================================================== */
 
     async function startUser() {
 
@@ -1817,9 +2435,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        INITIAL LANGUAGE
-    ========================= */
+    ===================================================== */
 
     let savedLanguage =
         localStorage.getItem(
@@ -1848,20 +2466,6 @@
 
     startUser();
 
-
-    /* =========================
-       TELEGRAM USER LOG
-    ========================= */
-
-    if (user) {
-
-        console.log(
-            "EarnPool User:",
-            user.id,
-            user.first_name
-        );
-
-    }
 
 </script>
 
