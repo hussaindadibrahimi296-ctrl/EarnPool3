@@ -47,31 +47,25 @@ def create_user():
     data = request.get_json(silent=True)
 
     if not data:
-
         return jsonify({
             "success": False,
             "message": "No data received"
         }), 400
 
-
     telegram_id = data.get("telegram_id")
 
     if not telegram_id:
-
         return jsonify({
             "success": False,
             "message": "Telegram ID is required"
         }), 400
 
-
     first_name = data.get("first_name", "")
     username = data.get("username", "")
     language = data.get("language", "en")
 
-
     conn = get_db()
     cursor = conn.cursor()
-
 
     cursor.execute("""
         INSERT INTO users (
@@ -80,7 +74,6 @@ def create_user():
             username,
             language
         )
-
         VALUES (%s, %s, %s, %s)
 
         ON CONFLICT (telegram_id)
@@ -98,14 +91,12 @@ def create_user():
         language
     ))
 
-
     user = cursor.fetchone()
 
     conn.commit()
 
     cursor.close()
     conn.close()
-
 
     return jsonify({
         "success": True,
@@ -123,7 +114,6 @@ def get_user(telegram_id):
     conn = get_db()
     cursor = conn.cursor()
 
-
     cursor.execute("""
         SELECT
             telegram_id,
@@ -137,21 +127,16 @@ def get_user(telegram_id):
         WHERE telegram_id = %s
     """, (telegram_id,))
 
-
     user = cursor.fetchone()
-
 
     cursor.close()
     conn.close()
 
-
     if not user:
-
         return jsonify({
             "success": False,
             "message": "User not found"
         }), 404
-
 
     return jsonify({
         "success": True,
@@ -169,28 +154,23 @@ def daily_reward():
     data = request.get_json(silent=True)
 
     if not data:
-
         return jsonify({
             "success": False,
             "message": "No data received"
         }), 400
 
-
     telegram_id = data.get("telegram_id")
 
     if not telegram_id:
-
         return jsonify({
             "success": False,
             "message": "Telegram ID is required"
         }), 400
 
-
     conn = get_db()
     cursor = conn.cursor()
 
-
-    # Get user
+    # Lock user row to prevent double reward
     cursor.execute("""
         SELECT
             telegram_id,
@@ -201,9 +181,7 @@ def daily_reward():
         FOR UPDATE
     """, (telegram_id,))
 
-
     user = cursor.fetchone()
-
 
     if not user:
 
@@ -215,13 +193,9 @@ def daily_reward():
             "message": "User not found"
         }), 404
 
-
     now = datetime.utcnow()
 
-
-    last_reward =
-        user["last_daily_reward"]
-
+    last_reward = user["last_daily_reward"]
 
     # =========================
     # CHECK 12 HOURS
@@ -229,61 +203,38 @@ def daily_reward():
 
     if last_reward:
 
-        next_reward_time = (
-            last_reward +
-            timedelta(hours=12)
-        )
-
+        next_reward_time = last_reward + timedelta(hours=12)
 
         if now < next_reward_time:
 
-            remaining =
-                next_reward_time - now
+            remaining = next_reward_time - now
 
+            total_seconds = int(
+                remaining.total_seconds()
+            )
 
-            total_seconds =
-                int(
-                    remaining.total_seconds()
-                )
+            hours = total_seconds // 3600
 
-
-            hours =
-                total_seconds // 3600
-
-
-            minutes =
-                (
-                    total_seconds % 3600
-                ) // 60
-
+            minutes = (
+                total_seconds % 3600
+            ) // 60
 
             cursor.close()
             conn.close()
 
-
             return jsonify({
-
                 "success": False,
-
-                "message":
-                    "Daily reward is not ready",
-
+                "message": "Daily reward is not ready",
                 "hours": hours,
-
                 "minutes": minutes,
-
-                "next_reward":
-                    next_reward_time.isoformat()
-
+                "next_reward": next_reward_time.isoformat()
             })
-
 
     # =========================
     # GIVE 1000 COINS
     # =========================
 
     reward = 1000
-
 
     cursor.execute("""
         UPDATE users
@@ -304,41 +255,21 @@ def daily_reward():
         telegram_id
     ))
 
-
-    updated_user =
-        cursor.fetchone()
-
+    updated_user = cursor.fetchone()
 
     conn.commit()
-
 
     cursor.close()
     conn.close()
 
-
     return jsonify({
-
         "success": True,
-
-        "message":
-            "Daily reward claimed",
-
-        "reward":
-            reward,
-
-        "user":
-            updated_user
-
+        "message": "Daily reward claimed",
+        "reward": reward,
+        "user": updated_user
     })
 
 
 # =========================
 # RUN
-# =========================
-
-if __name__ == "__main__":
-
-    app.run(
-        host="0.0.0.0",
-        port=5000
-    )
+# =================
