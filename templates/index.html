@@ -14,58 +14,36 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-
     <style>
 
         * {
             box-sizing: border-box;
         }
 
-
         html,
         body {
-
             margin: 0;
-
             padding: 0;
-
             width: 100%;
-
             min-height: 100%;
-
             font-family: Arial, sans-serif;
-
             background: #10131a;
-
             color: white;
-
         }
-
 
         body {
-
             padding-bottom: 88px;
-
         }
-
 
         button {
-
             font-family: inherit;
-
         }
 
-
         .app {
-
             width: 100%;
-
             max-width: 600px;
-
             margin: 0 auto;
-
             padding: 15px;
-
         }
 
 
@@ -74,43 +52,25 @@
         ========================= */
 
         .top-bar {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             margin-bottom: 18px;
-
         }
-
 
         .logo {
-
             font-size: 23px;
-
             font-weight: bold;
-
         }
 
-
         .language-button {
-
             border: none;
-
             background: #1c2330;
-
             color: white;
-
             border-radius: 10px;
-
             padding: 8px 11px;
-
             font-size: 13px;
-
             cursor: pointer;
-
         }
 
 
@@ -119,63 +79,36 @@
         ========================= */
 
         .language-menu {
-
             display: none;
-
             position: absolute;
-
             top: 58px;
-
             right: 15px;
-
             background: #1c2330;
-
             border-radius: 12px;
-
             padding: 6px;
-
             z-index: 100;
-
             box-shadow:
                 0 8px 25px rgba(0, 0, 0, 0.35);
-
         }
-
 
         .language-menu.show {
-
             display: block;
-
         }
-
 
         .language-option {
-
             display: block;
-
             width: 125px;
-
             border: none;
-
             background: transparent;
-
             color: white;
-
             padding: 10px;
-
             text-align: center;
-
             border-radius: 8px;
-
             cursor: pointer;
-
         }
 
-
         .language-option:active {
-
             background: #293242;
-
         }
 
 
@@ -184,48 +117,28 @@
         ========================= */
 
         .balance-card {
-
             background: #191e29;
-
             border-radius: 20px;
-
             padding: 22px;
-
             text-align: center;
-
             margin-bottom: 18px;
-
         }
-
 
         .balance-title {
-
             color: #9da5b4;
-
             font-size: 14px;
-
             margin-bottom: 8px;
-
         }
-
 
         .coins {
-
             font-size: 30px;
-
             font-weight: bold;
-
         }
 
-
         .usd-value {
-
             margin-top: 6px;
-
             color: #8f98a8;
-
             font-size: 15px;
-
         }
 
 
@@ -234,46 +147,27 @@
         ========================= */
 
         .content-card {
-
             background: #191e29;
-
             border-radius: 20px;
-
             padding: 22px;
-
             min-height: 330px;
-
         }
-
 
         .content-icon {
-
             font-size: 42px;
-
             margin-bottom: 12px;
-
         }
-
 
         .content-title {
-
             font-size: 22px;
-
             font-weight: bold;
-
             margin-bottom: 12px;
-
         }
 
-
         .content-text {
-
             color: #aeb5c1;
-
             line-height: 1.8;
-
             font-size: 15px;
-
         }
 
 
@@ -282,89 +176,49 @@
         ========================= */
 
         .bottom-nav {
-
             position: fixed;
-
             bottom: 0;
-
             left: 0;
-
             right: 0;
-
             width: 100%;
-
             background: #151922;
-
             border-top: 1px solid #252b36;
-
             padding: 7px 4px;
-
             z-index: 50;
-
         }
-
 
         .nav-container {
-
             width: 100%;
-
             max-width: 600px;
-
             margin: 0 auto;
-
             display: flex;
-
             gap: 3px;
-
         }
-
 
         .nav-button {
-
             flex: 1;
-
             width: 16.666%;
-
             min-width: 0;
-
             border: none;
-
             background: transparent;
-
             color: #8f98a8;
-
             border-radius: 11px;
-
             padding: 6px 1px;
-
             cursor: pointer;
-
             font-size: 9px;
-
             line-height: 1.2;
-
         }
-
 
         .nav-button.active {
-
             background: #252d3b;
-
             color: white;
-
         }
 
-
         .nav-icon {
-
             display: block;
-
             font-size: 20px;
-
             line-height: 22px;
-
             margin-bottom: 3px;
-
         }
 
 
@@ -375,41 +229,25 @@
         @media (max-width: 360px) {
 
             .app {
-
                 padding: 12px;
-
             }
-
 
             .nav-button {
-
                 font-size: 8px;
-
                 padding: 6px 0;
-
             }
-
 
             .nav-icon {
-
                 font-size: 18px;
-
             }
-
 
             .logo {
-
                 font-size: 21px;
-
             }
-
 
             .coins {
-
                 font-size: 27px;
-
             }
-
         }
 
     </style>
@@ -423,174 +261,123 @@
 <div class="app">
 
 
-    <!-- =========================
-         TOP BAR
-    ========================= -->
+    <!-- TOP BAR -->
 
     <div class="top-bar">
 
-
         <div class="logo">
-
             EarnPool
-
         </div>
-
 
         <button
             class="language-button"
             id="languageButton"
             onclick="toggleLanguageMenu()"
         >
-
             🌐 EN
-
         </button>
-
 
     </div>
 
 
-    <!-- =========================
-         LANGUAGE MENU
-    ========================= -->
+    <!-- LANGUAGE MENU -->
 
     <div
         class="language-menu"
         id="languageMenu"
     >
 
-
         <button
             class="language-option"
             onclick="changeLanguage('en')"
         >
-
             🇬🇧 English
-
         </button>
-
 
         <button
             class="language-option"
             onclick="changeLanguage('fa')"
         >
-
             🇦🇫 فارسی
-
         </button>
-
 
         <button
             class="language-option"
             onclick="changeLanguage('ar')"
         >
-
             🇸🇦 العربية
-
         </button>
-
 
     </div>
 
 
-    <!-- =========================
-         BALANCE
-    ========================= -->
+    <!-- BALANCE -->
 
     <div class="balance-card">
-
 
         <div
             class="balance-title"
             id="balanceTitle"
         >
-
             Your Balance
-
         </div>
-
 
         <div class="coins">
 
             <span id="coins">
-
                 0
-
             </span>
 
             🪙
 
         </div>
 
-
         <div
             class="usd-value"
             id="usdValue"
         >
-
             ≈ $0.000000
-
         </div>
-
 
     </div>
 
 
-    <!-- =========================
-         MAIN CONTENT
-    ========================= -->
+    <!-- MAIN CONTENT -->
 
     <div class="content-card">
-
 
         <div
             class="content-icon"
             id="contentIcon"
         >
-
             🎁
-
         </div>
-
 
         <div
             class="content-title"
             id="contentTitle"
         >
-
             Daily Reward
-
         </div>
-
 
         <div
             class="content-text"
             id="contentText"
         >
-
             Claim your daily reward and earn coins every day.
-
         </div>
 
-
     </div>
-
 
 </div>
 
 
-<!-- =========================
-     BOTTOM NAVIGATION
-========================= -->
+<!-- BOTTOM NAVIGATION -->
 
 <div class="bottom-nav">
 
-
     <div class="nav-container">
 
-
-        <!-- DAILY -->
 
         <button
             class="nav-button active"
@@ -599,22 +386,15 @@
         >
 
             <span class="nav-icon">
-
                 🎁
-
             </span>
 
-
             <span data-key="daily">
-
                 Daily
-
             </span>
 
         </button>
 
-
-        <!-- ADS -->
 
         <button
             class="nav-button"
@@ -623,22 +403,15 @@
         >
 
             <span class="nav-icon">
-
                 📺
-
             </span>
 
-
             <span data-key="ads">
-
                 Ads
-
             </span>
 
         </button>
 
-
-        <!-- TASKS -->
 
         <button
             class="nav-button"
@@ -647,22 +420,15 @@
         >
 
             <span class="nav-icon">
-
                 🎯
-
             </span>
 
-
             <span data-key="tasks">
-
                 Tasks
-
             </span>
 
         </button>
 
-
-        <!-- REFERRAL -->
 
         <button
             class="nav-button"
@@ -671,22 +437,15 @@
         >
 
             <span class="nav-icon">
-
                 👥
-
             </span>
 
-
             <span data-key="referral">
-
                 Referral
-
             </span>
 
         </button>
 
-
-        <!-- WITHDRAW -->
 
         <button
             class="nav-button"
@@ -695,22 +454,15 @@
         >
 
             <span class="nav-icon">
-
                 💰
-
             </span>
 
-
             <span data-key="withdraw">
-
                 Withdraw
-
             </span>
 
         </button>
 
-
-        <!-- ACCOUNT -->
 
         <button
             class="nav-button"
@@ -719,16 +471,11 @@
         >
 
             <span class="nav-icon">
-
                 👤
-
             </span>
 
-
             <span data-key="account">
-
                 Account
-
             </span>
 
         </button>
@@ -749,9 +496,7 @@
     const tg =
         window.Telegram.WebApp;
 
-
     tg.ready();
-
 
     tg.expand();
 
@@ -773,11 +518,10 @@
 
     function updateBalance() {
 
-
         document
             .getElementById("coins")
             .textContent =
-            coins.toLocaleString();
+            Number(coins).toLocaleString();
 
 
         /*
@@ -785,7 +529,7 @@
         */
 
         const usd =
-            coins / 1000000;
+            Number(coins) / 1000000;
 
 
         document
@@ -797,13 +541,75 @@
 
 
     /* =========================
+       LOAD REAL USER BALANCE
+       STEP 28
+    ========================= */
+
+    async function loadUserBalance() {
+
+        if (!user) {
+
+            console.log(
+                "Telegram user not available."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/user/" +
+                    encodeURIComponent(user.id)
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (data.success && data.user) {
+
+                coins =
+                    Number(data.user.coins || 0);
+
+                updateBalance();
+
+                console.log(
+                    "Balance loaded:",
+                    coins
+                );
+
+            } else {
+
+                console.error(
+                    "Could not load user balance:",
+                    data.message
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Balance loading error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =========================
        TRANSLATIONS
     ========================= */
 
     const translations = {
-
-
-        /* ENGLISH */
 
         en: {
 
@@ -828,13 +634,11 @@
             account:
                 "Account",
 
-
             dailyTitle:
                 "Daily Reward",
 
             dailyText:
                 "Claim your daily reward and earn coins every day.",
-
 
             adsTitle:
                 "Watch Ads",
@@ -842,13 +646,11 @@
             adsText:
                 "Watch advertisements and earn coins.",
 
-
             tasksTitle:
                 "Tasks",
 
             tasksText:
                 "Complete available tasks and earn rewards.",
-
 
             referralTitle:
                 "Referral",
@@ -856,13 +658,11 @@
             referralText:
                 "Invite friends and earn referral rewards.",
 
-
             withdrawTitle:
                 "Withdraw",
 
             withdrawText:
                 "Withdraw your available balance.",
-
 
             accountTitle:
                 "Account",
@@ -872,8 +672,6 @@
 
         },
 
-
-        /* FARSI */
 
         fa: {
 
@@ -898,13 +696,11 @@
             account:
                 "حساب",
 
-
             dailyTitle:
                 "پاداش روزانه",
 
             dailyText:
                 "پاداش روزانه خود را دریافت کنید و هر روز سکه به دست بیاورید.",
-
 
             adsTitle:
                 "دیدن تبلیغات",
@@ -912,13 +708,11 @@
             adsText:
                 "تبلیغات را تماشا کنید و سکه دریافت کنید.",
 
-
             tasksTitle:
                 "تسک‌ها",
 
             tasksText:
                 "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
-
 
             referralTitle:
                 "رفرال",
@@ -926,13 +720,11 @@
             referralText:
                 "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
 
-
             withdrawTitle:
                 "برداشت",
 
             withdrawText:
                 "موجودی قابل برداشت خود را برداشت کنید.",
-
 
             accountTitle:
                 "حساب کاربری",
@@ -942,8 +734,6 @@
 
         },
 
-
-        /* ARABIC */
 
         ar: {
 
@@ -968,13 +758,11 @@
             account:
                 "الحساب",
 
-
             dailyTitle:
                 "المكافأة اليومية",
 
             dailyText:
                 "احصل على مكافأتك اليومية واربح العملات كل يوم.",
-
 
             adsTitle:
                 "مشاهدة الإعلانات",
@@ -982,13 +770,11 @@
             adsText:
                 "شاهد الإعلانات واربح العملات.",
 
-
             tasksTitle:
                 "المهام",
 
             tasksText:
                 "أكمل المهام المتاحة واحصل على المكافآت.",
-
 
             referralTitle:
                 "الإحالة",
@@ -996,13 +782,11 @@
             referralText:
                 "ادعُ أصدقاءك واربح مكافآت الإحالة.",
 
-
             withdrawTitle:
                 "السحب",
 
             withdrawText:
                 "اسحب رصيدك المتاح.",
-
 
             accountTitle:
                 "الحساب",
@@ -1053,7 +837,6 @@
         button
     ) {
 
-
         currentSection =
             section;
 
@@ -1089,7 +872,6 @@
 
         const content = {
 
-
             daily: {
 
                 title:
@@ -1099,7 +881,6 @@
                     t.dailyText
 
             },
-
 
             ads: {
 
@@ -1111,7 +892,6 @@
 
             },
 
-
             tasks: {
 
                 title:
@@ -1121,7 +901,6 @@
                     t.tasksText
 
             },
-
 
             referral: {
 
@@ -1133,7 +912,6 @@
 
             },
 
-
             withdraw: {
 
                 title:
@@ -1143,7 +921,6 @@
                     t.withdrawText
 
             },
-
 
             account: {
 
@@ -1179,11 +956,10 @@
 
 
     /* =========================
-       TELEGRAM LANGUAGE
+       DETECT TELEGRAM LANGUAGE
     ========================= */
 
     function detectLanguage() {
-
 
         if (!user) {
 
@@ -1228,10 +1004,7 @@
        APPLY LANGUAGE
     ========================= */
 
-    function applyLanguage(
-        lang
-    ) {
-
+    function applyLanguage(lang) {
 
         if (
             !translations[lang]
@@ -1265,7 +1038,6 @@
         document
             .querySelectorAll("[data-key]")
             .forEach(function(element) {
-
 
                 const key =
                     element.getAttribute(
@@ -1321,10 +1093,7 @@
        CHANGE LANGUAGE
     ========================= */
 
-    function changeLanguage(
-        lang
-    ) {
-
+    function changeLanguage(lang) {
 
         localStorage.setItem(
             "language",
@@ -1354,7 +1123,6 @@
 
     function toggleLanguageMenu() {
 
-
         document
             .getElementById(
                 "languageMenu"
@@ -1373,7 +1141,6 @@
     document.addEventListener(
         "click",
         function(event) {
-
 
             const menu =
                 document.getElementById(
@@ -1395,7 +1162,6 @@
                     event.target
                 )
             ) {
-
 
                 menu.classList.remove(
                     "show"
@@ -1442,17 +1208,9 @@
 
     /* =========================
        REGISTER USER
-       STEP 26
     ========================= */
 
     async function registerUser() {
-
-
-        /*
-         If Mini App is not opened
-         inside Telegram, there is
-         no Telegram user.
-        */
 
         if (!user) {
 
@@ -1473,7 +1231,6 @@
 
 
         try {
-
 
             const response =
                 await fetch(
@@ -1516,19 +1273,14 @@
                 await response.json();
 
 
-            if (
-                data.success
-            ) {
-
+            if (data.success) {
 
                 console.log(
                     "EarnPool user registered:",
                     data.user
                 );
 
-
             } else {
-
 
                 console.error(
                     "User registration failed:",
@@ -1537,9 +1289,7 @@
 
             }
 
-
         } catch (error) {
-
 
             console.error(
                 "User registration error:",
@@ -1551,12 +1301,21 @@
     }
 
 
-    /*
-     Register user when
-     Mini App starts
-    */
+    /* =========================
+       START USER
+       STEP 26 + 28
+    ========================= */
 
-    registerUser();
+    async function startUser() {
+
+        await registerUser();
+
+        await loadUserBalance();
+
+    }
+
+
+    startUser();
 
 
     /* =========================
@@ -1564,7 +1323,6 @@
     ========================= */
 
     if (user) {
-
 
         console.log(
             "EarnPool User:",
@@ -1574,10 +1332,9 @@
 
     }
 
-
 </script>
 
 
 </body>
 
-            </html>
+    </html>
