@@ -2,7 +2,11 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
     <title>EarnPool</title>
 
@@ -25,7 +29,7 @@
         }
 
         body {
-            padding-bottom: 95px;
+            padding-bottom: 88px;
         }
 
         button {
@@ -39,7 +43,10 @@
             padding: 15px;
         }
 
-        /* TOP BAR */
+
+        /* =========================
+           TOP BAR
+        ========================= */
 
         .top-bar {
             display: flex;
@@ -58,23 +65,34 @@
             background: #1c2330;
             color: white;
             border-radius: 10px;
-            padding: 8px 12px;
+            padding: 8px 11px;
             font-size: 13px;
             cursor: pointer;
         }
 
-        /* LANGUAGE MENU */
+
+        /* =========================
+           LANGUAGE MENU
+        ========================= */
 
         .language-menu {
             display: none;
+
             position: absolute;
-            top: 55px;
+
+            top: 58px;
             right: 15px;
+
             background: #1c2330;
+
             border-radius: 12px;
+
             padding: 6px;
+
             z-index: 100;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.35);
         }
 
         .language-menu.show {
@@ -83,165 +101,226 @@
 
         .language-option {
             display: block;
-            width: 120px;
+
+            width: 125px;
+
             border: none;
+
             background: transparent;
+
             color: white;
+
             padding: 10px;
+
             text-align: center;
+
             border-radius: 8px;
+
             cursor: pointer;
         }
 
-        .language-option:hover {
+        .language-option:active {
             background: #293242;
         }
 
-        /* BALANCE */
+
+        /* =========================
+           BALANCE
+        ========================= */
 
         .balance-card {
             background: #191e29;
+
             border-radius: 20px;
+
             padding: 22px;
+
             text-align: center;
+
             margin-bottom: 18px;
         }
 
         .balance-title {
             color: #9da5b4;
+
             font-size: 14px;
+
             margin-bottom: 8px;
         }
 
         .coins {
             font-size: 30px;
+
             font-weight: bold;
         }
 
         .usd-value {
             margin-top: 6px;
+
             color: #8f98a8;
+
             font-size: 15px;
         }
 
-        /* CONTENT */
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
 
         .content-card {
             background: #191e29;
+
             border-radius: 20px;
+
             padding: 22px;
-            min-height: 300px;
+
+            min-height: 330px;
+        }
+
+        .content-icon {
+            font-size: 42px;
+
+            margin-bottom: 12px;
         }
 
         .content-title {
             font-size: 22px;
+
             font-weight: bold;
+
             margin-bottom: 12px;
         }
 
         .content-text {
             color: #aeb5c1;
-            line-height: 1.7;
+
+            line-height: 1.8;
+
             font-size: 15px;
         }
 
-        /* BOTTOM NAVIGATION */
+
+        /* =========================
+           BOTTOM NAVIGATION
+        ========================= */
 
         .bottom-nav {
             position: fixed;
+
             bottom: 0;
             left: 0;
             right: 0;
+
             width: 100%;
+
             background: #151922;
-            border-top: 1px solid #252b36;
-            padding: 8px 6px;
+
+            border-top:
+                1px solid #252b36;
+
+            padding:
+                7px 4px;
+
             z-index: 50;
         }
 
-        .nav-scroll {
+        .nav-container {
+            width: 100%;
+
+            max-width: 600px;
+
+            margin: 0 auto;
+
             display: flex;
-            gap: 7px;
-    
 
-        .nav-scroll {
-    display: flex;
-    gap: 4px;
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.nav-button {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    color: #8f98a8;
-    border-radius: 12px;
-    padding: 7px 2px;
-    cursor: pointer;
-    font-size: 10px;
-}
-
-.nav-button.active {
-    background: #252d3b;
-    color: white;
-}
-
-.nav-icon {
-    display: block;
-    font-size: 20px;
-    margin-bottom: 3px;
-} 
+            gap: 3px;
+        }
 
         .nav-button {
-            flex: 0 0 auto;
-            min-width: 82px;
+            flex: 1;
+
+            width: 16.666%;
+
+            min-width: 0;
+
             border: none;
+
             background: transparent;
+
             color: #8f98a8;
-            border-radius: 12px;
-            padding: 7px 5px;
+
+            border-radius: 11px;
+
+            padding:
+                6px 1px;
+
             cursor: pointer;
-            font-size: 11px;
+
+            font-size: 9px;
+
+            line-height: 1.2;
         }
 
         .nav-button.active {
             background: #252d3b;
+
             color: white;
         }
 
         .nav-icon {
             display: block;
-            font-size: 22px;
-            margin-bottom: 4px;
+
+            font-size: 20px;
+
+            line-height: 22px;
+
+            margin-bottom: 3px;
         }
 
-        /* SMALL SCREENS */
+
+        /* =========================
+           SMALL PHONES
+        ========================= */
 
         @media (max-width: 360px) {
+
+            .app {
+                padding: 12px;
+            }
+
             .nav-button {
-                min-width: 74px;
-                font-size: 10px;
+                font-size: 8px;
+
+                padding:
+                    6px 0;
             }
 
             .nav-icon {
-                font-size: 20px;
+                font-size: 18px;
+            }
+
+            .logo {
+                font-size: 21px;
             }
 
             .coins {
                 font-size: 27px;
             }
         }
+
     </style>
 </head>
 
+
 <body>
+
 
 <div class="app">
 
-    <!-- TOP BAR -->
+
+    <!-- =========================
+         TOP BAR
+    ========================= -->
 
     <div class="top-bar">
 
@@ -249,74 +328,114 @@
             EarnPool
         </div>
 
+
         <button
             class="language-button"
+            id="languageButton"
             onclick="toggleLanguageMenu()"
-            id="languageButton">
+        >
             🌐 EN
         </button>
 
     </div>
 
-    <!-- LANGUAGE MENU -->
 
-    <div class="language-menu" id="languageMenu">
+    <!-- =========================
+         LANGUAGE MENU
+    ========================= -->
+
+    <div
+        class="language-menu"
+        id="languageMenu"
+    >
 
         <button
             class="language-option"
-            onclick="changeLanguage('en')">
+            onclick="changeLanguage('en')"
+        >
             🇬🇧 English
         </button>
 
-        <button
-            class="language-option"
-            onclick="changeLanguage('fa')">
-            🇦🇫 فارسی
-        </button>
 
         <button
             class="language-option"
-            onclick="changeLanguage('ar')">
+            onclick="changeLanguage('fa')"
+        >
+            🇦🇫 فارسی
+        </button>
+
+
+        <button
+            class="language-option"
+            onclick="changeLanguage('ar')"
+        >
             🇸🇦 العربية
         </button>
 
     </div>
 
-    <!-- BALANCE -->
+
+    <!-- =========================
+         BALANCE
+    ========================= -->
 
     <div class="balance-card">
 
         <div
             class="balance-title"
-            id="balanceTitle">
+            id="balanceTitle"
+        >
             Your Balance
         </div>
 
+
         <div class="coins">
-            <span id="coins">0</span> 🪙
+
+            <span id="coins">
+                0
+            </span>
+
+            🪙
+
         </div>
+
 
         <div
             class="usd-value"
-            id="usdValue">
+            id="usdValue"
+        >
             ≈ $0.000000
         </div>
 
     </div>
 
-    <!-- MAIN CONTENT -->
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
 
     <div class="content-card">
 
         <div
+            class="content-icon"
+            id="contentIcon"
+        >
+            🎁
+        </div>
+
+
+        <div
             class="content-title"
-            id="contentTitle">
+            id="contentTitle"
+        >
             Daily Reward
         </div>
 
+
         <div
             class="content-text"
-            id="contentText">
+            id="contentText"
+        >
             Claim your daily reward and earn coins every day.
         </div>
 
@@ -325,17 +444,26 @@
 </div>
 
 
-<!-- BOTTOM NAVIGATION -->
+<!-- =========================
+     BOTTOM NAVIGATION
+========================= -->
 
 <div class="bottom-nav">
 
-    <div class="nav-scroll">
+    <div class="nav-container">
+
+
+        <!-- DAILY -->
 
         <button
             class="nav-button active"
-            onclick="showSection('daily', this)">
+            data-section="daily"
+            onclick="showSection('daily', this)"
+        >
 
-            <span class="nav-icon">🎁</span>
+            <span class="nav-icon">
+                🎁
+            </span>
 
             <span data-key="daily">
                 Daily
@@ -344,11 +472,17 @@
         </button>
 
 
+        <!-- ADS -->
+
         <button
             class="nav-button"
-            onclick="showSection('ads', this)">
+            data-section="ads"
+            onclick="showSection('ads', this)"
+        >
 
-            <span class="nav-icon">📺</span>
+            <span class="nav-icon">
+                📺
+            </span>
 
             <span data-key="ads">
                 Ads
@@ -357,11 +491,17 @@
         </button>
 
 
+        <!-- TASKS -->
+
         <button
             class="nav-button"
-            onclick="showSection('tasks', this)">
+            data-section="tasks"
+            onclick="showSection('tasks', this)"
+        >
 
-            <span class="nav-icon">🎯</span>
+            <span class="nav-icon">
+                🎯
+            </span>
 
             <span data-key="tasks">
                 Tasks
@@ -370,11 +510,17 @@
         </button>
 
 
+        <!-- REFERRAL -->
+
         <button
             class="nav-button"
-            onclick="showSection('referral', this)">
+            data-section="referral"
+            onclick="showSection('referral', this)"
+        >
 
-            <span class="nav-icon">👥</span>
+            <span class="nav-icon">
+                👥
+            </span>
 
             <span data-key="referral">
                 Referral
@@ -383,11 +529,17 @@
         </button>
 
 
+        <!-- WITHDRAW -->
+
         <button
             class="nav-button"
-            onclick="showSection('withdraw', this)">
+            data-section="withdraw"
+            onclick="showSection('withdraw', this)"
+        >
 
-            <span class="nav-icon">💰</span>
+            <span class="nav-icon">
+                💰
+            </span>
 
             <span data-key="withdraw">
                 Withdraw
@@ -396,17 +548,24 @@
         </button>
 
 
+        <!-- ACCOUNT -->
+
         <button
             class="nav-button"
-            onclick="showSection('account', this)">
+            data-section="account"
+            onclick="showSection('account', this)"
+        >
 
-            <span class="nav-icon">👤</span>
+            <span class="nav-icon">
+                👤
+            </span>
 
             <span data-key="account">
                 Account
             </span>
 
         </button>
+
 
     </div>
 
@@ -415,82 +574,128 @@
 
 <script>
 
-    /* TELEGRAM */
 
-    const tg = window.Telegram.WebApp;
+    /* =========================
+       TELEGRAM
+    ========================= */
+
+    const tg =
+        window.Telegram.WebApp;
 
     tg.ready();
+
     tg.expand();
 
 
-    /* USER */
+    /* =========================
+       USER
+    ========================= */
 
-    const user = tg.initDataUnsafe?.user;
+    const user =
+        tg.initDataUnsafe?.user || null;
 
 
-    /* BALANCE */
+    /* =========================
+       BALANCE
+    ========================= */
 
     let coins = 0;
 
 
     function updateBalance() {
 
-        document.getElementById("coins").textContent =
+        document
+            .getElementById("coins")
+            .textContent =
             coins.toLocaleString();
 
-        const usd = coins / 1000000;
 
-        document.getElementById("usdValue").textContent =
+        /*
+         1,000,000 coins = $1
+        */
+
+        const usd =
+            coins / 1000000;
+
+
+        document
+            .getElementById("usdValue")
+            .textContent =
             "≈ $" + usd.toFixed(6);
+
     }
 
 
-    /* TRANSLATIONS */
+    /* =========================
+       TRANSLATIONS
+    ========================= */
 
     const translations = {
 
+
+        /* ENGLISH */
+
         en: {
 
-            balance: "Your Balance",
+            balance:
+                "Your Balance",
 
-            daily: "Daily",
+            daily:
+                "Daily",
 
-            ads: "Ads",
+            ads:
+                "Ads",
 
-            tasks: "Tasks",
+            tasks:
+                "Tasks",
 
-            referral: "Referral",
+            referral:
+                "Referral",
 
-            withdraw: "Withdraw",
+            withdraw:
+                "Withdraw",
 
-            account: "Account",
+            account:
+                "Account",
 
-            dailyTitle: "Daily Reward",
+
+            dailyTitle:
+                "Daily Reward",
 
             dailyText:
                 "Claim your daily reward and earn coins every day.",
 
-            adsTitle: "Watch Ads",
+
+            adsTitle:
+                "Watch Ads",
 
             adsText:
                 "Watch advertisements and earn coins.",
 
-            tasksTitle: "Tasks",
+
+            tasksTitle:
+                "Tasks",
 
             tasksText:
                 "Complete available tasks and earn rewards.",
 
-            referralTitle: "Referral",
+
+            referralTitle:
+                "Referral",
 
             referralText:
                 "Invite friends and earn referral rewards.",
 
-            withdrawTitle: "Withdraw",
+
+            withdrawTitle:
+                "Withdraw",
 
             withdrawText:
                 "Withdraw your available balance.",
 
-            accountTitle: "Account",
+
+            accountTitle:
+                "Account",
 
             accountText:
                 "View your account information and statistics."
@@ -498,48 +703,69 @@
         },
 
 
+        /* FARSI */
+
         fa: {
 
-            balance: "موجودی شما",
+            balance:
+                "موجودی شما",
 
-            daily: "پاداش روزانه",
+            daily:
+                "روزانه",
 
-            ads: "تبلیغات",
+            ads:
+                "تبلیغات",
 
-            tasks: "تسک‌ها",
+            tasks:
+                "تسک‌ها",
 
-            referral: "رفرال",
+            referral:
+                "رفرال",
 
-            withdraw: "برداشت",
+            withdraw:
+                "برداشت",
 
-            account: "حساب",
+            account:
+                "حساب",
 
-            dailyTitle: "پاداش روزانه",
+
+            dailyTitle:
+                "پاداش روزانه",
 
             dailyText:
                 "پاداش روزانه خود را دریافت کنید و هر روز سکه به دست بیاورید.",
 
-            adsTitle: "دیدن تبلیغات",
+
+            adsTitle:
+                "دیدن تبلیغات",
 
             adsText:
                 "تبلیغات را تماشا کنید و سکه دریافت کنید.",
 
-            tasksTitle: "تسک‌ها",
+
+            tasksTitle:
+                "تسک‌ها",
 
             tasksText:
                 "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
 
-            referralTitle: "رفرال",
+
+            referralTitle:
+                "رفرال",
 
             referralText:
                 "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
 
-            withdrawTitle: "برداشت",
+
+            withdrawTitle:
+                "برداشت",
 
             withdrawText:
                 "موجودی قابل برداشت خود را برداشت کنید.",
 
-            accountTitle: "حساب کاربری",
+
+            accountTitle:
+                "حساب کاربری",
 
             accountText:
                 "اطلاعات حساب و آمار خود را مشاهده کنید."
@@ -547,48 +773,69 @@
         },
 
 
+        /* ARABIC */
+
         ar: {
 
-            balance: "رصيدك",
+            balance:
+                "رصيدك",
 
-            daily: "المكافأة اليومية",
+            daily:
+                "اليومي",
 
-            ads: "الإعلانات",
+            ads:
+                "الإعلانات",
 
-            tasks: "المهام",
+            tasks:
+                "المهام",
 
-            referral: "الإحالة",
+            referral:
+                "الإحالة",
 
-            withdraw: "السحب",
+            withdraw:
+                "السحب",
 
-            account: "الحساب",
+            account:
+                "الحساب",
 
-            dailyTitle: "المكافأة اليومية",
+
+            dailyTitle:
+                "المكافأة اليومية",
 
             dailyText:
                 "احصل على مكافأتك اليومية واربح العملات كل يوم.",
 
-            adsTitle: "مشاهدة الإعلانات",
+
+            adsTitle:
+                "مشاهدة الإعلانات",
 
             adsText:
                 "شاهد الإعلانات واربح العملات.",
 
-            tasksTitle: "المهام",
+
+            tasksTitle:
+                "المهام",
 
             tasksText:
                 "أكمل المهام المتاحة واحصل على المكافآت.",
 
-            referralTitle: "الإحالة",
+
+            referralTitle:
+                "الإحالة",
 
             referralText:
                 "ادعُ أصدقاءك واربح مكافآت الإحالة.",
 
-            withdrawTitle: "السحب",
+
+            withdrawTitle:
+                "السحب",
 
             withdrawText:
                 "اسحب رصيدك المتاح.",
 
-            accountTitle: "الحساب",
+
+            accountTitle:
+                "الحساب",
 
             accountText:
                 "عرض معلومات حسابك وإحصائياتك."
@@ -598,202 +845,426 @@
     };
 
 
-    /* SECTIONS */
+    /* =========================
+       SECTION ICONS
+    ========================= */
 
-    let currentSection = "daily";
+    const sectionIcons = {
+
+        daily: "🎁",
+
+        ads: "📺",
+
+        tasks: "🎯",
+
+        referral: "👥",
+
+        withdraw: "💰",
+
+        account: "👤"
+
+    };
 
 
-    function showSection(section, button) {
+    /* =========================
+       CURRENT SECTION
+    ========================= */
 
-        currentSection = section;
+    let currentSection =
+        "daily";
+
+
+    /* =========================
+       SHOW SECTION
+    ========================= */
+
+    function showSection(
+        section,
+        button
+    ) {
+
+        currentSection =
+            section;
+
+
+        /*
+         Remove active state
+        */
 
         document
             .querySelectorAll(".nav-button")
-            .forEach(btn => btn.classList.remove("active"));
+            .forEach(function(btn) {
 
-        button.classList.add("active");
-
-        const lang =
-            localStorage.getItem("language") || detectLanguage();
-
-        const t = translations[lang];
-
-
-        const data = {
-
-            daily: [
-                t.dailyTitle,
-                t.dailyText
-            ],
-
-            ads: [
-                t.adsTitle,
-                t.adsText
-            ],
-
-            tasks: [
-                t.tasksTitle,
-                t.tasksText
-            ],
-
-            referral: [
-                t.referralTitle,
-                t.referralText
-            ],
-
-            withdraw: [
-                t.withdrawTitle,
-                t.withdrawText
-            ],
-
-            account: [
-                t.accountTitle,
-                t.accountText
-            ]
-
-        };
-
-
-        document.getElementById("contentTitle").textContent =
-            data[section][0];
-
-        document.getElementById("contentText").textContent =
-            data[section][1];
-    }
-
-
-    /* LANGUAGE DETECTION */
-
-    function detectLanguage() {
-
-        const telegramLanguage =
-            user?.language_code || "";
-
-        const language =
-            telegramLanguage.toLowerCase();
-
-
-        if (
-            language === "fa" ||
-            language.startsWith("fa-")
-        ) {
-            return "fa";
-        }
-
-
-        if (
-            language === "ar" ||
-            language.startsWith("ar-")
-        ) {
-            return "ar";
-        }
-
-
-        return "en";
-    }
-
-
-    /* APPLY LANGUAGE */
-
-    function applyLanguage(lang) {
-
-        const t = translations[lang];
-
-        document.documentElement.lang = lang;
-
-        document.documentElement.dir =
-            lang === "en" ? "ltr" : "rtl";
-
-
-        document.getElementById("balanceTitle").textContent =
-            t.balance;
-
-
-        document
-            .querySelectorAll("[data-key]")
-            .forEach(element => {
-
-                const key =
-                    element.getAttribute("data-key");
-
-                element.textContent =
-                    t[key];
+                btn.classList.remove("active");
 
             });
 
 
-        const languageNames = {
+        /*
+         Add active state
+        */
 
-            en: "🌐 EN",
+        if (button) {
 
-            fa: "🌐 FA",
+            button.classList.add("active");
 
-            ar: "🌐 AR"
+        }
+
+
+        const lang =
+            localStorage.getItem("language") ||
+            detectLanguage();
+
+
+        const t =
+            translations[lang];
+
+
+        const content = {
+
+            daily: {
+
+                title:
+                    t.dailyTitle,
+
+                text:
+                    t.dailyText
+
+            },
+
+
+            ads: {
+
+                title:
+                    t.adsTitle,
+
+                text:
+                    t.adsText
+
+            },
+
+
+            tasks: {
+
+                title:
+                    t.tasksTitle,
+
+                text:
+                    t.tasksText
+
+            },
+
+
+            referral: {
+
+                title:
+                    t.referralTitle,
+
+                text:
+                    t.referralText
+
+            },
+
+
+            withdraw: {
+
+                title:
+                    t.withdrawTitle,
+
+                text:
+                    t.withdrawText
+
+            },
+
+
+            account: {
+
+                title:
+                    t.accountTitle,
+
+                text:
+                    t.accountText
+
+            }
 
         };
 
 
-        document.getElementById("languageButton").textContent =
-            languageNames[lang];
+        document
+            .getElementById("contentIcon")
+            .textContent =
+            sectionIcons[section];
 
+
+        document
+            .getElementById("contentTitle")
+            .textContent =
+            content[section].title;
+
+
+        document
+            .getElementById("contentText")
+            .textContent =
+            content[section].text;
+
+    }
+
+
+    /* =========================
+       DETECT TELEGRAM LANGUAGE
+    ========================= */
+
+    function detectLanguage() {
+
+        if (!user) {
+
+            return "en";
+
+        }
+
+
+        const telegramLanguage =
+            (
+                user.language_code ||
+                ""
+            ).toLowerCase();
+
+
+        /*
+         Persian
+        */
+
+        if (
+            telegramLanguage === "fa" ||
+            telegramLanguage.startsWith("fa-")
+        ) {
+
+            return "fa";
+
+        }
+
+
+        /*
+         Arabic
+        */
+
+        if (
+            telegramLanguage === "ar" ||
+            telegramLanguage.startsWith("ar-")
+        ) {
+
+            return "ar";
+
+        }
+
+
+        /*
+         Everything else = English
+        */
+
+        return "en";
+
+    }
+
+
+    /* =========================
+       APPLY LANGUAGE
+    ========================= */
+
+    function applyLanguage(
+        lang
+    ) {
+
+        if (
+            !translations[lang]
+        ) {
+
+            lang = "en";
+
+        }
+
+
+        const t =
+            translations[lang];
+
+
+        /*
+         HTML direction
+        */
+
+        document.documentElement.lang =
+            lang;
+
+
+        document.documentElement.dir =
+            lang === "en"
+                ? "ltr"
+                : "rtl";
+
+
+        /*
+         Balance
+        */
+
+        document
+            .getElementById("balanceTitle")
+            .textContent =
+            t.balance;
+
+
+        /*
+         Navigation
+        */
+
+        document
+            .querySelectorAll("[data-key]")
+            .forEach(function(element) {
+
+                const key =
+                    element.getAttribute(
+                        "data-key"
+                    );
+
+
+                if (t[key]) {
+
+                    element.textContent =
+                        t[key];
+
+                }
+
+            });
+
+
+        /*
+         Language button
+        */
+
+        const languageLabels = {
+
+            en:
+                "🌐 EN",
+
+            fa:
+                "🌐 FA",
+
+            ar:
+                "🌐 AR"
+
+        };
+
+
+        document
+            .getElementById("languageButton")
+            .textContent =
+            languageLabels[lang];
+
+
+        /*
+         Refresh current section
+        */
 
         const activeButton =
-            document.querySelector(".nav-button.active");
+            document.querySelector(
+                ".nav-button.active"
+            );
 
 
         showSection(
             currentSection,
             activeButton
         );
+
     }
 
 
-    /* CHANGE LANGUAGE */
+    /* =========================
+       CHANGE LANGUAGE
+    ========================= */
 
-    function changeLanguage(lang) {
+    function changeLanguage(
+        lang
+    ) {
+
+        /*
+         Save selected language
+        */
 
         localStorage.setItem(
             "language",
             lang
         );
 
-        applyLanguage(lang);
+
+        applyLanguage(
+            lang
+        );
+
+
+        /*
+         Close menu
+        */
 
         document
-            .getElementById("languageMenu")
-            .classList.remove("show");
+            .getElementById(
+                "languageMenu"
+            )
+            .classList.remove(
+                "show"
+            );
+
     }
 
 
-    /* LANGUAGE MENU */
+    /* =========================
+       LANGUAGE MENU
+    ========================= */
 
     function toggleLanguageMenu() {
 
         document
-            .getElementById("languageMenu")
-            .classList.toggle("show");
+            .getElementById(
+                "languageMenu"
+            )
+            .classList.toggle(
+                "show"
+            );
+
     }
 
 
-    /* CLOSE LANGUAGE MENU */
+    /* =========================
+       CLOSE LANGUAGE MENU
+    ========================= */
 
     document.addEventListener(
         "click",
         function(event) {
 
             const menu =
-                document.getElementById("languageMenu");
+                document.getElementById(
+                    "languageMenu"
+                );
+
 
             const button =
-                document.getElementById("languageButton");
+                document.getElementById(
+                    "languageButton"
+                );
 
 
             if (
-                !menu.contains(event.target) &&
-                !button.contains(event.target)
+                !menu.contains(
+                    event.target
+                ) &&
+                !button.contains(
+                    event.target
+                )
             ) {
 
-                menu.classList.remove("show");
+                menu.classList.remove(
+                    "show"
+                );
 
             }
 
@@ -801,13 +1272,27 @@
     );
 
 
-    /* START */
+    /* =========================
+       INITIAL LANGUAGE
+    ========================= */
 
     let savedLanguage =
-        localStorage.getItem("language");
+        localStorage.getItem(
+            "language"
+        );
 
 
-    if (!savedLanguage) {
+    /*
+     If user already selected a language,
+     use it.
+
+     Otherwise detect Telegram language.
+    */
+
+    if (
+        !savedLanguage ||
+        !translations[savedLanguage]
+    ) {
 
         savedLanguage =
             detectLanguage();
@@ -815,12 +1300,21 @@
     }
 
 
-    applyLanguage(savedLanguage);
+    /* =========================
+       START APP
+    ========================= */
+
+    applyLanguage(
+        savedLanguage
+    );
+
 
     updateBalance();
 
 
-    /* USER GREETING */
+    /* =========================
+       TELEGRAM USER LOG
+    ========================= */
 
     if (user) {
 
