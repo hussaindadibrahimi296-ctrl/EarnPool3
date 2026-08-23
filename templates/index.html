@@ -18,7 +18,6 @@
     <!-- AdsGram -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-
     <style>
 
         * {
@@ -51,11 +50,6 @@
             padding: 15px;
         }
 
-
-        /* =========================
-           TOP BAR
-        ========================= */
-
         .top-bar {
             display: flex;
             align-items: center;
@@ -78,11 +72,6 @@
             cursor: pointer;
         }
 
-
-        /* =========================
-           LANGUAGE MENU
-        ========================= */
-
         .language-menu {
             display: none;
             position: absolute;
@@ -92,7 +81,7 @@
             border-radius: 12px;
             padding: 6px;
             z-index: 100;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 8px 25px rgba(0,0,0,.35);
         }
 
         .language-menu.show {
@@ -114,11 +103,6 @@
         .language-option:active {
             background: #293242;
         }
-
-
-        /* =========================
-           BALANCE
-        ========================= */
 
         .balance-card {
             background: #191e29;
@@ -145,11 +129,6 @@
             font-size: 15px;
         }
 
-
-        /* =========================
-           MAIN CONTENT
-        ========================= */
-
         .content-card {
             background: #191e29;
             border-radius: 20px;
@@ -174,58 +153,52 @@
             font-size: 15px;
         }
 
-
-        /* =========================
-           DAILY REWARD
-        ========================= */
-
-        .reward-button {
+        .reward-button,
+        .watch-ad-button {
             width: 100%;
             border: none;
             background: #2d7dff;
             color: white;
             border-radius: 14px;
-            padding: 14px;
-            margin-top: 22px;
+            padding: 15px;
+            margin-top: 18px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .reward-button:active {
-            transform: scale(0.98);
-        }
-
-        .reward-button:disabled {
+        .reward-button:disabled,
+        .watch-ad-button:disabled {
             background: #303744;
             color: #8f98a8;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .reward-status {
+        .reward-status,
+        .ads-message,
+        .task-message {
             text-align: center;
             margin-top: 14px;
             font-size: 14px;
             line-height: 1.6;
         }
 
-        .reward-success {
+        .reward-success,
+        .ads-success,
+        .task-success {
             color: #58d68d;
         }
 
-        .reward-waiting {
+        .reward-waiting,
+        .ads-waiting {
             color: #aeb5c1;
         }
 
-        .reward-error {
+        .reward-error,
+        .ads-error,
+        .task-error {
             color: #ff7777;
         }
-
-
-        /* =========================
-           ADS
-        ========================= */
 
         .ads-panel {
             margin-top: 20px;
@@ -251,48 +224,63 @@
             color: white;
         }
 
-        .watch-ad-button {
+        /* TASKS */
+
+        .tasks-panel {
+            margin-top: 20px;
+        }
+
+        .task-card {
+            background: #111722;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+
+        .task-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .task-description {
+            color: #aeb5c1;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .task-reward {
+            color: #ffd166;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .task-button {
             width: 100%;
             border: none;
             background: #2d7dff;
             color: white;
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 18px;
-            font-size: 16px;
+            border-radius: 11px;
+            padding: 11px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .watch-ad-button:disabled {
+        .task-button:disabled {
             background: #303744;
             color: #8f98a8;
-            cursor: not-allowed;
         }
 
-        .ads-message {
+        .no-tasks {
             text-align: center;
-            margin-top: 12px;
-            font-size: 14px;
-            line-height: 1.6;
+            color: #8f98a8;
+            padding: 25px 10px;
+            line-height: 1.7;
         }
 
-        .ads-success {
-            color: #58d68d;
-        }
-
-        .ads-error {
-            color: #ff7777;
-        }
-
-        .ads-waiting {
-            color: #aeb5c1;
-        }
-
-
-        /* =========================
-           BOTTOM NAVIGATION
-        ========================= */
+        /* BOTTOM NAV */
 
         .bottom-nav {
             position: fixed;
@@ -340,11 +328,6 @@
             margin-bottom: 3px;
         }
 
-
-        /* =========================
-           SMALL PHONES
-        ========================= */
-
         @media (max-width: 360px) {
 
             .app {
@@ -353,7 +336,6 @@
 
             .nav-button {
                 font-size: 8px;
-                padding: 6px 0;
             }
 
             .nav-icon {
@@ -373,14 +355,9 @@
 
 </head>
 
-
 <body>
 
-
 <div class="app">
-
-
-    <!-- TOP BAR -->
 
     <div class="top-bar">
 
@@ -397,9 +374,6 @@
         </button>
 
     </div>
-
-
-    <!-- LANGUAGE MENU -->
 
     <div
         class="language-menu"
@@ -429,9 +403,6 @@
 
     </div>
 
-
-    <!-- BALANCE -->
-
     <div class="balance-card">
 
         <div
@@ -443,9 +414,7 @@
 
         <div class="coins">
 
-            <span id="coins">
-                0
-            </span>
+            <span id="coins">0</span>
 
             🪙
 
@@ -459,9 +428,6 @@
         </div>
 
     </div>
-
-
-    <!-- MAIN CONTENT -->
 
     <div class="content-card">
 
@@ -486,9 +452,6 @@
             Claim your daily reward and earn coins every 12 hours.
         </div>
 
-
-        <!-- DAILY BUTTON -->
-
         <button
             id="rewardButton"
             class="reward-button"
@@ -502,9 +465,6 @@
             class="reward-status"
         ></div>
 
-
-        <!-- ADS PANEL -->
-
         <div
             id="adsPanel"
             class="ads-panel"
@@ -514,26 +474,18 @@
             <div class="ads-info">
 
                 <div class="ads-row">
-
                     <span id="adsWatchedLabel">
                         Ads watched
                     </span>
 
                     <strong>
-                        <span id="adsWatched">
-                            0
-                        </span>
+                        <span id="adsWatched">0</span>
                         /
-                        <span id="adsLimit">
-                            10
-                        </span>
+                        <span id="adsLimit">10</span>
                     </strong>
-
                 </div>
 
-
                 <div class="ads-row">
-
                     <span id="adsRemainingLabel">
                         Ads remaining
                     </span>
@@ -541,12 +493,9 @@
                     <strong id="adsRemaining">
                         10
                     </strong>
-
                 </div>
 
-
                 <div class="ads-row">
-
                     <span id="adsRewardLabel">
                         Reward
                     </span>
@@ -554,11 +503,9 @@
                     <strong>
                         2,000 🪙
                     </strong>
-
                 </div>
 
             </div>
-
 
             <button
                 id="watchAdButton"
@@ -568,10 +515,24 @@
                 📺 Watch Ad +2,000
             </button>
 
-
             <div
                 id="adsMessage"
                 class="ads-message"
+            ></div>
+
+        </div>
+
+        <div
+            id="tasksPanel"
+            class="tasks-panel"
+            style="display:none;"
+        >
+
+            <div id="tasksList"></div>
+
+            <div
+                id="taskMessage"
+                class="task-message"
             ></div>
 
         </div>
@@ -580,1896 +541,2051 @@
 
 </div>
 
-
-<!-- BOTTOM NAVIGATION -->
-
 <div class="bottom-nav">
 
     <div class="nav-container">
-
-
-        <!-- DAILY -->
 
         <button
             class="nav-button active"
             data-section="daily"
             onclick="showSection('daily', this)"
         >
-
-            <span class="nav-icon">
-                🎁
-            </span>
-
-            <span data-key="daily">
-                Daily
-            </span>
-
+            <span class="nav-icon">🎁</span>
+            <span data-key="daily">Daily</span>
         </button>
-
-
-        <!-- ADS -->
 
         <button
             class="nav-button"
             data-section="ads"
             onclick="showSection('ads', this)"
         >
-
-            <span class="nav-icon">
-                📺
-            </span>
-
-            <span data-key="ads">
-                Ads
-            </span>
-
+            <span class="nav-icon">📺</span>
+            <span data-key="ads">Ads</span>
         </button>
-
-
-        <!-- TASKS -->
 
         <button
             class="nav-button"
             data-section="tasks"
             onclick="showSection('tasks', this)"
         >
-
-            <span class="nav-icon">
-                🎯
-            </span>
-
-            <span data-key="tasks">
-                Tasks
-            </span>
-
+            <span class="nav-icon">🎯</span>
+            <span data-key="tasks">Tasks</span>
         </button>
-
-
-        <!-- REFERRAL -->
 
         <button
             class="nav-button"
             data-section="referral"
             onclick="showSection('referral', this)"
         >
-
-            <span class="nav-icon">
-                👥
-            </span>
-
-            <span data-key="referral">
-                Referral
-            </span>
-
+            <span class="nav-icon">👥</span>
+            <span data-key="referral">Referral</span>
         </button>
-
-
-        <!-- WITHDRAW -->
 
         <button
             class="nav-button"
             data-section="withdraw"
             onclick="showSection('withdraw', this)"
         >
-
-            <span class="nav-icon">
-                💰
-            </span>
-
-            <span data-key="withdraw">
-                Withdraw
-            </span>
-
+            <span class="nav-icon">💰</span>
+            <span data-key="withdraw">Withdraw</span>
         </button>
-
-
-        <!-- ACCOUNT -->
 
         <button
             class="nav-button"
             data-section="account"
             onclick="showSection('account', this)"
         >
-
-            <span class="nav-icon">
-                👤
-            </span>
-
-            <span data-key="account">
-                Account
-            </span>
-
+            <span class="nav-icon">👤</span>
+            <span data-key="account">Account</span>
         </button>
-
 
     </div>
 
 </div>
 
-
 <script>
 
+const tg = window.Telegram.WebApp;
 
-    /* =====================================================
-       TELEGRAM
-    ===================================================== */
+tg.ready();
+tg.expand();
 
-    const tg =
-        window.Telegram.WebApp;
+const user =
+    tg.initDataUnsafe?.user || null;
 
-    tg.ready();
+let AdController = null;
 
-    tg.expand();
+try {
+
+    if (
+        window.Adsgram &&
+        typeof window.Adsgram.init === "function"
+    ) {
+
+        AdController =
+            window.Adsgram.init({
+                blockId: "44182"
+            });
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "AdsGram initialization error:",
+        error
+    );
+
+}
+
+let coins = 0;
+
+const DAILY_REWARD = 1000;
+const AD_REWARD = 2000;
+const TASK_REWARD = 1000;
+
+const AD_LIMIT = 10;
+
+const translations = {
+
+    en: {
+
+        balance: "Your Balance",
+
+        daily: "Daily",
+        ads: "Ads",
+        tasks: "Tasks",
+        referral: "Referral",
+        withdraw: "Withdraw",
+        account: "Account",
+
+        dailyTitle: "Daily Reward",
+
+        dailyText:
+            "Claim your daily reward and earn coins every 12 hours.",
+
+        adsTitle: "Watch Ads",
+
+        adsText:
+            "Watch advertisements and earn coins.",
+
+        tasksTitle: "Tasks",
+
+        tasksText:
+            "Complete available tasks and earn rewards.",
+
+        referralTitle: "Referral",
+
+        referralText:
+            "Invite friends and earn referral rewards.",
+
+        withdrawTitle: "Withdraw",
+
+        withdrawText:
+            "Withdraw your available balance.",
+
+        accountTitle: "Account",
+
+        accountText:
+            "View your account information and statistics.",
+
+        claim:
+            "🎁 Claim 1,000 Coins",
+
+        claimed:
+            "✅ Reward Claimed",
+
+        congratulations:
+            "🎉 Congratulations! You received 1,000 coins.",
+
+        waiting:
+            "⏳ Next reward in",
+
+        adsWatched:
+            "Ads watched",
+
+        adsRemaining:
+            "Ads remaining",
+
+        adsReward:
+            "Reward",
+
+        watchAd:
+            "📺 Watch Ad +2,000",
+
+        adSuccess:
+            "🎉 Congratulations! You received 2,000 coins.",
+
+        adLimit:
+            "⏳ You have reached your 10-ad limit.",
+
+        adError:
+            "❌ The ad could not be completed. No coins were added.",
+
+        adsReset:
+            "Next ads available in",
+
+        taskReward:
+            "Reward: 1,000 🪙",
+
+        completeTask:
+            "Complete Task",
+
+        claimTask:
+            "Claim 1,000 Coins",
+
+        taskSuccess:
+            "🎉 Task completed! You received 1,000 coins.",
+
+        taskAlready:
+            "This task has already been completed.",
+
+        noTasks:
+            "🎯 No new tasks available right now.",
+
+        tasksLoading:
+            "⏳ Loading tasks...",
+
+        error:
+            "Something went wrong. Please try again."
+
+    },
+
+    fa: {
+
+        balance:
+            "موجودی شما",
+
+        daily:
+            "روزانه",
+
+        ads:
+            "تبلیغات",
+
+        tasks:
+            "تسک‌ها",
+
+        referral:
+            "رفرال",
+
+        withdraw:
+            "برداشت",
+
+        account:
+            "حساب",
+
+        dailyTitle:
+            "پاداش روزانه",
+
+        dailyText:
+            "هر ۱۲ ساعت پاداش خود را دریافت کنید.",
+
+        adsTitle:
+            "دیدن تبلیغات",
+
+        adsText:
+            "تبلیغات را تماشا کنید و سکه دریافت کنید.",
+
+        tasksTitle:
+            "تسک‌ها",
+
+        tasksText:
+            "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
+
+        referralTitle:
+            "رفرال",
+
+        referralText:
+            "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
+
+        withdrawTitle:
+            "برداشت",
+
+        withdrawText:
+            "موجودی قابل برداشت خود را برداشت کنید.",
+
+        accountTitle:
+            "حساب کاربری",
+
+        accountText:
+            "اطلاعات حساب و آمار خود را مشاهده کنید.",
+
+        claim:
+            "🎁 دریافت ۱,۰۰۰ سکه",
+
+        claimed:
+            "✅ پاداش دریافت شد",
+
+        congratulations:
+            "🎉 تبریک! شما ۱,۰۰۰ سکه دریافت کردید.",
+
+        waiting:
+            "⏳ پاداش بعدی تا",
+
+        adsWatched:
+            "تبلیغات دیده‌شده",
+
+        adsRemaining:
+            "تبلیغات باقی‌مانده",
+
+        adsReward:
+            "پاداش",
+
+        watchAd:
+            "📺 دیدن تبلیغ +۲,۰۰۰",
+
+        adSuccess:
+            "🎉 تبریک! شما ۲,۰۰۰ سکه دریافت کردید.",
+
+        adLimit:
+            "⏳ شما به محدودیت ۱۰ تبلیغ رسیده‌اید.",
+
+        adError:
+            "❌ تبلیغ کامل نشد. سکه‌ای اضافه نشد.",
+
+        adsReset:
+            "تبلیغات بعدی تا",
+
+        taskReward:
+            "پاداش: ۱,۰۰۰ 🪙",
+
+        completeTask:
+            "انجام تسک",
+
+        claimTask:
+            "دریافت ۱,۰۰۰ سکه",
+
+        taskSuccess:
+            "🎉 تسک انجام شد! ۱,۰۰۰ سکه دریافت کردید.",
+
+        taskAlready:
+            "این تسک قبلاً انجام شده است.",
+
+        noTasks:
+            "🎯 فعلاً تسک جدیدی وجود ندارد.",
+
+        tasksLoading:
+            "⏳ در حال دریافت تسک‌ها...",
+
+        error:
+            "خطایی رخ داد. دوباره تلاش کنید."
+
+    },
+
+    ar: {
+
+        balance:
+            "رصيدك",
+
+        daily:
+            "اليومي",
+
+        ads:
+            "الإعلانات",
+
+        tasks:
+            "المهام",
+
+        referral:
+            "الإحالة",
+
+        withdraw:
+            "السحب",
+
+        account:
+            "الحساب",
+
+        dailyTitle:
+            "المكافأة اليومية",
+
+        dailyText:
+            "احصل على مكافأتك كل 12 ساعة.",
+
+        adsTitle:
+            "مشاهدة الإعلانات",
+
+        adsText:
+            "شاهد الإعلانات واربح العملات.",
+
+        tasksTitle:
+            "المهام",
+
+        tasksText:
+            "أكمل المهام المتاحة واحصل على المكافآت.",
+
+        referralTitle:
+            "الإحالة",
+
+        referralText:
+            "ادعُ أصدقاءك واربح مكافآت الإحالة.",
+
+        withdrawTitle:
+            "السحب",
+
+        withdrawText:
+            "اسحب رصيدك المتاح.",
+
+        accountTitle:
+            "الحساب",
+
+        accountText:
+            "عرض معلومات حسابك وإحصائياتك.",
+
+        claim:
+            "🎁 احصل على 1,000 عملة",
+
+        claimed:
+            "✅ تم استلام المكافأة",
+
+        congratulations:
+            "🎉 مبروك! حصلت على 1,000 عملة.",
+
+        waiting:
+            "⏳ المكافأة التالية خلال",
+
+        adsWatched:
+            "الإعلانات المشاهدة",
+
+        adsRemaining:
+            "الإعلانات المتبقية",
+
+        adsReward:
+            "المكافأة",
+
+        watchAd:
+            "📺 شاهد الإعلان +2,000",
+
+        adSuccess:
+            "🎉 مبروك! حصلت على 2,000 عملة.",
+
+        adLimit:
+            "⏳ وصلت إلى حد 10 إعلانات.",
+
+        adError:
+            "❌ لم تكتمل مشاهدة الإعلان. لم تتم إضافة العملات.",
+
+        adsReset:
+            "الإعلانات التالية خلال",
+
+        taskReward:
+            "المكافأة: 1,000 🪙",
+
+        completeTask:
+            "إكمال المهمة",
+
+        claimTask:
+            "احصل على 1,000 عملة",
+
+        taskSuccess:
+            "🎉 تم إكمال المهمة! حصلت على 1,000 عملة.",
+
+        taskAlready:
+            "تم إكمال هذه المهمة مسبقًا.",
+
+        noTasks:
+            "🎯 لا توجد مهام جديدة حاليًا.",
+
+        tasksLoading:
+            "⏳ جارٍ تحميل المهام...",
+
+        error:
+            "حدث خطأ. حاول مرة أخرى."
+
+    }
+
+};
+
+const sectionIcons = {
+
+    daily: "🎁",
+    ads: "📺",
+    tasks: "🎯",
+    referral: "👥",
+    withdraw: "💰",
+    account: "👤"
+
+};
+
+let currentSection = "daily";
+
+function updateBalance() {
+
+    document
+        .getElementById("coins")
+        .textContent =
+        Number(coins).toLocaleString();
+
+    const usd =
+        Number(coins) / 1000000;
+
+    document
+        .getElementById("usdValue")
+        .textContent =
+        "≈ $" + usd.toFixed(6);
+
+}
+
+function detectLanguage() {
+
+    if (!user) {
+        return "en";
+    }
+
+    const code =
+        (
+            user.language_code ||
+            ""
+        ).toLowerCase();
+
+    if (
+        code === "fa" ||
+        code.startsWith("fa-")
+    ) {
+
+        return "fa";
+
+    }
+
+    if (
+        code === "ar" ||
+        code.startsWith("ar-")
+    ) {
+
+        return "ar";
+
+    }
+
+    return "en";
+
+}
+
+function getLanguage() {
+
+    return (
+        localStorage.getItem("language") ||
+        detectLanguage()
+    );
+
+}
+function applyLanguage(lang) {
+
+    if (!translations[lang]) {
+        lang = "en";
+    }
+
+    const t = translations[lang];
+
+    document.documentElement.lang = lang;
+
+    document.documentElement.dir =
+        lang === "en" ? "ltr" : "rtl";
+
+    document.getElementById(
+        "balanceTitle"
+    ).textContent = t.balance;
+
+    document
+        .querySelectorAll("[data-key]")
+        .forEach(function(element) {
+
+            const key =
+                element.getAttribute("data-key");
+
+            if (t[key]) {
+                element.textContent = t[key];
+            }
+
+        });
+
+    document.getElementById(
+        "languageButton"
+    ).textContent = {
+
+        en: "🌐 EN",
+        fa: "🌐 FA",
+        ar: "🌐 AR"
+
+    }[lang];
+
+    document.getElementById(
+        "rewardButton"
+    ).textContent = t.claim;
+
+    document.getElementById(
+        "adsWatchedLabel"
+    ).textContent = t.adsWatched;
+
+    document.getElementById(
+        "adsRemainingLabel"
+    ).textContent = t.adsRemaining;
+
+    document.getElementById(
+        "adsRewardLabel"
+    ).textContent = t.adsReward;
+
+    document.getElementById(
+        "watchAdButton"
+    ).textContent = t.watchAd;
+
+    showSection(
+        currentSection,
+        document.querySelector(".nav-button.active")
+    );
+
+}
 
 
-    /* =====================================================
-       TELEGRAM USER
-    ===================================================== */
+/* =====================================================
+   CHANGE LANGUAGE
+===================================================== */
 
-    const user =
-        tg.initDataUnsafe?.user || null;
+function changeLanguage(lang) {
+
+    if (!translations[lang]) {
+        lang = "en";
+    }
+
+    localStorage.setItem(
+        "language",
+        lang
+    );
+
+    applyLanguage(lang);
+
+    document
+        .getElementById("languageMenu")
+        .classList.remove("show");
+
+}
 
 
-    /* =====================================================
-       ADSGRAM
-    ===================================================== */
+/* =====================================================
+   LANGUAGE MENU
+===================================================== */
 
-    let AdController = null;
+function toggleLanguageMenu() {
 
+    document
+        .getElementById("languageMenu")
+        .classList.toggle("show");
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const menu =
+            document.getElementById(
+                "languageMenu"
+            );
+
+        const button =
+            document.getElementById(
+                "languageButton"
+            );
+
+        if (
+            !menu.contains(event.target) &&
+            !button.contains(event.target)
+        ) {
+
+            menu.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SHOW SECTION
+===================================================== */
+
+function showSection(
+    section,
+    button
+) {
+
+    currentSection = section;
+
+    document
+        .querySelectorAll(".nav-button")
+        .forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+    if (button) {
+        button.classList.add("active");
+    }
+
+    const lang = getLanguage();
+
+    const t = translations[lang];
+
+    const content = {
+
+        daily: {
+
+            title:
+                t.dailyTitle,
+
+            text:
+                t.dailyText
+
+        },
+
+        ads: {
+
+            title:
+                t.adsTitle,
+
+            text:
+                t.adsText
+
+        },
+
+        tasks: {
+
+            title:
+                t.tasksTitle,
+
+            text:
+                t.tasksText
+
+        },
+
+        referral: {
+
+            title:
+                t.referralTitle,
+
+            text:
+                t.referralText
+
+        },
+
+        withdraw: {
+
+            title:
+                t.withdrawTitle,
+
+            text:
+                t.withdrawText
+
+        },
+
+        account: {
+
+            title:
+                t.accountTitle,
+
+            text:
+                t.accountText
+
+        }
+
+    };
+
+    document.getElementById(
+        "contentIcon"
+    ).textContent =
+        sectionIcons[section];
+
+    document.getElementById(
+        "contentTitle"
+    ).textContent =
+        content[section].title;
+
+    document.getElementById(
+        "contentText"
+    ).textContent =
+        content[section].text;
+
+    const rewardButton =
+        document.getElementById(
+            "rewardButton"
+        );
+
+    const rewardStatus =
+        document.getElementById(
+            "rewardStatus"
+        );
+
+    const adsPanel =
+        document.getElementById(
+            "adsPanel"
+        );
+
+    const tasksPanel =
+        document.getElementById(
+            "tasksPanel"
+        );
+
+
+    /* ==========================================
+       DAILY
+    ========================================== */
+
+    if (section === "daily") {
+
+        rewardButton.style.display =
+            "block";
+
+        rewardStatus.style.display =
+            "block";
+
+        adsPanel.style.display =
+            "none";
+
+        tasksPanel.style.display =
+            "none";
+
+        checkDailyReward();
+
+    }
+
+
+    /* ==========================================
+       ADS
+    ========================================== */
+
+    else if (section === "ads") {
+
+        rewardButton.style.display =
+            "none";
+
+        rewardStatus.style.display =
+            "none";
+
+        adsPanel.style.display =
+            "block";
+
+        tasksPanel.style.display =
+            "none";
+
+        loadAdsStatus();
+
+    }
+
+
+    /* ==========================================
+       TASKS
+    ========================================== */
+
+    else if (section === "tasks") {
+
+        rewardButton.style.display =
+            "none";
+
+        rewardStatus.style.display =
+            "none";
+
+        adsPanel.style.display =
+            "none";
+
+        tasksPanel.style.display =
+            "block";
+
+        loadTasks();
+
+    }
+
+
+    /* ==========================================
+       OTHER SECTIONS
+    ========================================== */
+
+    else {
+
+        rewardButton.style.display =
+            "none";
+
+        rewardStatus.style.display =
+            "none";
+
+        adsPanel.style.display =
+            "none";
+
+        tasksPanel.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD USER BALANCE
+===================================================== */
+
+async function loadUserBalance() {
+
+    if (!user) {
+        return;
+    }
 
     try {
 
+        const response =
+            await fetch(
+                "/api/user/" +
+                encodeURIComponent(user.id)
+            );
+
+        const data =
+            await response.json();
+
         if (
-            window.Adsgram &&
-            typeof window.Adsgram.init === "function"
+            data.success &&
+            data.user
         ) {
 
-            AdController =
-                window.Adsgram.init({
-                    blockId: "44182"
-                });
+            coins =
+                Number(
+                    data.user.coins || 0
+                );
+
+            updateBalance();
 
         }
 
     } catch (error) {
 
         console.error(
-            "AdsGram initialization error:",
+            "Balance loading error:",
             error
         );
 
     }
 
-
-    /* =====================================================
-       BALANCE
-    ===================================================== */
-
-    let coins = 0;
+}
 
 
-    function updateBalance() {
+/* =====================================================
+   REGISTER USER
+===================================================== */
 
-        document
-            .getElementById("coins")
-            .textContent =
-            Number(coins).toLocaleString();
+async function registerUser() {
 
-
-        const usd =
-            Number(coins) / 1000000;
-
-
-        document
-            .getElementById("usdValue")
-            .textContent =
-            "≈ $" + usd.toFixed(6);
-
+    if (!user) {
+        return;
     }
 
+    const language =
+        getLanguage();
 
-    /* =====================================================
-       LOAD USER BALANCE
-    ===================================================== */
+    try {
 
-    async function loadUserBalance() {
+        const response =
+            await fetch(
+                "/api/user",
+                {
 
-        if (!user) {
-            return;
-        }
+                    method: "POST",
 
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-        try {
+                    body:
+                        JSON.stringify({
 
-            const response =
-                await fetch(
-                    "/api/user/" +
-                    encodeURIComponent(user.id)
-                );
+                            telegram_id:
+                                user.id,
 
+                            first_name:
+                                user.first_name ||
+                                "",
 
-            const data =
-                await response.json();
+                            username:
+                                user.username ||
+                                "",
 
+                            language:
+                                language
 
-            if (
-                data.success &&
+                        })
+
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (data.success) {
+
+            console.log(
+                "EarnPool user registered:",
                 data.user
-            ) {
-
-                coins =
-                    Number(
-                        data.user.coins || 0
-                    );
-
-                updateBalance();
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Balance loading error:",
-                error
             );
 
         }
+
+    } catch (error) {
+
+        console.error(
+            "User registration error:",
+            error
+        );
 
     }
 
+}
 
-    /* =====================================================
-       TRANSLATIONS
-    ===================================================== */
 
-    const translations = {
+/* =====================================================
+   DAILY REWARD CHECK
+===================================================== */
 
-        en: {
+async function checkDailyReward() {
 
-            balance: "Your Balance",
+    if (!user) {
+        return;
+    }
 
-            daily: "Daily",
+    try {
 
-            ads: "Ads",
-
-            tasks: "Tasks",
-
-            referral: "Referral",
-
-            withdraw: "Withdraw",
-
-            account: "Account",
-
-            dailyTitle:
-                "Daily Reward",
-
-            dailyText:
-                "Claim your daily reward and earn coins every 12 hours.",
-
-            adsTitle:
-                "Watch Ads",
-
-            adsText:
-                "Watch advertisements and earn coins.",
-
-            tasksTitle:
-                "Tasks",
-
-            tasksText:
-                "Complete available tasks and earn rewards.",
-
-            referralTitle:
-                "Referral",
-
-            referralText:
-                "Invite friends and earn referral rewards.",
-
-            withdrawTitle:
-                "Withdraw",
-
-            withdrawText:
-                "Withdraw your available balance.",
-
-            accountTitle:
-                "Account",
-
-            accountText:
-                "View your account information and statistics.",
-
-            claim:
-                "🎁 Claim 1,000 Coins",
-
-            claimed:
-                "✅ Reward Claimed",
-
-            congratulations:
-                "🎉 Congratulations! You received 1,000 coins.",
-
-            waiting:
-                "⏳ Next reward in",
-
-            adsWatched:
-                "Ads watched",
-
-            adsRemaining:
-                "Ads remaining",
-
-            adsReward:
-                "Reward",
-
-            watchAd:
-                "📺 Watch Ad +2,000",
-
-            adSuccess:
-                "🎉 Congratulations! You received 2,000 coins.",
-
-            adLimit:
-                "⏳ You have reached your 10-ad limit.",
-
-            adError:
-                "❌ The ad could not be completed. No coins were added.",
-
-            adsReset:
-                "Next ads available in",
-
-            error:
-                "Something went wrong. Please try again."
-
-        },
-
-
-        fa: {
-
-            balance:
-                "موجودی شما",
-
-            daily:
-                "روزانه",
-
-            ads:
-                "تبلیغات",
-
-            tasks:
-                "تسک‌ها",
-
-            referral:
-                "رفرال",
-
-            withdraw:
-                "برداشت",
-
-            account:
-                "حساب",
-
-            dailyTitle:
-                "پاداش روزانه",
-
-            dailyText:
-                "هر ۱۲ ساعت پاداش خود را دریافت کنید.",
-
-            adsTitle:
-                "دیدن تبلیغات",
-
-            adsText:
-                "تبلیغات را تماشا کنید و سکه دریافت کنید.",
-
-            tasksTitle:
-                "تسک‌ها",
-
-            tasksText:
-                "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
-
-            referralTitle:
-                "رفرال",
-
-            referralText:
-                "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
-
-            withdrawTitle:
-                "برداشت",
-
-            withdrawText:
-                "موجودی قابل برداشت خود را برداشت کنید.",
-
-            accountTitle:
-                "حساب کاربری",
-
-            accountText:
-                "اطلاعات حساب و آمار خود را مشاهده کنید.",
-
-            claim:
-                "🎁 دریافت ۱,۰۰۰ سکه",
-
-            claimed:
-                "✅ پاداش دریافت شد",
-
-            congratulations:
-                "🎉 تبریک! شما ۱,۰۰۰ سکه دریافت کردید.",
-
-            waiting:
-                "⏳ پاداش بعدی تا",
-
-            adsWatched:
-                "تبلیغات دیده‌شده",
-
-            adsRemaining:
-                "تبلیغات باقی‌مانده",
-
-            adsReward:
-                "پاداش",
-
-            watchAd:
-                "📺 دیدن تبلیغ +۲,۰۰۰",
-
-            adSuccess:
-                "🎉 تبریک! شما ۲,۰۰۰ سکه دریافت کردید.",
-
-            adLimit:
-                "⏳ شما به محدودیت ۱۰ تبلیغ رسیده‌اید.",
-
-            adError:
-                "❌ تبلیغ کامل نشد. سکه‌ای اضافه نشد.",
-
-            adsReset:
-                "تبلیغات بعدی تا",
-
-            error:
-                "خطایی رخ داد. دوباره تلاش کنید."
-
-        },
-
-
-        ar: {
-
-            balance:
-                "رصيدك",
-
-            daily:
-                "اليومي",
-
-            ads:
-                "الإعلانات",
-
-            tasks:
-                "المهام",
-
-            referral:
-                "الإحالة",
-
-            withdraw:
-                "السحب",
-
-            account:
-                "الحساب",
-
-            dailyTitle:
-                "المكافأة اليومية",
-
-            dailyText:
-                "احصل على مكافأتك كل 12 ساعة.",
-
-            adsTitle:
-                "مشاهدة الإعلانات",
-
-            adsText:
-                "شاهد الإعلانات واربح العملات.",
-
-            tasksTitle:
-                "المهام",
-
-            tasksText:
-                "أكمل المهام المتاحة واحصل على المكافآت.",
-
-            referralTitle:
-                "الإحالة",
-
-            referralText:
-                "ادعُ أصدقاءك واربح مكافآت الإحالة.",
-
-            withdrawTitle:
-                "السحب",
-
-            withdrawText:
-                "اسحب رصيدك المتاح.",
-
-            accountTitle:
-                "الحساب",
-
-            accountText:
-                "عرض معلومات حسابك وإحصائياتك.",
-
-            claim:
-                "🎁 احصل على 1,000 عملة",
-
-            claimed:
-                "✅ تم استلام المكافأة",
-
-            congratulations:
-                "🎉 مبروك! حصلت على 1,000 عملة.",
-
-            waiting:
-                "⏳ المكافأة التالية خلال",
-
-            adsWatched:
-                "الإعلانات المشاهدة",
-
-            adsRemaining:
-                "الإعلانات المتبقية",
-
-            adsReward:
-                "المكافأة",
-
-            watchAd:
-                "📺 شاهد الإعلان +2,000",
-
-            adSuccess:
-                "🎉 مبروك! حصلت على 2,000 عملة.",
-
-            adLimit:
-                "⏳ وصلت إلى حد 10 إعلانات.",
-
-            adError:
-                "❌ لم تكتمل مشاهدة الإعلان. لم تتم إضافة العملات.",
-
-            adsReset:
-                "الإعلانات التالية خلال",
-
-            error:
-                "حدث خطأ. حاول مرة أخرى."
-
-        }
-
-    };
-
-
-    /* =====================================================
-       SECTION ICONS
-    ===================================================== */
-
-    const sectionIcons = {
-
-        daily: "🎁",
-
-        ads: "📺",
-
-        tasks: "🎯",
-
-        referral: "👥",
-
-        withdraw: "💰",
-
-        account: "👤"
-
-    };
-
-
-    let currentSection =
-        "daily";
-
-
-    /* =====================================================
-       SHOW SECTION
-    ===================================================== */
-
-    function showSection(
-        section,
-        button
-    ) {
-
-        currentSection =
-            section;
-
-
-        document
-            .querySelectorAll(".nav-button")
-            .forEach(function(btn) {
-
-                btn.classList.remove(
-                    "active"
-                );
-
-            });
-
-
-        if (button) {
-
-            button.classList.add(
-                "active"
+        const response =
+            await fetch(
+                "/api/user/" +
+                encodeURIComponent(user.id)
             );
 
+        const data =
+            await response.json();
+
+        if (
+            !data.success ||
+            !data.user
+        ) {
+
+            return;
+
         }
 
+        const lastReward =
+            data.user.last_daily_reward;
 
-        const lang =
-            localStorage.getItem("language") ||
-            detectLanguage();
-
-
-        const t =
-            translations[lang];
-
-
-        const content = {
-
-            daily: {
-
-                title:
-                    t.dailyTitle,
-
-                text:
-                    t.dailyText
-
-            },
-
-            ads: {
-
-                title:
-                    t.adsTitle,
-
-                text:
-                    t.adsText
-
-            },
-
-            tasks: {
-
-                title:
-                    t.tasksTitle,
-
-                text:
-                    t.tasksText
-
-            },
-
-            referral: {
-
-                title:
-                    t.referralTitle,
-
-                text:
-                    t.referralText
-
-            },
-
-            withdraw: {
-
-                title:
-                    t.withdrawTitle,
-
-                text:
-                    t.withdrawText
-
-            },
-
-            account: {
-
-                title:
-                    t.accountTitle,
-
-                text:
-                    t.accountText
-
-            }
-
-        };
-
-
-        document
-            .getElementById("contentIcon")
-            .textContent =
-            sectionIcons[section];
-
-
-        document
-            .getElementById("contentTitle")
-            .textContent =
-            content[section].title;
-
-
-        document
-            .getElementById("contentText")
-            .textContent =
-            content[section].text;
-
-
-        const rewardButton =
+        const button =
             document.getElementById(
                 "rewardButton"
             );
 
-        const rewardStatus =
+        const status =
             document.getElementById(
                 "rewardStatus"
             );
 
-        const adsPanel =
-            document.getElementById(
-                "adsPanel"
-            );
+        const t =
+            translations[getLanguage()];
 
 
-        /*
-         DAILY
-        */
+        if (!lastReward) {
 
-        if (section === "daily") {
+            button.disabled = false;
 
-            rewardButton.style.display =
-                "block";
+            button.textContent =
+                t.claim;
 
-            rewardStatus.style.display =
-                "block";
+            status.textContent = "";
 
-            adsPanel.style.display =
-                "none";
+            return;
+
+        }
+
+
+        const lastTime =
+            new Date(lastReward).getTime();
+
+        const nextTime =
+            lastTime +
+            (12 * 60 * 60 * 1000);
+
+        const now =
+            Date.now();
+
+
+        if (now >= nextTime) {
+
+            button.disabled = false;
+
+            button.textContent =
+                t.claim;
+
+            status.textContent = "";
+
+            return;
+
+        }
+
+
+        button.disabled = true;
+
+        button.textContent =
+            t.claimed;
+
+        updateWaitingTime(
+            nextTime
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Daily reward check error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DAILY WAITING TIME
+===================================================== */
+
+function updateWaitingTime(nextTime) {
+
+    const status =
+        document.getElementById(
+            "rewardStatus"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+    function update() {
+
+        const remaining =
+            nextTime -
+            Date.now();
+
+        if (remaining <= 0) {
 
             checkDailyReward();
 
-        }
-
-
-        /*
-         ADS
-        */
-
-        else if (section === "ads") {
-
-            rewardButton.style.display =
-                "none";
-
-            rewardStatus.style.display =
-                "none";
-
-            adsPanel.style.display =
-                "block";
-
-            loadAdsStatus();
+            return;
 
         }
 
-
-        /*
-         OTHER SECTIONS
-        */
-
-        else {
-
-            rewardButton.style.display =
-                "none";
-
-            rewardStatus.style.display =
-                "none";
-
-            adsPanel.style.display =
-                "none";
-
-        }
-
-    }
-
-
-    /* =====================================================
-       LANGUAGE DETECTION
-    ===================================================== */
-
-    function detectLanguage() {
-
-        if (!user) {
-            return "en";
-        }
-
-
-        const telegramLanguage =
-            (
-                user.language_code ||
-                ""
-            ).toLowerCase();
-
-
-        if (
-            telegramLanguage === "fa" ||
-            telegramLanguage.startsWith("fa-")
-        ) {
-
-            return "fa";
-
-        }
-
-
-        if (
-            telegramLanguage === "ar" ||
-            telegramLanguage.startsWith("ar-")
-        ) {
-
-            return "ar";
-
-        }
-
-
-        return "en";
-
-    }
-
-
-    /* =====================================================
-       APPLY LANGUAGE
-    ===================================================== */
-
-    function applyLanguage(lang) {
-
-        if (
-            !translations[lang]
-        ) {
-
-            lang = "en";
-
-        }
-
-
-        const t =
-            translations[lang];
-
-
-        document.documentElement.lang =
-            lang;
-
-
-        document.documentElement.dir =
-            lang === "en"
-                ? "ltr"
-                : "rtl";
-
-
-        document
-            .getElementById("balanceTitle")
-            .textContent =
-            t.balance;
-
-
-        document
-            .querySelectorAll("[data-key]")
-            .forEach(function(element) {
-
-                const key =
-                    element.getAttribute(
-                        "data-key"
-                    );
-
-
-                if (t[key]) {
-
-                    element.textContent =
-                        t[key];
-
-                }
-
-            });
-
-
-        document
-            .getElementById(
-                "languageButton"
-            )
-            .textContent = {
-
-                en: "🌐 EN",
-
-                fa: "🌐 FA",
-
-                ar: "🌐 AR"
-
-            }[lang];
-
-
-        document
-            .getElementById(
-                "rewardButton"
-            )
-            .textContent =
-            t.claim;
-
-
-        document
-            .getElementById(
-                "adsWatchedLabel"
-            )
-            .textContent =
-            t.adsWatched;
-
-
-        document
-            .getElementById(
-                "adsRemainingLabel"
-            )
-            .textContent =
-            t.adsRemaining;
-
-
-        document
-            .getElementById(
-                "adsRewardLabel"
-            )
-            .textContent =
-            t.adsReward;
-
-
-        document
-            .getElementById(
-                "watchAdButton"
-            )
-            .textContent =
-            t.watchAd;
-
-
-        const activeButton =
-            document.querySelector(
-                ".nav-button.active"
+        const totalMinutes =
+            Math.ceil(
+                remaining / 60000
             );
 
-
-        showSection(
-            currentSection,
-            activeButton
-        );
-
-    }
-
-
-    /* =====================================================
-       CHANGE LANGUAGE
-    ===================================================== */
-
-    function changeLanguage(lang) {
-
-        localStorage.setItem(
-            "language",
-            lang
-        );
-
-
-        applyLanguage(
-            lang
-        );
-
-
-        document
-            .getElementById(
-                "languageMenu"
-            )
-            .classList.remove(
-                "show"
+        const hours =
+            Math.floor(
+                totalMinutes / 60
             );
 
-    }
+        const minutes =
+            totalMinutes % 60;
 
+        status.className =
+            "reward-status reward-waiting";
 
-    /* =====================================================
-       LANGUAGE MENU
-    ===================================================== */
-
-    function toggleLanguageMenu() {
-
-        document
-            .getElementById(
-                "languageMenu"
-            )
-            .classList.toggle(
-                "show"
-            );
+        status.textContent =
+            t.waiting +
+            " " +
+            hours +
+            "h " +
+            minutes +
+            "m";
 
     }
 
+    update();
 
-    document.addEventListener(
-        "click",
-        function(event) {
+    setTimeout(
+        function() {
 
-            const menu =
-                document.getElementById(
-                    "languageMenu"
-                );
+            checkDailyReward();
 
-            const button =
-                document.getElementById(
-                    "languageButton"
-                );
-
-
-            if (
-                !menu.contains(
-                    event.target
-                ) &&
-                !button.contains(
-                    event.target
-                )
-            ) {
-
-                menu.classList.remove(
-                    "show"
-                );
-
-            }
-
-        }
+        },
+        60000
     );
 
-
-    /* =====================================================
-       DAILY REWARD CHECK
-    ===================================================== */
-
-    async function checkDailyReward() {
-
-        if (!user) {
-            return;
-        }
+}
 
 
-        try {
+/* =====================================================
+   CLAIM DAILY REWARD
+===================================================== */
 
-            const response =
-                await fetch(
-                    "/api/user/" +
-                    encodeURIComponent(
-                        user.id
-                    )
+async function claimDailyReward() {
+
+    if (!user) {
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "rewardButton"
+        );
+
+    const status =
+        document.getElementById(
+            "rewardStatus"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+    button.disabled = true;
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/daily-reward",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            telegram_id:
+                                user.id
+
+                        })
+
+                }
+            );
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            coins =
+                Number(
+                    data.user.coins
                 );
 
-
-            const data =
-                await response.json();
-
-
-            if (
-                !data.success ||
-                !data.user
-            ) {
-
-                return;
-
-            }
-
-
-            const lastReward =
-                data.user.last_daily_reward;
-
-
-            const button =
-                document.getElementById(
-                    "rewardButton"
-                );
-
-
-            const status =
-                document.getElementById(
-                    "rewardStatus"
-                );
-
-
-            const lang =
-                localStorage.getItem(
-                    "language"
-                ) ||
-                detectLanguage();
-
-
-            const t =
-                translations[lang];
-
-
-            if (!lastReward) {
-
-                button.disabled =
-                    false;
-
-                button.textContent =
-                    t.claim;
-
-                status.textContent =
-                    "";
-
-                return;
-
-            }
-
-
-            const lastTime =
-                new Date(lastReward)
-                    .getTime();
-
-
-            const nextTime =
-                lastTime +
-                (12 * 60 * 60 * 1000);
-
-
-            const now =
-                Date.now();
-
-
-            if (now >= nextTime) {
-
-                button.disabled =
-                    false;
-
-                button.textContent =
-                    t.claim;
-
-                status.textContent =
-                    "";
-
-                return;
-
-            }
-
-
-            button.disabled =
-                true;
+            updateBalance();
 
             button.textContent =
                 t.claimed;
 
+            status.className =
+                "reward-status reward-success";
 
-            updateWaitingTime(
-                nextTime
+            status.textContent =
+                t.congratulations;
+
+            setTimeout(
+                function() {
+
+                    checkDailyReward();
+
+                },
+                1500
             );
 
+        } else {
 
-        } catch (error) {
+            button.disabled = true;
 
-            console.error(
-                "Daily reward check error:",
-                error
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       DAILY WAITING TIME
-    ===================================================== */
-
-    function updateWaitingTime(
-        nextTime
-    ) {
-
-        const status =
-            document.getElementById(
-                "rewardStatus"
-            );
-
-
-        const lang =
-            localStorage.getItem(
-                "language"
-            ) ||
-            detectLanguage();
-
-
-        const t =
-            translations[lang];
-
-
-        function update() {
-
-            const remaining =
-                nextTime -
-                Date.now();
-
-
-            if (remaining <= 0) {
-
-                checkDailyReward();
-
-                return;
-
-            }
-
-
-            const totalMinutes =
-                Math.ceil(
-                    remaining / 60000
-                );
-
-
-            const hours =
-                Math.floor(
-                    totalMinutes / 60
-                );
-
-
-            const minutes =
-                totalMinutes % 60;
-
+            button.textContent =
+                t.claimed;
 
             status.className =
                 "reward-status reward-waiting";
 
+            if (data.next_reward) {
 
-            status.textContent =
-                t.waiting +
-                " " +
-                hours +
-                "h " +
-                minutes +
-                "m";
-
-        }
-
-
-        update();
-
-
-        setTimeout(
-            function() {
-
-                checkDailyReward();
-
-            },
-            60000
-        );
-
-    }
-
-
-    /* =====================================================
-       CLAIM DAILY REWARD
-    ===================================================== */
-
-    async function claimDailyReward() {
-
-        if (!user) {
-            return;
-        }
-
-
-        const button =
-            document.getElementById(
-                "rewardButton"
-            );
-
-
-        const status =
-            document.getElementById(
-                "rewardStatus"
-            );
-
-
-        const lang =
-            localStorage.getItem(
-                "language"
-            ) ||
-            detectLanguage();
-
-
-        const t =
-            translations[lang];
-
-
-        button.disabled =
-            true;
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/daily-reward",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-
-                                telegram_id:
-                                    user.id
-
-                            })
-
-                    }
+                updateWaitingTime(
+                    new Date(
+                        data.next_reward
+                    ).getTime()
                 );
 
-
-            const data =
-                await response.json();
-
-
-            if (data.success) {
-
-                coins =
-                    Number(
-                        data.user.coins
-                    );
-
-
-                updateBalance();
-
-
-                button.textContent =
-                    t.claimed;
-
-
-                status.className =
-                    "reward-status reward-success";
-
+            } else {
 
                 status.textContent =
-                    t.congratulations;
-
-
-                setTimeout(
-                    function() {
-
-                        checkDailyReward();
-
-                    },
-                    1500
-                );
-
-            } else {
-
-                button.disabled =
-                    true;
-
-                button.textContent =
-                    t.claimed;
-
-
-                status.className =
-                    "reward-status reward-waiting";
-
-
-                if (
-                    data.next_reward
-                ) {
-
-                    updateWaitingTime(
-                        new Date(
-                            data.next_reward
-                        ).getTime()
-                    );
-
-                } else {
-
-                    status.textContent =
-                        data.message ||
-                        t.error;
-
-                }
+                    data.message ||
+                    t.error;
 
             }
 
-
-        } catch (error) {
-
-            console.error(
-                "Daily reward error:",
-                error
-            );
-
-
-            button.disabled =
-                false;
-
-
-            status.className =
-                "reward-status reward-error";
-
-
-            status.textContent =
-                t.error;
-
         }
+
+    } catch (error) {
+
+        console.error(
+            "Daily reward error:",
+            error
+        );
+
+        button.disabled = false;
+
+        status.className =
+            "reward-status reward-error";
+
+        status.textContent =
+            t.error;
 
     }
 
-
-    /* =====================================================
-       ADS STATUS
-    ===================================================== */
-
-    async function loadAdsStatus() {
-
-        if (!user) {
-            return;
-        }
+}
 
 
-        try {
+/* =====================================================
+   ADS STATUS
+===================================================== */
 
-            const response =
-                await fetch(
-                    "/api/ads/status/" +
-                    encodeURIComponent(
-                        user.id
-                    )
-                );
+async function loadAdsStatus() {
 
-
-            const data =
-                await response.json();
-
-
-            if (!data.success) {
-                return;
-            }
-
-
-            document
-                .getElementById(
-                    "adsWatched"
-                )
-                .textContent =
-                data.ads_watched;
-
-
-            document
-                .getElementById(
-                    "adsLimit"
-                )
-                .textContent =
-                data.limit;
-
-
-            document
-                .getElementById(
-                    "adsRemaining"
-                )
-                .textContent =
-                data.ads_remaining;
-
-
-            const button =
-                document.getElementById(
-                    "watchAdButton"
-                );
-
-
-            const message =
-                document.getElementById(
-                    "adsMessage"
-                );
-
-
-            const lang =
-                localStorage.getItem(
-                    "language"
-                ) ||
-                detectLanguage();
-
-
-            const t =
-                translations[lang];
-
-
-            if (
-                data.ads_remaining <= 0
-            ) {
-
-                button.disabled =
-                    true;
-
-
-                message.className =
-                    "ads-message ads-waiting";
-
-
-                message.textContent =
-                    t.adLimit +
-                    " " +
-                    t.adsReset +
-                    " " +
-                    data.hours_until_reset +
-                    "h " +
-                    data.minutes_until_reset +
-                    "m";
-
-            } else {
-
-                button.disabled =
-                    false;
-
-                message.textContent =
-                    "";
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Ads status error:",
-                error
-            );
-
-        }
-
+    if (!user) {
+        return;
     }
 
+    try {
 
-    /* =====================================================
-       WATCH ADSGRAM AD
-    ===================================================== */
+        const response =
+            await fetch(
+                "/api/ads/status/" +
+                encodeURIComponent(user.id)
+            );
 
-    async function watchAd() {
+        const data =
+            await response.json();
 
-        if (!user) {
+        if (!data.success) {
             return;
         }
 
+        document.getElementById(
+            "adsWatched"
+        ).textContent =
+            data.ads_watched;
+
+        document.getElementById(
+            "adsLimit"
+        ).textContent =
+            data.limit;
+
+        document.getElementById(
+            "adsRemaining"
+        ).textContent =
+            data.ads_remaining;
 
         const button =
             document.getElementById(
                 "watchAdButton"
             );
-
 
         const message =
             document.getElementById(
                 "adsMessage"
             );
 
-
-        const lang =
-            localStorage.getItem(
-                "language"
-            ) ||
-            detectLanguage();
-
-
         const t =
-            translations[lang];
+            translations[getLanguage()];
 
 
-        if (!AdController) {
+        if (
+            data.ads_remaining <= 0
+        ) {
+
+            button.disabled = true;
+
+            message.className =
+                "ads-message ads-waiting";
+
+            message.textContent =
+                t.adLimit +
+                " " +
+                t.adsReset +
+                " " +
+                (
+                    data.hours_until_reset ||
+                    0
+                ) +
+                "h " +
+                (
+                    data.minutes_until_reset ||
+                    0
+                ) +
+                "m";
+
+        } else {
+
+            button.disabled = false;
+
+            message.textContent = "";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Ads status error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   WATCH ADSGRAM AD
+===================================================== */
+
+async function watchAd() {
+
+    if (!user) {
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "watchAdButton"
+        );
+
+    const message =
+        document.getElementById(
+            "adsMessage"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+
+    if (!AdController) {
+
+        message.className =
+            "ads-message ads-error";
+
+        message.textContent =
+            t.adError;
+
+        return;
+
+    }
+
+
+    button.disabled = true;
+
+    message.className =
+        "ads-message ads-waiting";
+
+    message.textContent =
+        "⏳ Loading advertisement...";
+
+
+    try {
+
+        /*
+         نمایش تبلیغ
+        */
+
+        const result =
+            await AdController.show();
+
+
+        /*
+         فقط اگر تبلیغ کامل دیده شده باشد
+         درخواست پاداش به سرور ارسال می‌شود.
+        */
+
+        if (
+            !result ||
+            result.done !== true
+        ) {
 
             message.className =
                 "ads-message ads-error";
 
-
             message.textContent =
                 t.adError;
 
+            await loadAdsStatus();
 
             return;
 
         }
 
 
-        button.disabled =
-            true;
-
-
-        message.className =
-            "ads-message ads-waiting";
-
-
         message.textContent =
-            "⏳ Loading advertisement...";
+            "⏳ Processing reward...";
 
 
-        try {
+        /*
+         دریافت پاداش از Backend
+        */
 
-            const result =
-                await AdController.show();
+        const response =
+            await fetch(
+                "/api/ads/claim",
+                {
 
+                    method: "POST",
 
-            /*
-             AdsGram Rewarded Ad:
-             done === true means
-             user watched the ad successfully.
-            */
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-            if (
-                result &&
-                result.done === true
-            ) {
+                    body:
+                        JSON.stringify({
 
-                message.textContent =
-                    "⏳ Processing reward...";
+                            telegram_id:
+                                user.id
 
-
-                /*
-                 Ask backend to award
-                 the 2,000 coins.
-                */
-
-                const response =
-                    await fetch(
-                        "/api/ads/claim",
-                        {
-
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    telegram_id:
-                                        user.id
-
-                                })
-
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (data.success) {
-
-                    /*
-                     Update balance
-                    */
-
-                    coins =
-                        Number(
-                            data.user.coins
-                        );
-
-
-                    updateBalance();
-
-
-                    message.className =
-                        "ads-message ads-success";
-
-
-                    message.textContent =
-                        t.adSuccess;
-
-
-                    document
-                        .getElementById(
-                            "adsWatched"
-                        )
-                        .textContent =
-                        data.ads_watched;
-
-
-                    document
-                        .getElementById(
-                            "adsRemaining"
-                        )
-                        .textContent =
-                        data.ads_remaining;
-
-
-                    if (
-                        data.ads_remaining <= 0
-                    ) {
-
-                        button.disabled =
-                            true;
-
-                    } else {
-
-                        button.disabled =
-                            false;
-
-                    }
-
-                } else {
-
-                    message.className =
-                        "ads-message ads-error";
-
-
-                    message.textContent =
-                        data.message ||
-                        t.adError;
-
-
-                    await loadAdsStatus();
+                        })
 
                 }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            coins =
+                Number(
+                    data.user.coins
+                );
+
+            updateBalance();
+
+
+            document.getElementById(
+                "adsWatched"
+            ).textContent =
+                data.ads_watched;
+
+
+            document.getElementById(
+                "adsRemaining"
+            ).textContent =
+                data.ads_remaining;
+
+
+            message.className =
+                "ads-message ads-success";
+
+            message.textContent =
+                t.adSuccess;
+
+
+            if (
+                data.ads_remaining <= 0
+            ) {
+
+                button.disabled = true;
 
             } else {
 
-                /*
-                 Advertisement was not
-                 successfully completed.
-                */
-
-                message.className =
-                    "ads-message ads-error";
-
-
-                message.textContent =
-                    t.adError;
-
-
-                await loadAdsStatus();
+                button.disabled = false;
 
             }
 
-
-        } catch (error) {
-
-            console.error(
-                "AdsGram show error:",
-                error
-            );
-
+        } else {
 
             message.className =
                 "ads-message ads-error";
 
-
             message.textContent =
+                data.message ||
                 t.adError;
-
 
             await loadAdsStatus();
 
         }
 
+    } catch (error) {
+
+        console.error(
+            "AdsGram error:",
+            error
+        );
+
+        message.className =
+            "ads-message ads-error";
+
+        message.textContent =
+            t.adError;
+
+        await loadAdsStatus();
+
     }
 
-
-    /* =====================================================
-       REGISTER USER
-    ===================================================== */
-
-    async function registerUser() {
-
-        if (!user) {
-            return;
-        }
+}
 
 
-        const language =
-            localStorage.getItem(
-                "language"
-            ) ||
-            detectLanguage();
+/* =====================================================
+   TASKS
+===================================================== */
+
+async function loadTasks() {
+
+    if (!user) {
+        return;
+    }
+
+    const list =
+        document.getElementById(
+            "tasksList"
+        );
+
+    const message =
+        document.getElementById(
+            "taskMessage"
+        );
+
+    const t =
+        translations[getLanguage()];
 
 
-        try {
+    list.innerHTML = "";
 
-            const response =
-                await fetch(
-                    "/api/user",
-                    {
+    message.className =
+        "task-message";
 
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-
-                                telegram_id:
-                                    user.id,
-
-                                first_name:
-                                    user.first_name ||
-                                    "",
-
-                                username:
-                                    user.username ||
-                                    "",
-
-                                language:
-                                    language
-
-                            })
-
-                    }
-                );
+    message.textContent =
+        t.tasksLoading;
 
 
-            const data =
-                await response.json();
+    try {
 
+        /*
+         دریافت فقط تسک‌هایی که
+         کاربر قبلاً انجام نداده است.
+        */
 
-            if (data.success) {
-
-                console.log(
-                    "EarnPool user registered:",
-                    data.user
-                );
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "User registration error:",
-                error
+        const response =
+            await fetch(
+                "/api/tasks/available/" +
+                encodeURIComponent(user.id)
             );
 
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                data.message ||
+                t.error;
+
+            return;
+
         }
 
-    }
+
+        const tasks =
+            Array.isArray(data.tasks)
+                ? data.tasks
+                : [];
 
 
-    /* =====================================================
-       START
-    ===================================================== */
+        list.innerHTML = "";
 
-    async function startUser() {
-
-        await registerUser();
-
-        await loadUserBalance();
-
-        await checkDailyReward();
-
-    }
+        message.textContent = "";
 
 
-    /* =====================================================
-       INITIAL LANGUAGE
-    ===================================================== */
+        if (tasks.length === 0) {
 
-    let savedLanguage =
-        localStorage.getItem(
-            "language"
+            message.className =
+                "task-message";
+
+            message.textContent =
+                t.noTasks;
+
+            return;
+
+        }
+
+
+        tasks.forEach(
+            function(task) {
+
+                createTaskCard(task);
+
+            }
         );
 
 
-    if (
-        !savedLanguage ||
-        !translations[savedLanguage]
-    ) {
+    } catch (error) {
 
-        savedLanguage =
-            detectLanguage();
+        console.error(
+            "Tasks loading error:",
+            error
+        );
+
+        message.className =
+            "task-message task-error";
+
+        message.textContent =
+            t.error;
 
     }
 
+}
 
-    applyLanguage(
-        savedLanguage
+
+/* =====================================================
+   CREATE TASK CARD
+===================================================== */
+
+function createTaskCard(task) {
+
+    const list =
+        document.getElementById(
+            "tasksList"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+    card.className =
+        "task-card";
+
+
+    const title =
+        document.createElement(
+            "div"
+        );
+
+    title.className =
+        "task-title";
+
+    title.textContent =
+        task.title ||
+        "Task";
+
+
+    const description =
+        document.createElement(
+            "div"
+        );
+
+    description.className =
+        "task-description";
+
+    description.textContent =
+        task.description ||
+        "";
+
+
+    const reward =
+        document.createElement(
+            "div"
+        );
+
+    reward.className =
+        "task-reward";
+
+    reward.textContent =
+        t.taskReward;
+
+
+    const button =
+        document.createElement(
+            "button"
+        );
+
+    button.className =
+        "task-button";
+
+    button.textContent =
+        t.completeTask;
+
+
+    button.onclick =
+        function() {
+
+            completeTask(
+                task,
+                button
+            );
+
+        };
+
+
+    card.appendChild(title);
+
+    if (task.description) {
+        card.appendChild(description);
+    }
+
+    card.appendChild(reward);
+
+    card.appendChild(button);
+
+    list.appendChild(card);
+
+}
+
+
+/* =====================================================
+   COMPLETE TASK
+===================================================== */
+
+async function completeTask(
+    task,
+    button
+) {
+
+    if (!user) {
+        return;
+    }
+
+
+    if (!task || !task.id) {
+        return;
+    }
+
+
+    const message =
+        document.getElementById(
+            "taskMessage"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "⏳";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/tasks/claim",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            telegram_id:
+                                user.id,
+
+                            task_id:
+                                task.id
+
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            /*
+             به‌روزرسانی موجودی
+            */
+
+            coins =
+                Number(
+                    data.user.coins
+                );
+
+            updateBalance();
+
+
+            /*
+             نمایش موفقیت
+            */
+
+            message.className =
+                "task-message task-success";
+
+            message.textContent =
+                t.taskSuccess;
+
+
+            /*
+             حذف فوری تسک از صفحه
+             */
+
+            const card =
+                button.closest(
+                    ".task-card"
+                );
+
+            if (card) {
+
+                card.remove();
+
+            }
+
+
+            /*
+             اگر دیگر تسکی باقی نمانده
+            */
+
+            const list =
+                document.getElementById(
+                    "tasksList"
+                );
+
+            if (
+                !list.children.length
+            ) {
+
+                message.textContent =
+                    t.noTasks;
+
+            }
+
+        } else {
+
+            button.disabled = false;
+
+            button.textContent =
+                t.completeTask;
+
+
+            message.className =
+                "task-message task-error";
+
+
+            if (
+                data.already_completed
+            ) {
+
+                message.textContent =
+                    t.taskAlready;
+
+                /*
+                 اگر سرور بگوید قبلاً انجام شده،
+                 آن تسک از صفحه حذف می‌شود.
+                */
+
+                const card =
+                    button.closest(
+                        ".task-card"
+                    );
+
+                if (card) {
+                    card.remove();
+                }
+
+            } else {
+
+                message.textContent =
+                    data.message ||
+                    t.error;
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Task claim error:",
+            error
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            t.completeTask;
+
+        message.className =
+            "task-message task-error";
+
+        message.textContent =
+            t.error;
+
+    }
+
+}
+
+
+/* =====================================================
+   START USER
+===================================================== */
+
+async function startUser() {
+
+    await registerUser();
+
+    await loadUserBalance();
+
+    await checkDailyReward();
+
+}
+
+
+/* =====================================================
+   INITIAL LANGUAGE
+===================================================== */
+
+let savedLanguage =
+    localStorage.getItem(
+        "language"
     );
 
 
-    updateBalance();
+if (
+    !savedLanguage ||
+    !translations[savedLanguage]
+) {
+
+    savedLanguage =
+        detectLanguage();
+
+}
 
 
-    startUser();
+applyLanguage(
+    savedLanguage
+);
 
+
+updateBalance();
+
+
+startUser();
 
 </script>
 
-
 </body>
 
-    </html>
+            </html>
