@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>EarnPool</title>
 
@@ -13,47 +13,104 @@
             box-sizing: border-box;
         }
 
+        html,
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
             font-family: Arial, sans-serif;
             background: #10131a;
             color: white;
         }
 
-        .container {
-            max-width: 500px;
-            margin: auto;
+        body {
+            padding-bottom: 95px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
+        button {
+            font-family: inherit;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* TOP BAR */
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
         }
 
         .logo {
-            font-size: 32px;
+            font-size: 23px;
             font-weight: bold;
-            margin-bottom: 8px;
         }
 
-        .welcome {
-            color: #aaa;
-            font-size: 14px;
+        .language-button {
+            border: none;
+            background: #1c2330;
+            color: white;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 13px;
+            cursor: pointer;
         }
 
-        .balance {
-            background: #191e29;
-            border-radius: 18px;
-            padding: 25px;
+        /* LANGUAGE MENU */
+
+        .language-menu {
+            display: none;
+            position: absolute;
+            top: 55px;
+            right: 15px;
+            background: #1c2330;
+            border-radius: 12px;
+            padding: 6px;
+            z-index: 100;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        .language-menu.show {
+            display: block;
+        }
+
+        .language-option {
+            display: block;
+            width: 120px;
+            border: none;
+            background: transparent;
+            color: white;
+            padding: 10px;
             text-align: center;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .language-option:hover {
+            background: #293242;
+        }
+
+        /* BALANCE */
+
+        .balance-card {
+            background: #191e29;
+            border-radius: 20px;
+            padding: 22px;
+            text-align: center;
+            margin-bottom: 18px;
         }
 
         .balance-title {
-            color: #aaa;
+            color: #9da5b4;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .coins {
@@ -61,112 +118,699 @@
             font-weight: bold;
         }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+        .usd-value {
+            margin-top: 6px;
+            color: #8f98a8;
+            font-size: 15px;
         }
 
-        .menu-button {
-            border: none;
-            border-radius: 16px;
-            padding: 20px 10px;
+        /* CONTENT */
+
+        .content-card {
             background: #191e29;
-            color: white;
-            font-size: 16px;
+            border-radius: 20px;
+            padding: 22px;
+            min-height: 300px;
+        }
+
+        .content-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .content-text {
+            color: #aeb5c1;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* BOTTOM NAVIGATION */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: #151922;
+            border-top: 1px solid #252b36;
+            padding: 8px 6px;
+            z-index: 50;
+        }
+
+        .nav-scroll {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            max-width: 700px;
+            margin: 0 auto;
+            scrollbar-width: none;
+        }
+
+        .nav-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-button {
+            flex: 0 0 auto;
+            min-width: 82px;
+            border: none;
+            background: transparent;
+            color: #8f98a8;
+            border-radius: 12px;
+            padding: 7px 5px;
             cursor: pointer;
+            font-size: 11px;
         }
 
-        .menu-button:active {
-            transform: scale(0.97);
+        .nav-button.active {
+            background: #252d3b;
+            color: white;
         }
 
-        .icon {
+        .nav-icon {
             display: block;
-            font-size: 28px;
-            margin-bottom: 8px;
+            font-size: 22px;
+            margin-bottom: 4px;
         }
 
-        .footer {
-            text-align: center;
-            color: #777;
-            font-size: 12px;
-            margin-top: 25px;
+        /* SMALL SCREENS */
+
+        @media (max-width: 360px) {
+            .nav-button {
+                min-width: 74px;
+                font-size: 10px;
+            }
+
+            .nav-icon {
+                font-size: 20px;
+            }
+
+            .coins {
+                font-size: 27px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-    <div class="header">
-        <div class="logo">💰 EarnPool</div>
-        <div class="welcome" id="welcome">
-            خوش آمدید 👋
+    <!-- TOP BAR -->
+
+    <div class="top-bar">
+
+        <div class="logo">
+            EarnPool
         </div>
+
+        <button
+            class="language-button"
+            onclick="toggleLanguageMenu()"
+            id="languageButton">
+            🌐 EN
+        </button>
+
     </div>
 
-    <div class="balance">
-        <div class="balance-title">موجودی شما</div>
+    <!-- LANGUAGE MENU -->
+
+    <div class="language-menu" id="languageMenu">
+
+        <button
+            class="language-option"
+            onclick="changeLanguage('en')">
+            🇬🇧 English
+        </button>
+
+        <button
+            class="language-option"
+            onclick="changeLanguage('fa')">
+            🇦🇫 فارسی
+        </button>
+
+        <button
+            class="language-option"
+            onclick="changeLanguage('ar')">
+            🇸🇦 العربية
+        </button>
+
+    </div>
+
+    <!-- BALANCE -->
+
+    <div class="balance-card">
+
+        <div
+            class="balance-title"
+            id="balanceTitle">
+            Your Balance
+        </div>
+
         <div class="coins">
             <span id="coins">0</span> 🪙
         </div>
-    </div>
 
-    <div class="buttons">
-
-        <button class="menu-button">
-            <span class="icon">🎁</span>
-            پاداش روزانه
-        </button>
-
-        <button class="menu-button">
-            <span class="icon">📺</span>
-            دیدن تبلیغات
-        </button>
-
-        <button class="menu-button">
-            <span class="icon">🎯</span>
-            انجام تسک‌ها
-        </button>
-
-        <button class="menu-button">
-            <span class="icon">👥</span>
-            رفرال
-        </button>
-
-        <button class="menu-button">
-            <span class="icon">💰</span>
-            برداشت
-        </button>
-
-        <button class="menu-button">
-            <span class="icon">👤</span>
-            حساب کاربری
-        </button>
+        <div
+            class="usd-value"
+            id="usdValue">
+            ≈ $0.000000
+        </div>
 
     </div>
 
-    <div class="footer">
-        EarnPool © 2026
+    <!-- MAIN CONTENT -->
+
+    <div class="content-card">
+
+        <div
+            class="content-title"
+            id="contentTitle">
+            Daily Reward
+        </div>
+
+        <div
+            class="content-text"
+            id="contentText">
+            Claim your daily reward and earn coins every day.
+        </div>
+
     </div>
 
 </div>
 
+
+<!-- BOTTOM NAVIGATION -->
+
+<div class="bottom-nav">
+
+    <div class="nav-scroll">
+
+        <button
+            class="nav-button active"
+            onclick="showSection('daily', this)">
+
+            <span class="nav-icon">🎁</span>
+
+            <span data-key="daily">
+                Daily
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            onclick="showSection('ads', this)">
+
+            <span class="nav-icon">📺</span>
+
+            <span data-key="ads">
+                Ads
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            onclick="showSection('tasks', this)">
+
+            <span class="nav-icon">🎯</span>
+
+            <span data-key="tasks">
+                Tasks
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            onclick="showSection('referral', this)">
+
+            <span class="nav-icon">👥</span>
+
+            <span data-key="referral">
+                Referral
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            onclick="showSection('withdraw', this)">
+
+            <span class="nav-icon">💰</span>
+
+            <span data-key="withdraw">
+                Withdraw
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            onclick="showSection('account', this)">
+
+            <span class="nav-icon">👤</span>
+
+            <span data-key="account">
+                Account
+            </span>
+
+        </button>
+
+    </div>
+
+</div>
+
+
 <script>
+
+    /* TELEGRAM */
+
     const tg = window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
 
+
+    /* USER */
+
     const user = tg.initDataUnsafe?.user;
 
-    if (user) {
-        document.getElementById("welcome").textContent =
-            `سلام ${user.first_name} 👋`;
+
+    /* BALANCE */
+
+    let coins = 0;
+
+
+    function updateBalance() {
+
+        document.getElementById("coins").textContent =
+            coins.toLocaleString();
+
+        const usd = coins / 1000000;
+
+        document.getElementById("usdValue").textContent =
+            "≈ $" + usd.toFixed(6);
     }
+
+
+    /* TRANSLATIONS */
+
+    const translations = {
+
+        en: {
+
+            balance: "Your Balance",
+
+            daily: "Daily",
+
+            ads: "Ads",
+
+            tasks: "Tasks",
+
+            referral: "Referral",
+
+            withdraw: "Withdraw",
+
+            account: "Account",
+
+            dailyTitle: "Daily Reward",
+
+            dailyText:
+                "Claim your daily reward and earn coins every day.",
+
+            adsTitle: "Watch Ads",
+
+            adsText:
+                "Watch advertisements and earn coins.",
+
+            tasksTitle: "Tasks",
+
+            tasksText:
+                "Complete available tasks and earn rewards.",
+
+            referralTitle: "Referral",
+
+            referralText:
+                "Invite friends and earn referral rewards.",
+
+            withdrawTitle: "Withdraw",
+
+            withdrawText:
+                "Withdraw your available balance.",
+
+            accountTitle: "Account",
+
+            accountText:
+                "View your account information and statistics."
+
+        },
+
+
+        fa: {
+
+            balance: "موجودی شما",
+
+            daily: "پاداش روزانه",
+
+            ads: "تبلیغات",
+
+            tasks: "تسک‌ها",
+
+            referral: "رفرال",
+
+            withdraw: "برداشت",
+
+            account: "حساب",
+
+            dailyTitle: "پاداش روزانه",
+
+            dailyText:
+                "پاداش روزانه خود را دریافت کنید و هر روز سکه به دست بیاورید.",
+
+            adsTitle: "دیدن تبلیغات",
+
+            adsText:
+                "تبلیغات را تماشا کنید و سکه دریافت کنید.",
+
+            tasksTitle: "تسک‌ها",
+
+            tasksText:
+                "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
+
+            referralTitle: "رفرال",
+
+            referralText:
+                "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
+
+            withdrawTitle: "برداشت",
+
+            withdrawText:
+                "موجودی قابل برداشت خود را برداشت کنید.",
+
+            accountTitle: "حساب کاربری",
+
+            accountText:
+                "اطلاعات حساب و آمار خود را مشاهده کنید."
+
+        },
+
+
+        ar: {
+
+            balance: "رصيدك",
+
+            daily: "المكافأة اليومية",
+
+            ads: "الإعلانات",
+
+            tasks: "المهام",
+
+            referral: "الإحالة",
+
+            withdraw: "السحب",
+
+            account: "الحساب",
+
+            dailyTitle: "المكافأة اليومية",
+
+            dailyText:
+                "احصل على مكافأتك اليومية واربح العملات كل يوم.",
+
+            adsTitle: "مشاهدة الإعلانات",
+
+            adsText:
+                "شاهد الإعلانات واربح العملات.",
+
+            tasksTitle: "المهام",
+
+            tasksText:
+                "أكمل المهام المتاحة واحصل على المكافآت.",
+
+            referralTitle: "الإحالة",
+
+            referralText:
+                "ادعُ أصدقاءك واربح مكافآت الإحالة.",
+
+            withdrawTitle: "السحب",
+
+            withdrawText:
+                "اسحب رصيدك المتاح.",
+
+            accountTitle: "الحساب",
+
+            accountText:
+                "عرض معلومات حسابك وإحصائياتك."
+
+        }
+
+    };
+
+
+    /* SECTIONS */
+
+    let currentSection = "daily";
+
+
+    function showSection(section, button) {
+
+        currentSection = section;
+
+        document
+            .querySelectorAll(".nav-button")
+            .forEach(btn => btn.classList.remove("active"));
+
+        button.classList.add("active");
+
+        const lang =
+            localStorage.getItem("language") || detectLanguage();
+
+        const t = translations[lang];
+
+
+        const data = {
+
+            daily: [
+                t.dailyTitle,
+                t.dailyText
+            ],
+
+            ads: [
+                t.adsTitle,
+                t.adsText
+            ],
+
+            tasks: [
+                t.tasksTitle,
+                t.tasksText
+            ],
+
+            referral: [
+                t.referralTitle,
+                t.referralText
+            ],
+
+            withdraw: [
+                t.withdrawTitle,
+                t.withdrawText
+            ],
+
+            account: [
+                t.accountTitle,
+                t.accountText
+            ]
+
+        };
+
+
+        document.getElementById("contentTitle").textContent =
+            data[section][0];
+
+        document.getElementById("contentText").textContent =
+            data[section][1];
+    }
+
+
+    /* LANGUAGE DETECTION */
+
+    function detectLanguage() {
+
+        const telegramLanguage =
+            user?.language_code || "";
+
+        const language =
+            telegramLanguage.toLowerCase();
+
+
+        if (
+            language === "fa" ||
+            language.startsWith("fa-")
+        ) {
+            return "fa";
+        }
+
+
+        if (
+            language === "ar" ||
+            language.startsWith("ar-")
+        ) {
+            return "ar";
+        }
+
+
+        return "en";
+    }
+
+
+    /* APPLY LANGUAGE */
+
+    function applyLanguage(lang) {
+
+        const t = translations[lang];
+
+        document.documentElement.lang = lang;
+
+        document.documentElement.dir =
+            lang === "en" ? "ltr" : "rtl";
+
+
+        document.getElementById("balanceTitle").textContent =
+            t.balance;
+
+
+        document
+            .querySelectorAll("[data-key]")
+            .forEach(element => {
+
+                const key =
+                    element.getAttribute("data-key");
+
+                element.textContent =
+                    t[key];
+
+            });
+
+
+        const languageNames = {
+
+            en: "🌐 EN",
+
+            fa: "🌐 FA",
+
+            ar: "🌐 AR"
+
+        };
+
+
+        document.getElementById("languageButton").textContent =
+            languageNames[lang];
+
+
+        const activeButton =
+            document.querySelector(".nav-button.active");
+
+
+        showSection(
+            currentSection,
+            activeButton
+        );
+    }
+
+
+    /* CHANGE LANGUAGE */
+
+    function changeLanguage(lang) {
+
+        localStorage.setItem(
+            "language",
+            lang
+        );
+
+        applyLanguage(lang);
+
+        document
+            .getElementById("languageMenu")
+            .classList.remove("show");
+    }
+
+
+    /* LANGUAGE MENU */
+
+    function toggleLanguageMenu() {
+
+        document
+            .getElementById("languageMenu")
+            .classList.toggle("show");
+    }
+
+
+    /* CLOSE LANGUAGE MENU */
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            const menu =
+                document.getElementById("languageMenu");
+
+            const button =
+                document.getElementById("languageButton");
+
+
+            if (
+                !menu.contains(event.target) &&
+                !button.contains(event.target)
+            ) {
+
+                menu.classList.remove("show");
+
+            }
+
+        }
+    );
+
+
+    /* START */
+
+    let savedLanguage =
+        localStorage.getItem("language");
+
+
+    if (!savedLanguage) {
+
+        savedLanguage =
+            detectLanguage();
+
+    }
+
+
+    applyLanguage(savedLanguage);
+
+    updateBalance();
+
+
+    /* USER GREETING */
+
+    if (user) {
+
+        console.log(
+            "EarnPool User:",
+            user.id,
+            user.first_name
+        );
+
+    }
+
 </script>
 
 </body>
-</html>
+    </html>
