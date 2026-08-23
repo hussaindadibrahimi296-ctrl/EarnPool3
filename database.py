@@ -1,49 +1,53 @@
-import sqlite3
-
-DATABASE = "earnpool.db"
+import os
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 
 def get_db():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    return conn
+    database_url = os.environ.get("DATABASE_URL")
+
+    if not database_url:
+        raise RuntimeError("DATABASE_URL is not configured")
+
+    return psycopg2.connect(
+        database_url,
+        cursor_factory=RealDictCursor
+    )
 
 
 def init_db():
     conn = get_db()
+    cursor = conn.cursor()
 
-    conn.execute("""
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            telegram_id INTEGER UNIQUE NOT NULL,
+            id SERIAL PRIMARY KEY,
+            telegram_id BIGINT UNIQUE NOT NULL,
             first_name TEXT,
             username TEXT,
-            coins INTEGER DEFAULT 0,
+            coins BIGINT DEFAULT 0,
             language TEXT DEFAULT 'en',
             referral_count INTEGER DEFAULT 0,
-            referred_by INTEGER,
-            last_daily_reward TEXT,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+            referred_by BIGINT,
+            last_daily_reward TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
-    conn.execute("""
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS withdrawals (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            telegram_id INTEGER NOT NULL,
-            coins INTEGER NOT NULL,
-            amount_usd REAL NOT NULL,
+            id SERIAL PRIMARY KEY,
+            telegram_id BIGINT NOT NULL,
+            coins BIGINT NOT NULL,
+            amount_usd NUMERIC(20, 6) NOT NULL,
             method TEXT,
             account TEXT,
             status TEXT DEFAULT 'pending',
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
     conn.commit()
+
+    cursor.close()
     conn.close()
-
-
-if __name__ == "__main__":
-    init_db()
-    print("EarnPool database initialized successfully.")
