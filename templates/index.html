@@ -12,660 +12,810 @@
 
     <title>EarnPool</title>
 
-    <!-- =====================================================
-         TELEGRAM WEB APP
-    ====================================================== -->
-
+    <!-- Telegram Mini App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- =====================================================
-         ADSGRAM
-    ====================================================== -->
-
+    <!-- AdsGram -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
 
     <style>
 
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
+        html,
         body {
             margin: 0;
             padding: 0;
-            background:
-                radial-gradient(
-                    circle at top,
-                    #17213b 0%,
-                    #080b14 45%,
-                    #05070c 100%
-                );
+            width: 100%;
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            background: #10131a;
             color: #ffffff;
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-            min-height: 100vh;
+        }
+
+        body {
+            padding-bottom: 90px;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
         }
 
         button {
-            font-family: inherit;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .app {
             width: 100%;
-            max-width: 520px;
-            margin: auto;
-            min-height: 100vh;
-            padding-bottom: 90px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
         }
 
-        /* =================================================
-           HEADER
-        ================================================= */
-
-        .header {
-            padding: 18px 16px 10px;
+        .top-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-
-        .brand {
-            font-size: 23px;
-            font-weight: 800;
-            letter-spacing: .3px;
-        }
-
-        .language-area {
+            margin-bottom: 18px;
             position: relative;
         }
 
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
         .language-button {
-            border: 0;
-            background: rgba(255,255,255,.08);
-            color: #fff;
-            border-radius: 12px;
-            padding: 9px 12px;
+            border: none;
+            background: #1c2330;
+            color: white;
+            border-radius: 10px;
+            padding: 8px 11px;
+            font-size: 13px;
             cursor: pointer;
         }
 
         .language-menu {
-            position: absolute;
-            right: 0;
-            top: 44px;
-            background: #151b2d;
-            border: 1px solid rgba(255,255,255,.1);
-            border-radius: 14px;
-            overflow: hidden;
-            min-width: 130px;
             display: none;
+            position: fixed;
+            top: 58px;
+            right: 15px;
+            background: #1c2330;
+            border-radius: 12px;
+            padding: 6px;
             z-index: 1000;
-            box-shadow: 0 15px 40px rgba(0,0,0,.4);
+            box-shadow: 0 8px 25px rgba(0,0,0,.35);
         }
 
         .language-menu.show {
             display: block;
         }
 
-        .language-menu button {
-            width: 100%;
-            padding: 12px;
-            border: 0;
+        .language-option {
+            display: block;
+            width: 125px;
+            border: none;
             background: transparent;
-            color: #fff;
-            text-align: left;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
             cursor: pointer;
         }
 
-        .language-menu button:hover {
-            background: rgba(255,255,255,.08);
+        .language-option:active {
+            background: #293242;
         }
 
-
-        /* =================================================
-           BALANCE
-        ================================================= */
-
         .balance-card {
-            margin: 10px 16px 18px;
+            background: #191e29;
+            border-radius: 20px;
             padding: 22px;
-            border-radius: 22px;
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,193,7,.18),
-                    rgba(255,255,255,.05)
-                );
-            border: 1px solid rgba(255,193,7,.18);
             text-align: center;
+            margin-bottom: 18px;
         }
 
         .balance-title {
+            color: #9da5b4;
             font-size: 14px;
-            opacity: .7;
             margin-bottom: 8px;
         }
 
-        .balance-value {
-            font-size: 35px;
-            font-weight: 900;
-            color: #ffd54f;
+        .coins {
+            font-size: 30px;
+            font-weight: bold;
         }
 
-        .coin-label {
-            opacity: .65;
-            margin-top: 4px;
-            font-size: 13px;
-        }
-
-
-        /* =================================================
-           CONTENT
-        ================================================= */
-
-        .content {
-            padding: 0 16px;
+        .usd-value {
+            margin-top: 6px;
+            color: #8f98a8;
+            font-size: 15px;
         }
 
         .content-card {
-            background: rgba(255,255,255,.045);
-            border: 1px solid rgba(255,255,255,.07);
+            background: #191e29;
             border-radius: 20px;
-            padding: 20px;
-            min-height: 220px;
+            padding: 22px;
+            min-height: 350px;
         }
 
         .content-icon {
-            font-size: 38px;
-            margin-bottom: 10px;
+            font-size: 42px;
+            margin-bottom: 12px;
         }
 
         .content-title {
-            margin: 0 0 10px;
-            font-size: 23px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 12px;
         }
 
         .content-text {
-            margin: 0;
-            line-height: 1.7;
-            color: rgba(255,255,255,.72);
+            color: #aeb5c1;
+            line-height: 1.8;
+            font-size: 15px;
         }
 
-
-        /* =================================================
-           DAILY
-        ================================================= */
-
         .reward-button,
-        .main-button {
+        .watch-ad-button,
+        .primary-button {
             width: 100%;
-            border: 0;
+            border: none;
+            background: #2d7dff;
+            color: white;
+            border-radius: 14px;
+            padding: 15px;
             margin-top: 18px;
-            padding: 14px;
-            border-radius: 15px;
             font-size: 16px;
-            font-weight: 800;
+            font-weight: bold;
             cursor: pointer;
-            background: linear-gradient(
-                135deg,
-                #ffd54f,
-                #ffb300
-            );
-            color: #17120a;
         }
 
         .reward-button:disabled,
-        .main-button:disabled {
-            opacity: .45;
+        .watch-ad-button:disabled,
+        .primary-button:disabled {
+            background: #303744;
+            color: #8f98a8;
             cursor: not-allowed;
         }
 
-        .reward-status {
+        .reward-status,
+        .ads-message,
+        .task-message,
+        .general-message {
             text-align: center;
-            margin-top: 12px;
-            min-height: 22px;
+            margin-top: 14px;
             font-size: 14px;
-        }
-
-        .reward-success {
-            color: #62e6a5;
-        }
-
-        .reward-error {
-            color: #ff7676;
-        }
-
-        .reward-waiting {
-            color: #ffd54f;
-        }
-
-
-        /* =================================================
-           ADS
-        ================================================= */
-
-        .ads-panel {
-            margin-top: 20px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 9px;
-        }
-
-        .stat-box {
-            background: rgba(255,255,255,.055);
-            border-radius: 15px;
-            padding: 13px 7px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 20px;
-            font-weight: 800;
-            color: #ffd54f;
-        }
-
-        .stat-label {
-            margin-top: 5px;
-            font-size: 11px;
-            opacity: .6;
-        }
-
-        .ads-message {
-            text-align: center;
-            margin-top: 13px;
-            min-height: 22px;
-            font-size: 13px;
-        }
-
-        .ads-success {
-            color: #61e7a2;
-        }
-
-        .ads-error {
-            color: #ff7373;
-        }
-
-        .ads-waiting {
-            color: #ffd54f;
-        }
-
-
-        /* =================================================
-           TASKS
-        ================================================= */
-
-        .tasks-panel {
-            margin-top: 20px;
-        }
-
-        .task-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .task-card {
-            padding: 16px;
-            background: rgba(255,255,255,.055);
-            border: 1px solid rgba(255,255,255,.07);
-            border-radius: 17px;
-        }
-
-        .task-title {
-            font-size: 17px;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .task-description {
-            color: rgba(255,255,255,.63);
-            font-size: 13px;
             line-height: 1.6;
         }
 
+        .reward-success,
+        .ads-success,
+        .task-success {
+            color: #58d68d;
+        }
+
+        .reward-waiting,
+        .ads-waiting {
+            color: #aeb5c1;
+        }
+
+        .reward-error,
+        .ads-error,
+        .task-error {
+            color: #ff7777;
+        }
+
+        .ads-panel,
+        .tasks-panel,
+        .referral-panel,
+        .withdraw-panel,
+        .account-panel {
+            margin-top: 20px;
+        }
+
+        .ads-info {
+            background: #111722;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 15px;
+        }
+
+        .ads-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            color: #b5bdc9;
+            font-size: 14px;
+        }
+
+        .ads-row strong {
+            color: white;
+        }
+
+        /* TASKS */
+
+        .task-card {
+            background: #111722;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+
+        .task-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .task-description {
+            color: #aeb5c1;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
         .task-reward {
-            margin-top: 10px;
-            color: #ffd54f;
-            font-weight: 700;
+            color: #ffd166;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .task-link {
+            display: block;
+            width: 100%;
+            border: none;
+            background: #222b3a;
+            color: #ffffff;
+            border-radius: 11px;
+            padding: 11px;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 9px;
             font-size: 14px;
         }
 
         .task-button {
             width: 100%;
-            margin-top: 12px;
-            padding: 12px;
-            border: 0;
-            border-radius: 13px;
-            background: #ffffff;
-            color: #111827;
-            font-weight: 800;
+            border: none;
+            background: #2d7dff;
+            color: white;
+            border-radius: 11px;
+            padding: 11px;
+            font-weight: bold;
             cursor: pointer;
         }
 
         .task-button:disabled {
-            opacity: .4;
+            background: #303744;
+            color: #8f98a8;
         }
 
-        .task-loading,
-        .task-empty,
-        .task-error {
+        .no-tasks {
             text-align: center;
+            color: #8f98a8;
             padding: 25px 10px;
-            color: rgba(255,255,255,.65);
+            line-height: 1.7;
         }
 
-        .task-error {
-            color: #ff7777;
+        /* GENERAL PANELS */
+
+        .info-box {
+            background: #111722;
+            border-radius: 15px;
+            padding: 17px;
+            margin-top: 15px;
         }
 
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 9px 0;
+            color: #aeb5c1;
+            font-size: 14px;
+        }
 
-        /* =================================================
-           BOTTOM NAV
-        ================================================= */
+        .info-row strong {
+            color: #ffffff;
+        }
+
+        .referral-link-box {
+            background: #0d121b;
+            border: 1px solid #283142;
+            border-radius: 12px;
+            padding: 12px;
+            word-break: break-all;
+            font-size: 12px;
+            color: #bfc7d4;
+            margin-top: 12px;
+        }
+
+        .copy-button {
+            width: 100%;
+            border: none;
+            background: #252d3b;
+            color: white;
+            border-radius: 11px;
+            padding: 11px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .withdraw-note {
+            color: #9da5b4;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-top: 12px;
+        }
+
+        /* BOTTOM NAV */
 
         .bottom-nav {
             position: fixed;
             bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            right: 0;
             width: 100%;
-            max-width: 520px;
-            padding: 8px 8px 10px;
-            background: rgba(7,10,18,.95);
-            backdrop-filter: blur(15px);
-            border-top: 1px solid rgba(255,255,255,.07);
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            z-index: 900;
+            background: #151922;
+            border-top: 1px solid #252b36;
+            padding: 7px 4px;
+            z-index: 50;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 3px;
         }
 
         .nav-button {
-            border: 0;
+            flex: 1;
+            width: 16.666%;
+            min-width: 0;
+            border: none;
             background: transparent;
-            color: rgba(255,255,255,.5);
-            padding: 6px 2px;
+            color: #8f98a8;
+            border-radius: 11px;
+            padding: 6px 1px;
             cursor: pointer;
-            font-size: 10px;
+            font-size: 9px;
+            line-height: 1.2;
+        }
+
+        .nav-button.active {
+            background: #252d3b;
+            color: white;
         }
 
         .nav-icon {
             display: block;
-            font-size: 19px;
+            font-size: 20px;
+            line-height: 22px;
             margin-bottom: 3px;
         }
 
-        .nav-button.active {
-            color: #ffd54f;
-        }
+        @media (max-width: 360px) {
 
+            .app {
+                padding: 12px;
+            }
 
-        /* =================================================
-           HIDDEN
-        ================================================= */
+            .nav-button {
+                font-size: 8px;
+            }
 
-        .hidden {
-            display: none !important;
-        }
+            .nav-icon {
+                font-size: 18px;
+            }
 
+            .logo {
+                font-size: 21px;
+            }
 
-        /* =================================================
-           LOADING
-        ================================================= */
+            .coins {
+                font-size: 27px;
+            }
 
-        .loading {
-            text-align: center;
-            padding: 30px;
-            color: rgba(255,255,255,.6);
         }
 
     </style>
 
 </head>
 
-
 <body>
 
 <div class="app">
 
+    <div class="top-bar">
 
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
-
-    <header class="header">
-
-        <div class="brand">
+        <div class="logo">
             EarnPool
         </div>
 
-        <div class="language-area">
+        <button
+            class="language-button"
+            id="languageButton"
+            onclick="toggleLanguageMenu()"
+        >
+            🌐 EN
+        </button>
 
-            <button
-                id="languageButton"
-                class="language-button"
-                onclick="toggleLanguageMenu()"
-            >
-                🌐 EN
-            </button>
+    </div>
 
-            <div
-                id="languageMenu"
-                class="language-menu"
-            >
+    <div
+        class="language-menu"
+        id="languageMenu"
+    >
 
-                <button
-                    onclick="changeLanguage('en')"
-                >
-                    🇬🇧 English
-                </button>
+        <button
+            class="language-option"
+            onclick="changeLanguage('en')"
+        >
+            🇬🇧 English
+        </button>
 
-                <button
-                    onclick="changeLanguage('fa')"
-                >
-                    🇦🇫 فارسی
-                </button>
+        <button
+            class="language-option"
+            onclick="changeLanguage('fa')"
+        >
+            🇦🇫 فارسی
+        </button>
 
-                <button
-                    onclick="changeLanguage('ar')"
-                >
-                    🇸🇦 العربية
-                </button>
+        <button
+            class="language-option"
+            onclick="changeLanguage('ar')"
+        >
+            🇸🇦 العربية
+        </button>
 
-            </div>
+    </div>
 
-        </div>
+    <!-- BALANCE -->
 
-    </header>
-
-
-    <!-- =====================================================
-         BALANCE
-    ====================================================== -->
-
-    <section class="balance-card">
+    <div class="balance-card">
 
         <div
-            id="balanceTitle"
             class="balance-title"
+            id="balanceTitle"
         >
-            Balance
+            Your Balance
+        </div>
+
+        <div class="coins">
+
+            <span id="coins">0</span>
+
+            🪙
+
         </div>
 
         <div
-            id="balance"
-            class="balance-value"
+            class="usd-value"
+            id="usdValue"
         >
-            0
+            ≈ $0.000000
         </div>
 
-        <div class="coin-label">
-            Coins
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content-card">
+
+        <div
+            class="content-icon"
+            id="contentIcon"
+        >
+            🎁
         </div>
 
-    </section>
+        <div
+            class="content-title"
+            id="contentTitle"
+        >
+            Daily Reward
+        </div>
+
+        <div
+            class="content-text"
+            id="contentText"
+        >
+            Claim your daily reward and earn coins every 12 hours.
+        </div>
 
 
-    <!-- =====================================================
-         CONTENT
-    ====================================================== -->
+        <!-- DAILY -->
 
-    <main class="content">
+        <button
+            id="rewardButton"
+            class="reward-button"
+            onclick="claimDailyReward()"
+        >
+            🎁 Claim 1,000 Coins
+        </button>
 
-        <div class="content-card">
+        <div
+            id="rewardStatus"
+            class="reward-status"
+        ></div>
 
-            <div
-                id="contentIcon"
-                class="content-icon"
-            >
-                🎁
+
+        <!-- ADS -->
+
+        <div
+            id="adsPanel"
+            class="ads-panel"
+            style="display:none;"
+        >
+
+            <div class="ads-info">
+
+                <div class="ads-row">
+
+                    <span id="adsWatchedLabel">
+                        Ads watched
+                    </span>
+
+                    <strong>
+
+                        <span id="adsWatched">
+                            0
+                        </span>
+
+                        /
+
+                        <span id="adsLimit">
+                            10
+                        </span>
+
+                    </strong>
+
+                </div>
+
+                <div class="ads-row">
+
+                    <span id="adsRemainingLabel">
+                        Ads remaining
+                    </span>
+
+                    <strong id="adsRemaining">
+                        10
+                    </strong>
+
+                </div>
+
+                <div class="ads-row">
+
+                    <span id="adsRewardLabel">
+                        Reward
+                    </span>
+
+                    <strong>
+                        2,000 🪙
+                    </strong>
+
+                </div>
+
             </div>
 
-            <h2
-                id="contentTitle"
-                class="content-title"
-            >
-                Daily Reward
-            </h2>
-
-            <p
-                id="contentText"
-                class="content-text"
-            >
-                Claim your daily reward.
-            </p>
-
-
-            <!-- =================================================
-                 DAILY REWARD
-            ================================================== -->
-
             <button
-                id="rewardButton"
-                class="reward-button"
-                onclick="claimDailyReward()"
+                id="watchAdButton"
+                class="watch-ad-button"
+                onclick="watchAd()"
             >
-                Claim
+                📺 Watch Ad +2,000
             </button>
 
             <div
-                id="rewardStatus"
-                class="reward-status"
+                id="adsMessage"
+                class="ads-message"
             ></div>
 
+        </div>
 
-            <!-- =================================================
-                 ADS
-            ================================================== -->
+
+        <!-- TASKS -->
+
+        <div
+            id="tasksPanel"
+            class="tasks-panel"
+            style="display:none;"
+        >
+
+            <div id="tasksList"></div>
 
             <div
-                id="adsPanel"
-                class="ads-panel hidden"
-            >
+                id="taskMessage"
+                class="task-message"
+            ></div>
 
-                <div class="stats-grid">
-
-                    <div class="stat-box">
-
-                        <div
-                            id="adsWatched"
-                            class="stat-number"
-                        >
-                            0
-                        </div>
-
-                        <div
-                            id="adsWatchedLabel"
-                            class="stat-label"
-                        >
-                            Watched
-                        </div>
-
-                    </div>
+        </div>
 
 
-                    <div class="stat-box">
+        <!-- REFERRAL -->
 
-                        <div
-                            id="adsRemaining"
-                            class="stat-number"
-                        >
-                            10
-                        </div>
+        <div
+            id="referralPanel"
+            class="referral-panel"
+            style="display:none;"
+        >
 
-                        <div
-                            id="adsRemainingLabel"
-                            class="stat-label"
-                        >
-                            Remaining
-                        </div>
+            <div class="info-box">
 
-                    </div>
+                <div class="info-row">
 
+                    <span id="referralCountLabel">
+                        Referrals
+                    </span>
 
-                    <div class="stat-box">
-
-                        <div
-                            id="adsReward"
-                            class="stat-number"
-                        >
-                            2000
-                        </div>
-
-                        <div
-                            id="adsRewardLabel"
-                            class="stat-label"
-                        >
-                            Reward
-                        </div>
-
-                    </div>
+                    <strong id="referralCount">
+                        0
+                    </strong>
 
                 </div>
 
+                <div class="info-row">
 
-                <button
-                    id="watchAdButton"
-                    class="main-button"
-                    onclick="watchAd()"
-                >
-                    Watch Ad
-                </button>
+                    <span id="referralIdLabel">
+                        Your Telegram ID
+                    </span>
 
+                    <strong id="referralTelegramId">
+                        -
+                    </strong>
 
-                <div
-                    id="adsMessage"
-                    class="ads-message"
-                ></div>
+                </div>
 
             </div>
 
+            <div
+                class="referral-link-box"
+                id="referralLink"
+            >
+                -
+            </div>
 
-            <!-- =================================================
-                 TASKS
-            ================================================== -->
+            <button
+                class="copy-button"
+                onclick="copyReferralLink()"
+                id="copyReferralButton"
+            >
+                📋 Copy Referral Link
+            </button>
 
             <div
-                id="tasksPanel"
-                class="tasks-panel hidden"
+                class="general-message"
+                id="referralMessage"
+            ></div>
+
+        </div>
+
+
+        <!-- WITHDRAW -->
+
+        <div
+            id="withdrawPanel"
+            class="withdraw-panel"
+            style="display:none;"
+        >
+
+            <div class="info-box">
+
+                <div class="info-row">
+
+                    <span>
+                        <span id="withdrawBalanceLabel">
+                            Balance
+                        </span>
+                    </span>
+
+                    <strong id="withdrawBalance">
+                        0 🪙
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span id="withdrawUsdLabel">
+                        USD Value
+                    </span>
+
+                    <strong id="withdrawUsd">
+                        $0.000000
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div
+                class="withdraw-note"
+                id="withdrawNote"
             >
+                Withdraw functionality will be connected to the withdrawal system in the next stage.
+            </div>
 
-                <div
-                    id="taskList"
-                    class="task-list"
-                >
+        </div>
 
-                    <div
-                        id="taskLoading"
-                        class="task-loading"
-                    >
-                        Loading tasks...
-                    </div>
+
+        <!-- ACCOUNT -->
+
+        <div
+            id="accountPanel"
+            class="account-panel"
+            style="display:none;"
+        >
+
+            <div class="info-box">
+
+                <div class="info-row">
+
+                    <span id="accountNameLabel">
+                        Name
+                    </span>
+
+                    <strong id="accountName">
+                        -
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span id="accountUsernameLabel">
+                        Username
+                    </span>
+
+                    <strong id="accountUsername">
+                        -
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span id="accountIdLabel">
+                        Telegram ID
+                    </span>
+
+                    <strong id="accountId">
+                        -
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span id="accountBalanceLabel">
+                        Balance
+                    </span>
+
+                    <strong id="accountBalance">
+                        0 🪙
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span id="accountReferralLabel">
+                        Referrals
+                    </span>
+
+                    <strong id="accountReferrals">
+                        0
+                    </strong>
 
                 </div>
 
@@ -673,133 +823,134 @@
 
         </div>
 
-    </main>
+    </div>
 
 </div>
 
 
-<!-- =========================================================
-     BOTTOM NAV
-========================================================== -->
+<!-- BOTTOM NAV -->
 
-<nav class="bottom-nav">
+<div class="bottom-nav">
 
-    <button
-        class="nav-button active"
-        data-section="daily"
-        onclick="showSection('daily', this)"
-    >
+    <div class="nav-container">
 
-        <span class="nav-icon">
-            🎁
-        </span>
+        <button
+            class="nav-button active"
+            data-section="daily"
+            onclick="showSection('daily', this)"
+        >
 
-        <span data-key="daily">
-            Daily
-        </span>
+            <span class="nav-icon">
+                🎁
+            </span>
 
-    </button>
+            <span data-key="daily">
+                Daily
+            </span>
 
-
-    <button
-        class="nav-button"
-        data-section="ads"
-        onclick="showSection('ads', this)"
-    >
-
-        <span class="nav-icon">
-            📺
-        </span>
-
-        <span data-key="ads">
-            Ads
-        </span>
-
-    </button>
+        </button>
 
 
-    <button
-        class="nav-button"
-        data-section="tasks"
-        onclick="showSection('tasks', this)"
-    >
+        <button
+            class="nav-button"
+            data-section="ads"
+            onclick="showSection('ads', this)"
+        >
 
-        <span class="nav-icon">
-            🎯
-        </span>
+            <span class="nav-icon">
+                📺
+            </span>
 
-        <span data-key="tasks">
-            Tasks
-        </span>
+            <span data-key="ads">
+                Ads
+            </span>
 
-    </button>
-
-
-    <button
-        class="nav-button"
-        data-section="referral"
-        onclick="showSection('referral', this)"
-    >
-
-        <span class="nav-icon">
-            👥
-        </span>
-
-        <span data-key="referral">
-            Referral
-        </span>
-
-    </button>
+        </button>
 
 
-    <button
-        class="nav-button"
-        data-section="withdraw"
-        onclick="showSection('withdraw', this)"
-    >
+        <button
+            class="nav-button"
+            data-section="tasks"
+            onclick="showSection('tasks', this)"
+        >
 
-        <span class="nav-icon">
-            💸
-        </span>
+            <span class="nav-icon">
+                🎯
+            </span>
 
-        <span data-key="withdraw">
-            Withdraw
-        </span>
+            <span data-key="tasks">
+                Tasks
+            </span>
 
-    </button>
+        </button>
 
 
-    <button
-        class="nav-button"
-        data-section="account"
-        onclick="showSection('account', this)"
-    >
+        <button
+            class="nav-button"
+            data-section="referral"
+            onclick="showSection('referral', this)"
+        >
 
-        <span class="nav-icon">
-            👤
-        </span>
+            <span class="nav-icon">
+                👥
+            </span>
 
-        <span data-key="account">
-            Account
-        </span>
+            <span data-key="referral">
+                Referral
+            </span>
 
-    </button>
+        </button>
 
-</nav>
+
+        <button
+            class="nav-button"
+            data-section="withdraw"
+            onclick="showSection('withdraw', this)"
+        >
+
+            <span class="nav-icon">
+                💰
+            </span>
+
+            <span data-key="withdraw">
+                Withdraw
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="account"
+            onclick="showSection('account', this)"
+        >
+
+            <span class="nav-icon">
+                👤
+            </span>
+
+            <span data-key="account">
+                Account
+            </span>
+
+        </button>
+
+    </div>
+
+</div>
 
 
 <script>
 
-/* ============================================================
+/* =====================================================
    TELEGRAM
-============================================================ */
+===================================================== */
 
 const tg =
     window.Telegram &&
     window.Telegram.WebApp
         ? window.Telegram.WebApp
         : null;
-
 
 if (tg) {
 
@@ -810,9 +961,9 @@ if (tg) {
 }
 
 
-/* ============================================================
-   USER
-============================================================ */
+/* =====================================================
+   TELEGRAM USER
+===================================================== */
 
 const user =
     tg &&
@@ -822,133 +973,115 @@ const user =
         : null;
 
 
-/* ============================================================
-   BLOCK IDS
-============================================================ */
+/* =====================================================
+   ADSGRAM
+===================================================== */
 
 /*
-    IMPORTANT
-
-    AdsGram normal advertisement:
-    44182
-
-    AdsGram task advertisement:
-    task-44183
+    AdsGram Block ID
+    بخش تبلیغات
 */
 
-const ADSGRAM_AD_BLOCK_ID =
+const ADSGRAM_BLOCK_ID =
     "44182";
-
-const ADSGRAM_TASK_BLOCK_ID =
-    "task-44183";
-
-
-/* ============================================================
-   ADSGRAM CONTROLLERS
-============================================================ */
 
 let AdController = null;
 
-let TaskAdController = null;
-
-
-/*
-    Normal Ads Controller
-*/
-
 try {
 
     if (
-        typeof Adsgram !== "undefined" &&
-        Adsgram &&
-        typeof Adsgram.init === "function"
+        window.Adsgram &&
+        typeof window.Adsgram.init === "function"
     ) {
 
         AdController =
-            Adsgram.init({
+            window.Adsgram.init({
                 blockId:
-                    ADSGRAM_AD_BLOCK_ID
+                    ADSGRAM_BLOCK_ID
             });
+
+        console.log(
+            "AdsGram initialized:",
+            ADSGRAM_BLOCK_ID
+        );
 
     }
 
 } catch (error) {
 
     console.error(
-        "AdsGram normal controller error:",
+        "AdsGram initialization error:",
         error
     );
 
 }
 
+
+/* =====================================================
+   TASK ID
+===================================================== */
 
 /*
-    Task Ads Controller
+    task-44183
+    شناسه بخش/تسک موردنظر
 */
 
-try {
-
-    if (
-        typeof Adsgram !== "undefined" &&
-        Adsgram &&
-        typeof Adsgram.init === "function"
-    ) {
-
-        TaskAdController =
-            Adsgram.init({
-                blockId:
-                    ADSGRAM_TASK_BLOCK_ID
-            });
-
-    }
-
-} catch (error) {
-
-    console.error(
-        "AdsGram task controller error:",
-        error
-    );
-
-}
+const TASK_BLOCK_ID =
+    "task-44183";
 
 
-/* ============================================================
-   STATE
-============================================================ */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 let coins = 0;
 
 let currentSection =
     "daily";
 
+const DAILY_REWARD = 1000;
 
-/* ============================================================
+const AD_REWARD = 2000;
+
+const TASK_REWARD = 1000;
+
+const AD_LIMIT = 10;
+
+
+/* =====================================================
    TRANSLATIONS
-============================================================ */
+===================================================== */
 
 const translations = {
 
     en: {
 
-        balance: "Balance",
+        balance:
+            "Your Balance",
 
-        daily: "Daily",
+        daily:
+            "Daily",
 
-        ads: "Ads",
+        ads:
+            "Ads",
 
-        tasks: "Tasks",
+        tasks:
+            "Tasks",
 
-        referral: "Referral",
+        referral:
+            "Referral",
 
-        withdraw: "Withdraw",
+        withdraw:
+            "Withdraw",
 
-        account: "Account",
+        account:
+            "Account",
 
         dailyTitle:
             "Daily Reward",
 
         dailyText:
-            "Claim your reward every 12 hours.",
+            "Claim your daily reward and earn coins every 12 hours.",
 
         adsTitle:
             "Watch Ads",
@@ -966,82 +1099,112 @@ const translations = {
             "Referral",
 
         referralText:
-            "Invite friends and earn rewards.",
+            "Invite friends and earn referral rewards.",
 
         withdrawTitle:
             "Withdraw",
 
         withdrawText:
-            "Your withdrawal section will be available here.",
+            "Withdraw your available balance.",
 
         accountTitle:
             "Account",
 
         accountText:
-            "Your EarnPool account.",
+            "View your account information and statistics.",
 
         claim:
-            "🎁 Claim Reward",
+            "🎁 Claim 1,000 Coins",
 
         claimed:
-            "⏳ Already Claimed",
-
-        waiting:
-            "Next reward in",
+            "✅ Reward Claimed",
 
         congratulations:
-            "🎉 Reward added!",
+            "🎉 Congratulations! You received 1,000 coins.",
 
-        error:
-            "Something went wrong. Please try again.",
+        waiting:
+            "⏳ Next reward in",
 
         adsWatched:
-            "Watched",
+            "Ads watched",
 
         adsRemaining:
-            "Remaining",
+            "Ads remaining",
 
         adsReward:
             "Reward",
 
         watchAd:
-            "📺 Watch Ad",
+            "📺 Watch Ad +2,000",
 
         adSuccess:
-            "🎉 2,000 coins added!",
-
-        adError:
-            "Advertisement could not be completed.",
+            "🎉 Congratulations! You received 2,000 coins.",
 
         adLimit:
-            "Ad limit reached.",
+            "⏳ You have reached your 10-ad limit.",
+
+        adError:
+            "❌ The ad could not be completed. No coins were added.",
 
         adsReset:
-            "Reset in",
+            "Next ads available in",
 
-        taskLoading:
-            "⏳ Loading tasks...",
+        taskReward:
+            "Reward:",
 
-        taskEmpty:
-            "🎉 No tasks available right now.",
+        completeTask:
+            "Complete Task",
 
-        taskError:
-            "❌ Could not load tasks.",
-
-        taskWatch:
-            "▶️ Start Task",
-
-        taskClaim:
-            "🎁 Claim Reward",
-
-        taskProcessing:
-            "⏳ Processing...",
+        claimTask:
+            "Claim Reward",
 
         taskSuccess:
-            "🎉 Task reward added!",
+            "🎉 Task completed! Reward received.",
 
-        taskFailed:
-            "❌ Task could not be completed."
+        taskAlready:
+            "This task has already been completed.",
+
+        noTasks:
+            "🎯 No new tasks available right now.",
+
+        tasksLoading:
+            "⏳ Loading tasks...",
+
+        openTask:
+            "🔗 Open Task",
+
+        taskRewardError:
+            "Could not claim task reward.",
+
+        error:
+            "Something went wrong. Please try again.",
+
+        referrals:
+            "Referrals",
+
+        telegramId:
+            "Telegram ID",
+
+        copyReferral:
+            "📋 Copy Referral Link",
+
+        copied:
+            "✅ Copied",
+
+        name:
+            "Name",
+
+        username:
+            "Username",
+
+        referralBalance:
+            "Balance",
+
+        usdValue:
+            "USD Value",
+
+        withdrawInfo:
+            "Withdraw functionality will be connected to the withdrawal system in the next stage."
 
     },
 
@@ -1049,7 +1212,7 @@ const translations = {
     fa: {
 
         balance:
-            "موجودی",
+            "موجودی شما",
 
         daily:
             "روزانه",
@@ -1061,7 +1224,7 @@ const translations = {
             "تسک‌ها",
 
         referral:
-            "زیرمجموعه",
+            "رفرال",
 
         withdraw:
             "برداشت",
@@ -1076,97 +1239,127 @@ const translations = {
             "هر ۱۲ ساعت پاداش خود را دریافت کنید.",
 
         adsTitle:
-            "تماشای تبلیغات",
+            "دیدن تبلیغات",
 
         adsText:
-            "با تماشای تبلیغات سکه دریافت کنید.",
+            "تبلیغات را تماشا کنید و سکه دریافت کنید.",
 
         tasksTitle:
             "تسک‌ها",
 
         tasksText:
-            "تسک‌های موجود را انجام دهید و پاداش بگیرید.",
+            "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
 
         referralTitle:
-            "زیرمجموعه‌گیری",
+            "رفرال",
 
         referralText:
-            "دوستان خود را دعوت کنید و پاداش بگیرید.",
+            "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
 
         withdrawTitle:
             "برداشت",
 
         withdrawText:
-            "بخش برداشت در اینجا قرار می‌گیرد.",
+            "موجودی قابل برداشت خود را مشاهده کنید.",
 
         accountTitle:
             "حساب کاربری",
 
         accountText:
-            "حساب EarnPool شما.",
+            "اطلاعات حساب و آمار خود را مشاهده کنید.",
 
         claim:
-            "🎁 دریافت پاداش",
+            "🎁 دریافت ۱,۰۰۰ سکه",
 
         claimed:
-            "⏳ قبلاً دریافت شده",
-
-        waiting:
-            "پاداش بعدی:",
+            "✅ پاداش دریافت شد",
 
         congratulations:
-            "🎉 پاداش اضافه شد!",
+            "🎉 تبریک! شما ۱,۰۰۰ سکه دریافت کردید.",
 
-        error:
-            "خطایی رخ داد. دوباره تلاش کنید.",
+        waiting:
+            "⏳ پاداش بعدی تا",
 
         adsWatched:
-            "تماشا شده",
+            "تبلیغات دیده‌شده",
 
         adsRemaining:
-            "باقی‌مانده",
+            "تبلیغات باقی‌مانده",
 
         adsReward:
             "پاداش",
 
         watchAd:
-            "📺 تماشای تبلیغ",
+            "📺 دیدن تبلیغ +۲,۰۰۰",
 
         adSuccess:
-            "🎉 ۲۰۰۰ سکه اضافه شد!",
-
-        adError:
-            "تبلیغ کامل نشد.",
+            "🎉 تبریک! شما ۲,۰۰۰ سکه دریافت کردید.",
 
         adLimit:
-            "به حد تبلیغات رسیدید.",
+            "⏳ شما به محدودیت ۱۰ تبلیغ رسیده‌اید.",
+
+        adError:
+            "❌ تبلیغ کامل نشد. سکه‌ای اضافه نشد.",
 
         adsReset:
-            "ریست در",
+            "تبلیغات بعدی تا",
 
-        taskLoading:
-            "⏳ در حال دریافت تسک‌ها...",
+        taskReward:
+            "پاداش:",
 
-        taskEmpty:
-            "🎉 فعلاً تسکی وجود ندارد.",
+        completeTask:
+            "انجام تسک",
 
-        taskError:
-            "❌ دریافت تسک‌ها ناموفق بود.",
-
-        taskWatch:
-            "▶️ شروع تسک",
-
-        taskClaim:
-            "🎁 دریافت پاداش",
-
-        taskProcessing:
-            "⏳ در حال پردازش...",
+        claimTask:
+            "دریافت پاداش",
 
         taskSuccess:
-            "🎉 پاداش تسک اضافه شد!",
+            "🎉 تسک انجام شد! پاداش دریافت شد.",
 
-        taskFailed:
-            "❌ انجام تسک ناموفق بود."
+        taskAlready:
+            "این تسک قبلاً انجام شده است.",
+
+        noTasks:
+            "🎯 فعلاً تسک جدیدی وجود ندارد.",
+
+        tasksLoading:
+            "⏳ در حال دریافت تسک‌ها...",
+
+        openTask:
+            "🔗 باز کردن تسک",
+
+        taskRewardError:
+            "دریافت پاداش تسک ممکن نبود.",
+
+        error:
+            "خطایی رخ داد. دوباره تلاش کنید.",
+
+        referrals:
+            "تعداد رفرال",
+
+        telegramId:
+            "آیدی تلگرام",
+
+        copyReferral:
+            "📋 کپی لینک رفرال",
+
+        copied:
+            "✅ کپی شد",
+
+        name:
+            "نام",
+
+        username:
+            "نام کاربری",
+
+        referralBalance:
+            "موجودی",
+
+        usdValue:
+            "ارزش دلاری",
+
+        withdrawInfo:
+            "سیستم برداشت در مرحله بعدی به سیستم برداشت متصل خواهد شد."
 
     },
 
@@ -1174,7 +1367,7 @@ const translations = {
     ar: {
 
         balance:
-            "الرصيد",
+            "رصيدك",
 
         daily:
             "اليومي",
@@ -1204,103 +1397,219 @@ const translations = {
             "مشاهدة الإعلانات",
 
         adsText:
-            "شاهد الإعلانات واكسب العملات.",
+            "شاهد الإعلانات واربح العملات.",
 
         tasksTitle:
             "المهام",
 
         tasksText:
-            "أكمل المهام المتاحة واربح المكافآت.",
+            "أكمل المهام المتاحة واحصل على المكافآت.",
 
         referralTitle:
-            "الإحالات",
+            "الإحالة",
 
         referralText:
-            "ادعُ أصدقاءك واربح المكافآت.",
+            "ادعُ أصدقاءك واربح مكافآت الإحالة.",
 
         withdrawTitle:
             "السحب",
 
         withdrawText:
-            "سيكون قسم السحب متاحًا هنا.",
+            "اعرض رصيدك المتاح للسحب.",
 
         accountTitle:
             "الحساب",
 
         accountText:
-            "حساب EarnPool الخاص بك.",
+            "عرض معلومات حسابك وإحصائياتك.",
 
         claim:
-            "🎁 استلام المكافأة",
+            "🎁 احصل على 1,000 عملة",
 
         claimed:
-            "⏳ تم الاستلام",
-
-        waiting:
-            "المكافأة التالية خلال",
+            "✅ تم استلام المكافأة",
 
         congratulations:
-            "🎉 تمت إضافة المكافأة!",
+            "🎉 مبروك! حصلت على 1,000 عملة.",
 
-        error:
-            "حدث خطأ. حاول مرة أخرى.",
+        waiting:
+            "⏳ المكافأة التالية خلال",
 
         adsWatched:
-            "تمت المشاهدة",
+            "الإعلانات المشاهدة",
 
         adsRemaining:
-            "المتبقي",
+            "الإعلانات المتبقية",
 
         adsReward:
             "المكافأة",
 
         watchAd:
-            "📺 مشاهدة الإعلان",
+            "📺 شاهد الإعلان +2,000",
 
         adSuccess:
-            "🎉 تمت إضافة 2000 عملة!",
-
-        adError:
-            "لم تكتمل مشاهدة الإعلان.",
+            "🎉 مبروك! حصلت على 2,000 عملة.",
 
         adLimit:
-            "لقد وصلت إلى حد الإعلانات.",
+            "⏳ وصلت إلى حد 10 إعلانات.",
+
+        adError:
+            "❌ لم تكتمل مشاهدة الإعلان. لم تتم إضافة العملات.",
 
         adsReset:
-            "إعادة التعيين خلال",
+            "الإعلانات التالية خلال",
 
-        taskLoading:
-            "⏳ جارٍ تحميل المهام...",
+        taskReward:
+            "المكافأة:",
 
-        taskEmpty:
-            "🎉 لا توجد مهام متاحة حالياً.",
+        completeTask:
+            "إكمال المهمة",
 
-        taskError:
-            "❌ تعذر تحميل المهام.",
-
-        taskWatch:
-            "▶️ بدء المهمة",
-
-        taskClaim:
-            "🎁 استلام المكافأة",
-
-        taskProcessing:
-            "⏳ جارٍ المعالجة...",
+        claimTask:
+            "احصل على المكافأة",
 
         taskSuccess:
-            "🎉 تمت إضافة مكافأة المهمة!",
+            "🎉 تم إكمال المهمة! تم استلام المكافأة.",
 
-        taskFailed:
-            "❌ تعذر إكمال المهمة."
+        taskAlready:
+            "تم إكمال هذه المهمة مسبقًا.",
+
+        noTasks:
+            "🎯 لا توجد مهام جديدة حاليًا.",
+
+        tasksLoading:
+            "⏳ جارٍ تحميل المهام...",
+
+        openTask:
+            "🔗 فتح المهمة",
+
+        taskRewardError:
+            "تعذر استلام مكافأة المهمة.",
+
+        error:
+            "حدث خطأ. حاول مرة أخرى.",
+
+        referrals:
+            "الإحالات",
+
+        telegramId:
+            "معرف Telegram",
+
+        copyReferral:
+            "📋 نسخ رابط الإحالة",
+
+        copied:
+            "✅ تم النسخ",
+
+        name:
+            "الاسم",
+
+        username:
+            "اسم المستخدم",
+
+        referralBalance:
+            "الرصيد",
+
+        usdValue:
+            "قيمة USD",
+
+        withdrawInfo:
+            "سيتم ربط نظام السحب بنظام السحب في المرحلة القادمة."
 
     }
 
 };
 
 
-/* ============================================================
-   LANGUAGE DETECTION
-============================================================ */
+/* =====================================================
+   SECTION ICONS
+===================================================== */
+
+const sectionIcons = {
+
+    daily: "🎁",
+
+    ads: "📺",
+
+    tasks: "🎯",
+
+    referral: "👥",
+
+    withdraw: "💰",
+
+    account: "👤"
+
+};
+
+
+/* =====================================================
+   BALANCE
+===================================================== */
+
+function updateBalance() {
+
+    document
+        .getElementById("coins")
+        .textContent =
+        Number(coins)
+            .toLocaleString();
+
+    const usd =
+        Number(coins) / 1000000;
+
+    document
+        .getElementById("usdValue")
+        .textContent =
+        "≈ $" +
+        usd.toFixed(6);
+
+    const withdrawBalance =
+        document.getElementById(
+            "withdrawBalance"
+        );
+
+    const withdrawUsd =
+        document.getElementById(
+            "withdrawUsd"
+        );
+
+    const accountBalance =
+        document.getElementById(
+            "accountBalance"
+        );
+
+    if (withdrawBalance) {
+
+        withdrawBalance.textContent =
+            Number(coins)
+                .toLocaleString() +
+            " 🪙";
+
+    }
+
+    if (withdrawUsd) {
+
+        withdrawUsd.textContent =
+            "$" +
+            usd.toFixed(6);
+
+    }
+
+    if (accountBalance) {
+
+        accountBalance.textContent =
+            Number(coins)
+                .toLocaleString() +
+            " 🪙";
+
+    }
+
+}
+
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
 
 function detectLanguage() {
 
@@ -1314,7 +1623,6 @@ function detectLanguage() {
             ""
         ).toLowerCase();
 
-
     if (
         code === "fa" ||
         code.startsWith("fa-")
@@ -1323,7 +1631,6 @@ function detectLanguage() {
         return "fa";
 
     }
-
 
     if (
         code === "ar" ||
@@ -1334,15 +1641,10 @@ function detectLanguage() {
 
     }
 
-
     return "en";
 
 }
 
-
-/* ============================================================
-   CURRENT LANGUAGE
-============================================================ */
 
 function getLanguage() {
 
@@ -1350,7 +1652,6 @@ function getLanguage() {
         localStorage.getItem(
             "language"
         );
-
 
     if (
         saved &&
@@ -1361,54 +1662,22 @@ function getLanguage() {
 
     }
 
-
     return detectLanguage();
 
 }
 
 
-/* ============================================================
-   TRANSLATE
-============================================================ */
-
-function t(key) {
-
-    const lang =
-        getLanguage();
-
-    return (
-        translations[lang][key] ||
-        translations.en[key] ||
-        key
-    );
-
-}
-
-
-/* ============================================================
-   APPLY LANGUAGE
-============================================================ */
-
 function applyLanguage(lang) {
 
-    if (
-        !translations[lang]
-    ) {
-
+    if (!translations[lang]) {
         lang = "en";
-
     }
 
-
-    localStorage.setItem(
-        "language",
-        lang
-    );
-
+    const t =
+        translations[lang];
 
     document.documentElement.lang =
         lang;
-
 
     document.documentElement.dir =
         lang === "en"
@@ -1416,105 +1685,153 @@ function applyLanguage(lang) {
             : "rtl";
 
 
+    document.getElementById(
+        "balanceTitle"
+    ).textContent =
+        t.balance;
+
+
     document
         .querySelectorAll("[data-key]")
-        .forEach(
-            function(element) {
+        .forEach(function(element) {
 
-                const key =
-                    element.getAttribute(
-                        "data-key"
-                    );
+            const key =
+                element.getAttribute(
+                    "data-key"
+                );
 
-                if (
-                    translations[lang][key]
-                ) {
+            if (t[key]) {
 
-                    element.textContent =
-                        translations[lang][key];
-
-                }
+                element.textContent =
+                    t[key];
 
             }
-        );
+
+        });
 
 
-    document
-        .getElementById(
-            "balanceTitle"
-        )
-        .textContent =
-        translations[lang].balance;
+    document.getElementById(
+        "languageButton"
+    ).textContent = {
+
+        en: "🌐 EN",
+
+        fa: "🌐 FA",
+
+        ar: "🌐 AR"
+
+    }[lang];
 
 
-    document
-        .getElementById(
-            "languageButton"
-        )
-        .textContent = {
-
-            en: "🌐 EN",
-
-            fa: "🌐 FA",
-
-            ar: "🌐 AR"
-
-        }[lang];
+    document.getElementById(
+        "rewardButton"
+    ).textContent =
+        t.claim;
 
 
-    document
-        .getElementById(
-            "rewardButton"
-        )
-        .textContent =
-        translations[lang].claim;
+    document.getElementById(
+        "adsWatchedLabel"
+    ).textContent =
+        t.adsWatched;
 
 
-    document
-        .getElementById(
-            "adsWatchedLabel"
-        )
-        .textContent =
-        translations[lang].adsWatched;
+    document.getElementById(
+        "adsRemainingLabel"
+    ).textContent =
+        t.adsRemaining;
 
 
-    document
-        .getElementById(
-            "adsRemainingLabel"
-        )
-        .textContent =
-        translations[lang].adsRemaining;
+    document.getElementById(
+        "adsRewardLabel"
+    ).textContent =
+        t.adsReward;
 
 
-    document
-        .getElementById(
-            "adsRewardLabel"
-        )
-        .textContent =
-        translations[lang].adsReward;
+    document.getElementById(
+        "watchAdButton"
+    ).textContent =
+        t.watchAd;
 
 
-    document
-        .getElementById(
-            "watchAdButton"
-        )
-        .textContent =
-        translations[lang].watchAd;
+    document.getElementById(
+        "referralCountLabel"
+    ).textContent =
+        t.referrals;
+
+
+    document.getElementById(
+        "referralIdLabel"
+    ).textContent =
+        t.telegramId;
+
+
+    document.getElementById(
+        "copyReferralButton"
+    ).textContent =
+        t.copyReferral;
+
+
+    document.getElementById(
+        "accountNameLabel"
+    ).textContent =
+        t.name;
+
+
+    document.getElementById(
+        "accountUsernameLabel"
+    ).textContent =
+        t.username;
+
+
+    document.getElementById(
+        "accountIdLabel"
+    ).textContent =
+        t.telegramId;
+
+
+    document.getElementById(
+        "accountBalanceLabel"
+    ).textContent =
+        t.referralBalance;
+
+
+    document.getElementById(
+        "accountReferralLabel"
+    ).textContent =
+        t.referrals;
+
+
+    document.getElementById(
+        "withdrawBalanceLabel"
+    ).textContent =
+        t.referralBalance;
+
+
+    document.getElementById(
+        "withdrawUsdLabel"
+    ).textContent =
+        t.usdValue;
+
+
+    document.getElementById(
+        "withdrawNote"
+    ).textContent =
+        t.withdrawInfo;
 
 
     showSection(
         currentSection,
         document.querySelector(
-            `.nav-button[data-section="${currentSection}"]`
+            ".nav-button.active"
         )
     );
 
 }
 
 
-/* ============================================================
+/* =====================================================
    LANGUAGE MENU
-============================================================ */
+===================================================== */
 
 function toggleLanguageMenu() {
 
@@ -1530,6 +1847,15 @@ function toggleLanguageMenu() {
 
 
 function changeLanguage(lang) {
+
+    if (!translations[lang]) {
+        lang = "en";
+    }
+
+    localStorage.setItem(
+        "language",
+        lang
+    );
 
     applyLanguage(lang);
 
@@ -1558,7 +1884,6 @@ document.addEventListener(
                 "languageButton"
             );
 
-
         if (
             menu &&
             button &&
@@ -1580,79 +1905,9 @@ document.addEventListener(
 );
 
 
-/* ============================================================
-   BALANCE
-============================================================ */
-
-function updateBalance() {
-
-    document
-        .getElementById(
-            "balance"
-        )
-        .textContent =
-        Number(coins || 0)
-            .toLocaleString();
-
-}
-
-
-/* ============================================================
-   LOAD USER BALANCE
-============================================================ */
-
-async function loadUserBalance() {
-
-    if (!user) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/user/" +
-                encodeURIComponent(
-                    user.id
-                )
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            data.success &&
-            data.user
-        ) {
-
-            coins =
-                Number(
-                    data.user.coins || 0
-                );
-
-
-            updateBalance();
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Balance error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ============================================================
+/* =====================================================
    SHOW SECTION
-============================================================ */
+===================================================== */
 
 function showSection(
     section,
@@ -1668,9 +1923,9 @@ function showSection(
             ".nav-button"
         )
         .forEach(
-            function(item) {
+            function(btn) {
 
-                item.classList.remove(
+                btn.classList.remove(
                     "active"
                 );
 
@@ -1678,1160 +1933,4 @@ function showSection(
         );
 
 
-    if (button) {
-
-        button.classList.add(
-            "active"
-        );
-
-    } else {
-
-        const active =
-            document.querySelector(
-                `.nav-button[data-section="${section}"]`
-            );
-
-        if (active) {
-
-            active.classList.add(
-                "active"
-            );
-
-        }
-
-    }
-
-
-    const lang =
-        getLanguage();
-
-    const tr =
-        translations[lang];
-
-
-    const content = {
-
-        daily: {
-
-            icon: "🎁",
-
-            title:
-                tr.dailyTitle,
-
-            text:
-                tr.dailyText
-
-        },
-
-        ads: {
-
-            icon: "📺",
-
-            title:
-                tr.adsTitle,
-
-            text:
-                tr.adsText
-
-        },
-
-        tasks: {
-
-            icon: "🎯",
-
-            title:
-                tr.tasksTitle,
-
-            text:
-                tr.tasksText
-
-        },
-
-        referral: {
-
-            icon: "👥",
-
-            title:
-                tr.referralTitle,
-
-            text:
-                tr.referralText
-
-        },
-
-        withdraw: {
-
-            icon: "💸",
-
-            title:
-                tr.withdrawTitle,
-
-            text:
-                tr.withdrawText
-
-        },
-
-        account: {
-
-            icon: "👤",
-
-            title:
-                tr.accountTitle,
-
-            text:
-                tr.accountText
-
-        }
-
-    };
-
-
-    document
-        .getElementById(
-            "contentIcon"
-        )
-        .textContent =
-        content[section].icon;
-
-
-    document
-        .getElementById(
-            "contentTitle"
-        )
-        .textContent =
-        content[section].title;
-
-
-    document
-        .getElementById(
-            "contentText"
-        )
-        .textContent =
-        content[section].text;
-
-
-    const rewardButton =
-        document.getElementById(
-            "rewardButton"
-        );
-
-    const rewardStatus =
-        document.getElementById(
-            "rewardStatus"
-        );
-
-    const adsPanel =
-        document.getElementById(
-            "adsPanel"
-        );
-
-    const tasksPanel =
-        document.getElementById(
-            "tasksPanel"
-        );
-
-
-    rewardButton.classList.add(
-        "hidden"
-    );
-
-    rewardStatus.classList.add(
-        "hidden"
-    );
-
-    adsPanel.classList.add(
-        "hidden"
-    );
-
-    tasksPanel.classList.add(
-        "hidden"
-    );
-
-
-    if (
-        section === "daily"
-    ) {
-
-        rewardButton.classList.remove(
-            "hidden"
-        );
-
-        rewardStatus.classList.remove(
-            "hidden"
-        );
-
-        checkDailyReward();
-
-    }
-
-
-    else if (
-        section === "ads"
-    ) {
-
-        adsPanel.classList.remove(
-            "hidden"
-        );
-
-        loadAdsStatus();
-
-    }
-
-
-    else if (
-        section === "tasks"
-    ) {
-
-        tasksPanel.classList.remove(
-            "hidden"
-        );
-
-        loadTasks();
-
-    }
-
-}
-
-
-/* ============================================================
-   DAILY REWARD CHECK
-============================================================ */
-
-async function checkDailyReward() {
-
-    if (!user) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/user/" +
-                encodeURIComponent(
-                    user.id
-                )
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !data.success ||
-            !data.user
-        ) {
-
-            return;
-
-        }
-
-
-        const lastReward =
-            data.user.last_daily_reward;
-
-
-        const button =
-            document.getElementById(
-                "rewardButton"
-            );
-
-        const status =
-            document.getElementById(
-                "rewardStatus"
-            );
-
-
-        if (!lastReward) {
-
-            button.disabled =
-                false;
-
-            button.textContent =
-                t("claim");
-
-            status.textContent =
-                "";
-
-            return;
-
-        }
-
-
-        const lastTime =
-            new Date(
-                lastReward
-            ).getTime();
-
-
-        const nextTime =
-            lastTime +
-            (
-                12 *
-                60 *
-                60 *
-                1000
-            );
-
-
-        if (
-            Date.now() >=
-            nextTime
-        ) {
-
-            button.disabled =
-                false;
-
-            button.textContent =
-                t("claim");
-
-            status.textContent =
-                "";
-
-            return;
-
-        }
-
-
-        button.disabled =
-            true;
-
-        button.textContent =
-            t("claimed");
-
-
-        updateWaitingTime(
-            nextTime
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Daily check:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ============================================================
-   WAITING TIME
-============================================================ */
-
-function updateWaitingTime(
-    nextTime
-) {
-
-    const status =
-        document.getElementById(
-            "rewardStatus"
-        );
-
-
-    function update() {
-
-        const remaining =
-            nextTime -
-            Date.now();
-
-
-        if (
-            remaining <= 0
-        ) {
-
-            checkDailyReward();
-
-            return;
-
-        }
-
-
-        const totalMinutes =
-            Math.ceil(
-                remaining / 60000
-            );
-
-
-        const hours =
-            Math.floor(
-                totalMinutes / 60
-            );
-
-
-        const minutes =
-            totalMinutes % 60;
-
-
-        status.className =
-            "reward-status reward-waiting";
-
-
-        status.textContent =
-            t("waiting") +
-            " " +
-            hours +
-            "h " +
-            minutes +
-            "m";
-
-    }
-
-
-    update();
-
-
-    setTimeout(
-        function() {
-
-            checkDailyReward();
-
-        },
-        60000
-    );
-
-}
-
-
-/* ============================================================
-   CLAIM DAILY REWARD
-============================================================ */
-
-async function claimDailyReward() {
-
-    if (!user) {
-        return;
-    }
-
-
-    const button =
-        document.getElementById(
-            "rewardButton"
-        );
-
-    const status =
-        document.getElementById(
-            "rewardStatus"
-        );
-
-
-    button.disabled =
-        true;
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/daily-reward",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            telegram_id:
-                                user.id
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            data.success
-        ) {
-
-            coins =
-                Number(
-                    data.user.coins
-                );
-
-
-            updateBalance();
-
-
-            status.className =
-                "reward-status reward-success";
-
-
-            status.textContent =
-                t("congratulations");
-
-
-            button.textContent =
-                t("claimed");
-
-
-            setTimeout(
-                checkDailyReward,
-                1500
-            );
-
-        }
-
-        else {
-
-            button.disabled =
-                true;
-
-            button.textContent =
-                t("claimed");
-
-
-            status.className =
-                "reward-status reward-waiting";
-
-
-            if (
-                data.next_reward
-            ) {
-
-                updateWaitingTime(
-                    new Date(
-                        data.next_reward
-                    ).getTime()
-                );
-
-            }
-
-            else {
-
-                status.textContent =
-                    data.message ||
-                    t("error");
-
-            }
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Daily reward:",
-            error
-        );
-
-
-        button.disabled =
-            false;
-
-
-        status.className =
-            "reward-status reward-error";
-
-
-        status.textContent =
-            t("error");
-
-    }
-
-}
-
-
-/* ============================================================
-   ADS STATUS
-============================================================ */
-
-async function loadAdsStatus() {
-
-    if (!user) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/ads/status/" +
-                encodeURIComponent(
-                    user.id
-                )
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-            return;
-        }
-
-
-        document
-            .getElementById(
-                "adsWatched"
-            )
-            .textContent =
-            data.ads_watched || 0;
-
-
-        document
-            .getElementById(
-                "adsRemaining"
-            )
-            .textContent =
-            data.ads_remaining || 0;
-
-
-        document
-            .getElementById(
-                "adsReward"
-            )
-            .textContent =
-            Number(
-                data.reward_per_ad ||
-                2000
-            ).toLocaleString();
-
-
-        const button =
-            document.getElementById(
-                "watchAdButton"
-            );
-
-        const message =
-            document.getElementById(
-                "adsMessage"
-            );
-
-
-        if (
-            data.ads_remaining <= 0
-        ) {
-
-            button.disabled =
-                true;
-
-
-            message.className =
-                "ads-message ads-waiting";
-
-
-            message.textContent =
-                t("adLimit") +
-                " " +
-                t("adsReset") +
-                " " +
-                (
-                    data.hours_until_reset ||
-                    0
-                ) +
-                "h " +
-                (
-                    data.minutes_until_reset ||
-                    0
-                ) +
-                "m";
-
-        }
-
-        else {
-
-            button.disabled =
-                false;
-
-            message.textContent =
-                "";
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Ads status:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ============================================================
-   WATCH NORMAL ADSGRAM AD
-============================================================ */
-
-async function watchAd() {
-
-    if (!user) {
-        return;
-    }
-
-
-    const button =
-        document.getElementById(
-            "watchAdButton"
-        );
-
-    const message =
-        document.getElementById(
-            "adsMessage"
-        );
-
-
-    if (!AdController) {
-
-        message.className =
-            "ads-message ads-error";
-
-        message.textContent =
-            t("adError");
-
-        console.error(
-            "AdsGram controller is not available."
-        );
-
-        return;
-
-    }
-
-
-    button.disabled =
-        true;
-
-
-    message.className =
-        "ads-message ads-waiting";
-
-
-    message.textContent =
-        "⏳ Loading advertisement...";
-
-
-    try {
-
-        const result =
-            await AdController.show();
-
-
-        /*
-            AdsGram rewarded ad:
-            done === true
-            means the ad was completed.
-        */
-
-        if (
-            !result ||
-            result.done !== true
-        ) {
-
-            message.className =
-                "ads-message ads-error";
-
-            message.textContent =
-                t("adError");
-
-            await loadAdsStatus();
-
-            return;
-
-        }
-
-
-        message.textContent =
-            "⏳ Processing reward...";
-
-
-        /*
-            IMPORTANT:
-            Reward is given by backend.
-        */
-
-        const response =
-            await fetch(
-                "/api/ads/claim",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            telegram_id:
-                                user.id
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            data.success
-        ) {
-
-            coins =
-                Number(
-                    data.user.coins
-                );
-
-
-            updateBalance();
-
-
-            document
-                .getElementById(
-                    "adsWatched"
-                )
-                .textContent =
-                data.ads_watched;
-
-
-            document
-                .getElementById(
-                    "adsRemaining"
-                )
-                .textContent =
-                data.ads_remaining;
-
-
-            message.className =
-                "ads-message ads-success";
-
-
-            message.textContent =
-                t("adSuccess");
-
-
-            button.disabled =
-                data.ads_remaining <= 0;
-
-        }
-
-        else {
-
-            message.className =
-                "ads-message ads-error";
-
-            message.textContent =
-                data.message ||
-                t("adError");
-
-
-            await loadAdsStatus();
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "AdsGram error:",
-            error
-        );
-
-
-        message.className =
-            "ads-message ads-error";
-
-        message.textContent =
-            t("adError");
-
-
-        await loadAdsStatus();
-
-    }
-
-}
-
-
-/* ============================================================
-   LOAD TASKS
-============================================================ */
-
-async function loadTasks() {
-
-    const list =
-        document.getElementById(
-            "taskList"
-        );
-
-
-    if (!user) {
-
-        list.innerHTML =
-            `<div class="task-error">
-                ${t("taskError")}
-            </div>`;
-
-        return;
-
-    }
-
-
-    list.innerHTML =
-        `<div class="task-loading">
-            ${t("taskLoading")}
-        </div>`;
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/tasks/" +
-                encodeURIComponent(
-                    user.id
-                ),
-                {
-                    method: "GET",
-                    cache: "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "HTTP " +
-                response.status
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Task API error"
-            );
-
-        }
-
-
-        const tasks =
-            Array.isArray(
-                data.tasks
-            )
-                ? data.tasks
-                : [];
-
-
-        if (
-            tasks.length === 0
-        ) {
-
-            list.innerHTML =
-                `<div class="task-empty">
-                    ${t("taskEmpty")}
-                </div>`;
-
-            return;
-
-        }
-
-
-        list.innerHTML = "";
-
-
-        tasks.forEach(
-            function(task) {
-
-                renderTask(
-                    task,
-                    list
-                );
-
-            }
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Load tasks error:",
-            error
-        );
-
-
-        list.innerHTML =
-            `<div class="task-error">
-                ${t("taskError")}
-                <br><br>
-                <button
-                    class="task-button"
-                    onclick="loadTasks()"
-                >
-                    🔄 Retry
-                </button>
-            </div>`;
-
-    }
-
-}
-
-
-/* ============================================================
-   RENDER TASK
-============================================================ */
-
-function renderTask(
-    task,
-    list
-) {
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-
-    card.className =
-        "task-card";
-
-
-    const title =
-        document.createElement(
-            "div"
-        );
-
-
-    title.className =
-        "task-title";
-
-
-    title.textContent =
-        task.title ||
-        "Task";
-
-
-    const description =
-        document.createElement(
-            "div"
-        );
-
-
-    description.className =
-        "task-description";
-
-
-    description.textContent =
-        task.description ||
-        "";
-
-
-    const reward =
-        document.createElement(
-            "div"
-        );
-
-
-    reward.className =
-        "task-reward";
-
-
-    reward.textContent =
-        "🪙 " +
-        Number(
-            task.reward_coins ||
-            1000
-        ).toLocaleString() +
-        " coins";
-
-
-    const button =
-        document.createElement(
-            "button"
-        );
-
-
-    button.className =
-        "task-button";
-
-
-    button.textContent =
-        t("taskWatch");
-
-
-    button.onclick =
-        function() {
-
-            executeTask(
-                task,
-                button
-            );
-
-        };
-
-
-    card.appendChild(
-        title
-    );
-
-
-    if (
-        task.description
-    ) {
-
-        card.appendChild(
-            description
-        );
-
-    }
-
-
-    card.appendChild(
-        reward
-    );
-
-
-    card.appendChild(
-        button
-    );
-
-
-    list.appendChild(
-        card
-    );
-
-}
-
-
-/* ============================================================
-   EXECUTE TASK
-============================================================ */
-
-async function executeTask(
-    task,
-    button
-) {
-
-    if (!user) {
-        ret
+    if (button)
