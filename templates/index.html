@@ -87,8 +87,7 @@
             border-radius: 12px;
             padding: 6px;
             z-index: 100;
-            box-shadow:
-                0 8px 25px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
         }
 
         .language-menu.show {
@@ -168,6 +167,54 @@
             color: #aeb5c1;
             line-height: 1.8;
             font-size: 15px;
+        }
+
+
+        /* =========================
+           DAILY REWARD
+        ========================= */
+
+        .reward-button {
+            width: 100%;
+            border: none;
+            background: #2d7dff;
+            color: white;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reward-button:active {
+            transform: scale(0.98);
+        }
+
+        .reward-button:disabled {
+            background: #303744;
+            color: #8f98a8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .reward-status {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .reward-success {
+            color: #58d68d;
+        }
+
+        .reward-waiting {
+            color: #aeb5c1;
+        }
+
+        .reward-error {
+            color: #ff7777;
         }
 
 
@@ -367,6 +414,21 @@
             Claim your daily reward and earn coins every day.
         </div>
 
+        <!-- DAILY REWARD BUTTON -->
+
+        <button
+            id="rewardButton"
+            class="reward-button"
+            onclick="claimDailyReward()"
+        >
+            🎁 Claim 1,000 Coins
+        </button>
+
+        <div
+            id="rewardStatus"
+            class="reward-status"
+        ></div>
+
     </div>
 
 </div>
@@ -378,6 +440,8 @@
 
     <div class="nav-container">
 
+
+        <!-- DAILY -->
 
         <button
             class="nav-button active"
@@ -396,6 +460,8 @@
         </button>
 
 
+        <!-- ADS -->
+
         <button
             class="nav-button"
             data-section="ads"
@@ -412,6 +478,8 @@
 
         </button>
 
+
+        <!-- TASKS -->
 
         <button
             class="nav-button"
@@ -430,6 +498,8 @@
         </button>
 
 
+        <!-- REFERRAL -->
+
         <button
             class="nav-button"
             data-section="referral"
@@ -447,6 +517,8 @@
         </button>
 
 
+        <!-- WITHDRAW -->
+
         <button
             class="nav-button"
             data-section="withdraw"
@@ -463,6 +535,8 @@
 
         </button>
 
+
+        <!-- ACCOUNT -->
 
         <button
             class="nav-button"
@@ -524,10 +598,6 @@
             Number(coins).toLocaleString();
 
 
-        /*
-         1,000,000 coins = $1
-        */
-
         const usd =
             Number(coins) / 1000000;
 
@@ -541,8 +611,7 @@
 
 
     /* =========================
-       LOAD REAL USER BALANCE
-       STEP 28
+       LOAD USER BALANCE
     ========================= */
 
     async function loadUserBalance() {
@@ -571,10 +640,15 @@
                 await response.json();
 
 
-            if (data.success && data.user) {
+            if (
+                data.success &&
+                data.user
+            ) {
 
                 coins =
-                    Number(data.user.coins || 0);
+                    Number(
+                        data.user.coins || 0
+                    );
 
                 updateBalance();
 
@@ -583,15 +657,7 @@
                     coins
                 );
 
-            } else {
-
-                console.error(
-                    "Could not load user balance:",
-                    data.message
-                );
-
             }
-
 
         } catch (error) {
 
@@ -610,6 +676,7 @@
     ========================= */
 
     const translations = {
+
 
         en: {
 
@@ -638,7 +705,7 @@
                 "Daily Reward",
 
             dailyText:
-                "Claim your daily reward and earn coins every day.",
+                "Claim your daily reward and earn coins every 12 hours.",
 
             adsTitle:
                 "Watch Ads",
@@ -668,7 +735,22 @@
                 "Account",
 
             accountText:
-                "View your account information and statistics."
+                "View your account information and statistics.",
+
+            claim:
+                "🎁 Claim 1,000 Coins",
+
+            claimed:
+                "✅ Reward Claimed",
+
+            congratulations:
+                "🎉 Congratulations! You received 1,000 coins.",
+
+            waiting:
+                "⏳ Next reward in",
+
+            error:
+                "Something went wrong. Please try again."
 
         },
 
@@ -700,7 +782,7 @@
                 "پاداش روزانه",
 
             dailyText:
-                "پاداش روزانه خود را دریافت کنید و هر روز سکه به دست بیاورید.",
+                "هر ۱۲ ساعت پاداش خود را دریافت کنید.",
 
             adsTitle:
                 "دیدن تبلیغات",
@@ -730,7 +812,22 @@
                 "حساب کاربری",
 
             accountText:
-                "اطلاعات حساب و آمار خود را مشاهده کنید."
+                "اطلاعات حساب و آمار خود را مشاهده کنید.",
+
+            claim:
+                "🎁 دریافت ۱,۰۰۰ سکه",
+
+            claimed:
+                "✅ پاداش دریافت شد",
+
+            congratulations:
+                "🎉 تبریک! شما ۱,۰۰۰ سکه دریافت کردید.",
+
+            waiting:
+                "⏳ پاداش بعدی تا",
+
+            error:
+                "خطایی رخ داد. لطفاً دوباره تلاش کنید."
 
         },
 
@@ -762,7 +859,7 @@
                 "المكافأة اليومية",
 
             dailyText:
-                "احصل على مكافأتك اليومية واربح العملات كل يوم.",
+                "احصل على مكافأتك كل 12 ساعة.",
 
             adsTitle:
                 "مشاهدة الإعلانات",
@@ -792,7 +889,22 @@
                 "الحساب",
 
             accountText:
-                "عرض معلومات حسابك وإحصائياتك."
+                "عرض معلومات حسابك وإحصائياتك.",
+
+            claim:
+                "🎁 احصل على 1,000 عملة",
+
+            claimed:
+                "✅ تم استلام المكافأة",
+
+            congratulations:
+                "🎉 مبروك! حصلت على 1,000 عملة.",
+
+            waiting:
+                "⏳ المكافأة التالية خلال",
+
+            error:
+                "حدث خطأ. حاول مرة أخرى."
 
         }
 
@@ -819,10 +931,6 @@
 
     };
 
-
-    /* =========================
-       CURRENT SECTION
-    ========================= */
 
     let currentSection =
         "daily";
@@ -872,6 +980,7 @@
 
         const content = {
 
+
             daily: {
 
                 title:
@@ -881,6 +990,7 @@
                     t.dailyText
 
             },
+
 
             ads: {
 
@@ -892,6 +1002,7 @@
 
             },
 
+
             tasks: {
 
                 title:
@@ -901,6 +1012,7 @@
                     t.tasksText
 
             },
+
 
             referral: {
 
@@ -912,6 +1024,7 @@
 
             },
 
+
             withdraw: {
 
                 title:
@@ -921,6 +1034,7 @@
                     t.withdrawText
 
             },
+
 
             account: {
 
@@ -952,11 +1066,49 @@
             .textContent =
             content[section].text;
 
+
+        /*
+         Show Daily Reward button
+         only on Daily section.
+        */
+
+        const rewardButton =
+            document.getElementById(
+                "rewardButton"
+            );
+
+
+        const rewardStatus =
+            document.getElementById(
+                "rewardStatus"
+            );
+
+
+        if (section === "daily") {
+
+            rewardButton.style.display =
+                "block";
+
+            rewardStatus.style.display =
+                "block";
+
+            checkDailyReward();
+
+        } else {
+
+            rewardButton.style.display =
+                "none";
+
+            rewardStatus.style.display =
+                "none";
+
+        }
+
     }
 
 
     /* =========================
-       DETECT TELEGRAM LANGUAGE
+       LANGUAGE DETECTION
     ========================= */
 
     function detectLanguage() {
@@ -1055,24 +1207,27 @@
             });
 
 
-        const languageLabels = {
+        document
+            .getElementById(
+                "languageButton"
+            )
+            .textContent = {
 
-            en:
-                "🌐 EN",
+                en: "🌐 EN",
 
-            fa:
-                "🌐 FA",
+                fa: "🌐 FA",
 
-            ar:
-                "🌐 AR"
+                ar: "🌐 AR"
 
-        };
+            }[lang];
 
 
         document
-            .getElementById("languageButton")
+            .getElementById(
+                "rewardButton"
+            )
             .textContent =
-            languageLabels[lang];
+            t.claim;
 
 
         const activeButton =
@@ -1134,10 +1289,6 @@
     }
 
 
-    /* =========================
-       CLOSE LANGUAGE MENU
-    ========================= */
-
     document.addEventListener(
         "click",
         function(event) {
@@ -1174,36 +1325,393 @@
 
 
     /* =========================
-       INITIAL LANGUAGE
+       CHECK DAILY REWARD
     ========================= */
 
-    let savedLanguage =
-        localStorage.getItem(
-            "language"
-        );
+    async function checkDailyReward() {
+
+        if (!user) {
+            return;
+        }
 
 
-    if (
-        !savedLanguage ||
-        !translations[savedLanguage]
-    ) {
+        try {
 
-        savedLanguage =
-            detectLanguage();
+            const response =
+                await fetch(
+                    "/api/user/" +
+                    encodeURIComponent(
+                        user.id
+                    )
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data.success ||
+                !data.user
+            ) {
+                return;
+            }
+
+
+            const lastReward =
+                data.user.last_daily_reward;
+
+
+            const button =
+                document.getElementById(
+                    "rewardButton"
+                );
+
+
+            const status =
+                document.getElementById(
+                    "rewardStatus"
+                );
+
+
+            const lang =
+                localStorage.getItem(
+                    "language"
+                ) ||
+                detectLanguage();
+
+
+            const t =
+                translations[lang];
+
+
+            if (!lastReward) {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    t.claim;
+
+                status.textContent =
+                    "";
+
+                return;
+
+            }
+
+
+            const lastTime =
+                new Date(lastReward)
+                    .getTime();
+
+
+            const nextTime =
+                lastTime +
+                (12 * 60 * 60 * 1000);
+
+
+            const now =
+                Date.now();
+
+
+            if (now >= nextTime) {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    t.claim;
+
+                status.textContent =
+                    "";
+
+                return;
+
+            }
+
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                t.claimed;
+
+
+            updateWaitingTime(
+                nextTime
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Daily reward check error:",
+                error
+            );
+
+        }
 
     }
 
 
     /* =========================
-       START APP
+       WAITING TIME
     ========================= */
 
-    applyLanguage(
-        savedLanguage
-    );
+    function updateWaitingTime(
+        nextTime
+    ) {
+
+        const status =
+            document.getElementById(
+                "rewardStatus"
+            );
 
 
-    updateBalance();
+        const lang =
+            localStorage.getItem(
+                "language"
+            ) ||
+            detectLanguage();
+
+
+        const t =
+            translations[lang];
+
+
+        function update() {
+
+            const remaining =
+                nextTime - Date.now();
+
+
+            if (remaining <= 0) {
+
+                checkDailyReward();
+
+                return;
+
+            }
+
+
+            const totalMinutes =
+                Math.ceil(
+                    remaining / 60000
+                );
+
+
+            const hours =
+                Math.floor(
+                    totalMinutes / 60
+                );
+
+
+            const minutes =
+                totalMinutes % 60;
+
+
+            status.className =
+                "reward-status reward-waiting";
+
+
+            status.textContent =
+                t.waiting +
+                " " +
+                hours +
+                "h " +
+                minutes +
+                "m";
+
+        }
+
+
+        update();
+
+
+        setTimeout(
+            function() {
+
+                checkDailyReward();
+
+            },
+            60000
+        );
+
+    }
+
+
+    /* =========================
+       CLAIM DAILY REWARD
+    ========================= */
+
+    async function claimDailyReward() {
+
+        if (!user) {
+
+            return;
+
+        }
+
+
+        const button =
+            document.getElementById(
+                "rewardButton"
+            );
+
+
+        const status =
+            document.getElementById(
+                "rewardStatus"
+            );
+
+
+        const lang =
+            localStorage.getItem(
+                "language"
+            ) ||
+            detectLanguage();
+
+
+        const t =
+            translations[lang];
+
+
+        button.disabled =
+            true;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/daily-reward",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                telegram_id:
+                                    user.id
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (data.success) {
+
+                /*
+                 Update balance immediately
+                */
+
+                coins =
+                    Number(
+                        data.user.coins
+                    );
+
+
+                updateBalance();
+
+
+                button.textContent =
+                    t.claimed;
+
+
+                status.className =
+                    "reward-status reward-success";
+
+
+                status.textContent =
+                    t.congratulations;
+
+
+                /*
+                 Check again after
+                 successful reward.
+                */
+
+                setTimeout(
+                    function() {
+
+                        checkDailyReward();
+
+                    },
+                    1500
+                );
+
+
+            } else {
+
+                button.disabled =
+                    true;
+
+
+                button.textContent =
+                    t.claimed;
+
+
+                status.className =
+                    "reward-status reward-waiting";
+
+
+                if (
+                    data.next_reward
+                ) {
+
+                    updateWaitingTime(
+                        new Date(
+                            data.next_reward
+                        ).getTime()
+                    );
+
+                } else {
+
+                    status.textContent =
+                        data.message ||
+                        t.error;
+
+                }
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Daily reward error:",
+                error
+            );
+
+
+            button.disabled =
+                false;
+
+
+            status.className =
+                "reward-status reward-error";
+
+
+            status.textContent =
+                t.error;
+
+        }
+
+    }
 
 
     /* =========================
@@ -1280,13 +1788,6 @@
                     data.user
                 );
 
-            } else {
-
-                console.error(
-                    "User registration failed:",
-                    data.message
-                );
-
             }
 
         } catch (error) {
@@ -1303,7 +1804,6 @@
 
     /* =========================
        START USER
-       STEP 26 + 28
     ========================= */
 
     async function startUser() {
@@ -1312,7 +1812,38 @@
 
         await loadUserBalance();
 
+        await checkDailyReward();
+
     }
+
+
+    /* =========================
+       INITIAL LANGUAGE
+    ========================= */
+
+    let savedLanguage =
+        localStorage.getItem(
+            "language"
+        );
+
+
+    if (
+        !savedLanguage ||
+        !translations[savedLanguage]
+    ) {
+
+        savedLanguage =
+            detectLanguage();
+
+    }
+
+
+    applyLanguage(
+        savedLanguage
+    );
+
+
+    updateBalance();
 
 
     startUser();
