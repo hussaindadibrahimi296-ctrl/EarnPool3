@@ -93,9 +93,51 @@ def create_user():
     })
 
 
+# =========================
+# GET USER BALANCE
+# =========================
+
+@app.route("/api/user/<int:telegram_id>", methods=["GET"])
+def get_user(telegram_id):
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            telegram_id,
+            first_name,
+            username,
+            coins,
+            language,
+            referral_count
+        FROM users
+        WHERE telegram_id = %s
+    """, (telegram_id,))
+
+    user = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+
+    if not user:
+
+        return jsonify({
+            "success": False,
+            "message": "User not found"
+        }), 404
+
+
+    return jsonify({
+        "success": True,
+        "user": user
+    })
+
+
 if __name__ == "__main__":
 
     app.run(
         host="0.0.0.0",
         port=5000
-)
+        )
