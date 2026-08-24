@@ -62,7 +62,6 @@ def init_db():
             )
         """)
 
-
         # -------------------------------------------------
         # WITHDRAWALS
         # -------------------------------------------------
@@ -80,7 +79,6 @@ def init_db():
             )
         """)
 
-
         # -------------------------------------------------
         # AD USAGE
         # -------------------------------------------------
@@ -94,7 +92,6 @@ def init_db():
             )
         """)
 
-
         # -------------------------------------------------
         # AD CLAIM HISTORY
         # -------------------------------------------------
@@ -107,7 +104,6 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-
 
         # -------------------------------------------------
         # TASKS
@@ -125,7 +121,6 @@ def init_db():
             )
         """)
 
-
         # -------------------------------------------------
         # COMPLETED TASKS
         # -------------------------------------------------
@@ -140,7 +135,6 @@ def init_db():
                 UNIQUE (telegram_id, task_id)
             )
         """)
-
 
         conn.commit()
 
@@ -226,7 +220,6 @@ def create_user():
             "message": "No data received"
         }), 400
 
-
     telegram_id = data.get(
         "telegram_id"
     )
@@ -238,7 +231,6 @@ def create_user():
             "message":
                 "Telegram ID is required"
         }), 400
-
 
     first_name = data.get(
         "first_name",
@@ -254,7 +246,6 @@ def create_user():
         "language",
         "en"
     )
-
 
     conn = get_db()
     cursor = conn.cursor()
@@ -294,17 +285,14 @@ def create_user():
             language
         ))
 
-
         user = cursor.fetchone()
 
         conn.commit()
-
 
         return jsonify({
             "success": True,
             "user": user
         })
-
 
     except Exception as e:
 
@@ -320,7 +308,6 @@ def create_user():
             "message":
                 "Could not save user"
         }), 500
-
 
     finally:
 
@@ -360,9 +347,7 @@ def get_user(telegram_id):
             telegram_id,
         ))
 
-
         user = cursor.fetchone()
-
 
         if not user:
 
@@ -372,12 +357,10 @@ def get_user(telegram_id):
                     "User not found"
             }), 404
 
-
         return jsonify({
             "success": True,
             "user": user
         })
-
 
     finally:
 
@@ -387,7 +370,6 @@ def get_user(telegram_id):
 
 # =========================================================
 # DAILY REWARD
-# 1000 COINS EVERY 12 HOURS
 # =========================================================
 
 @app.route(
@@ -408,7 +390,6 @@ def daily_reward():
                 "No data received"
         }), 400
 
-
     telegram_id = data.get(
         "telegram_id"
     )
@@ -420,7 +401,6 @@ def daily_reward():
             "message":
                 "Telegram ID is required"
         }), 400
-
 
     conn = get_db()
     cursor = conn.cursor()
@@ -442,9 +422,7 @@ def daily_reward():
             telegram_id,
         ))
 
-
         user = cursor.fetchone()
-
 
         if not user:
 
@@ -454,17 +432,11 @@ def daily_reward():
                     "User not found"
             }), 404
 
-
         now = datetime.utcnow()
 
         last_reward = (
             user["last_daily_reward"]
         )
-
-
-        # -------------------------------------------------
-        # CHECK 12 HOURS
-        # -------------------------------------------------
 
         if last_reward:
 
@@ -475,19 +447,15 @@ def daily_reward():
                 )
             )
 
-
             if now < next_reward_time:
 
                 remaining = (
-                    next_reward_time
-                    - now
+                    next_reward_time - now
                 )
-
 
                 total_seconds = int(
                     remaining.total_seconds()
                 )
-
 
                 hours = (
                     total_seconds // 3600
@@ -496,7 +464,6 @@ def daily_reward():
                 minutes = (
                     total_seconds % 3600
                 ) // 60
-
 
                 return jsonify({
                     "success": False,
@@ -507,11 +474,6 @@ def daily_reward():
                     "next_reward":
                         next_reward_time.isoformat()
                 })
-
-
-        # -------------------------------------------------
-        # GIVE REWARD
-        # -------------------------------------------------
 
         cursor.execute("""
             UPDATE users
@@ -534,14 +496,9 @@ def daily_reward():
             telegram_id
         ))
 
-
-        updated_user = (
-            cursor.fetchone()
-        )
-
+        updated_user = cursor.fetchone()
 
         conn.commit()
-
 
         return jsonify({
             "success": True,
@@ -552,7 +509,6 @@ def daily_reward():
             "user":
                 updated_user
         })
-
 
     except Exception as e:
 
@@ -568,7 +524,6 @@ def daily_reward():
             "message":
                 "Daily reward error"
         }), 500
-
 
     finally:
 
@@ -601,9 +556,7 @@ def ads_status(telegram_id):
             telegram_id,
         ))
 
-
         user = cursor.fetchone()
-
 
         if not user:
 
@@ -612,7 +565,6 @@ def ads_status(telegram_id):
                 "message":
                     "User not found"
             }), 404
-
 
         cursor.execute("""
             SELECT
@@ -626,15 +578,9 @@ def ads_status(telegram_id):
             telegram_id,
         ))
 
-
         usage = cursor.fetchone()
 
         now = datetime.utcnow()
-
-
-        # -------------------------------------------------
-        # FIRST WINDOW
-        # -------------------------------------------------
 
         if not usage:
 
@@ -651,11 +597,9 @@ def ads_status(telegram_id):
                     AD_INTERVAL_HOURS
             })
 
-
         window_started = (
             usage["window_started_at"]
         )
-
 
         next_window = (
             window_started
@@ -663,11 +607,6 @@ def ads_status(telegram_id):
                 hours=AD_INTERVAL_HOURS
             )
         )
-
-
-        # -------------------------------------------------
-        # RESET
-        # -------------------------------------------------
 
         if now >= next_window:
 
@@ -687,9 +626,7 @@ def ads_status(telegram_id):
                 telegram_id
             ))
 
-
             conn.commit()
-
 
             return jsonify({
                 "success": True,
@@ -704,17 +641,14 @@ def ads_status(telegram_id):
                     AD_INTERVAL_HOURS
             })
 
-
         watched = (
             usage["ads_watched"]
         )
-
 
         remaining_ads = max(
             0,
             MAX_ADS - watched
         )
-
 
         remaining_seconds = int(
             (
@@ -722,16 +656,13 @@ def ads_status(telegram_id):
             ).total_seconds()
         )
 
-
         hours = (
             remaining_seconds // 3600
         )
 
-
         minutes = (
             remaining_seconds % 3600
         ) // 60
-
 
         return jsonify({
             "success": True,
@@ -753,7 +684,6 @@ def ads_status(telegram_id):
                 next_window.isoformat()
         })
 
-
     except Exception as e:
 
         print(
@@ -767,7 +697,6 @@ def ads_status(telegram_id):
                 "Could not load ads status"
         }), 500
 
-
     finally:
 
         cursor.close()
@@ -775,9 +704,7 @@ def ads_status(telegram_id):
 
 
 # =========================================================
-# CLAIM REWARDED AD
-# 2000 COINS
-# MAX 10 ADS / 12 HOURS
+# CLAIM AD
 # =========================================================
 
 @app.route(
@@ -798,11 +725,9 @@ def claim_ad():
                 "No data received"
         }), 400
 
-
     telegram_id = data.get(
         "telegram_id"
     )
-
 
     if not telegram_id:
 
@@ -812,15 +737,10 @@ def claim_ad():
                 "Telegram ID is required"
         }), 400
 
-
     conn = get_db()
     cursor = conn.cursor()
 
     try:
-
-        # -------------------------------------------------
-        # LOCK USER
-        # -------------------------------------------------
 
         cursor.execute("""
             SELECT
@@ -836,9 +756,7 @@ def claim_ad():
             telegram_id,
         ))
 
-
         user = cursor.fetchone()
-
 
         if not user:
 
@@ -848,13 +766,7 @@ def claim_ad():
                     "User not found"
             }), 404
 
-
         now = datetime.utcnow()
-
-
-        # -------------------------------------------------
-        # GET AD WINDOW
-        # -------------------------------------------------
 
         cursor.execute("""
             SELECT
@@ -870,19 +782,12 @@ def claim_ad():
             telegram_id,
         ))
 
-
         usage = cursor.fetchone()
-
-
-        # -------------------------------------------------
-        # FIRST AD
-        # -------------------------------------------------
 
         if not usage:
 
             ads_watched = 0
             window_started = now
-
 
             cursor.execute("""
                 INSERT INTO ad_usage (
@@ -905,7 +810,6 @@ def claim_ad():
                 now
             ))
 
-
         else:
 
             ads_watched = (
@@ -916,11 +820,6 @@ def claim_ad():
                 usage["window_started_at"]
             )
 
-
-            # -------------------------------------------------
-            # RESET 12 HOURS
-            # -------------------------------------------------
-
             if (
                 now - window_started
             ) >= timedelta(
@@ -929,7 +828,6 @@ def claim_ad():
 
                 ads_watched = 0
                 window_started = now
-
 
                 cursor.execute("""
                     UPDATE ad_usage
@@ -947,11 +845,6 @@ def claim_ad():
                     telegram_id
                 ))
 
-
-        # -------------------------------------------------
-        # CHECK LIMIT
-        # -------------------------------------------------
-
         if ads_watched >= MAX_ADS:
 
             next_window = (
@@ -961,11 +854,9 @@ def claim_ad():
                 )
             )
 
-
             remaining = (
                 next_window - now
             )
-
 
             total_seconds = max(
                 0,
@@ -974,19 +865,15 @@ def claim_ad():
                 )
             )
 
-
             hours = (
                 total_seconds // 3600
             )
-
 
             minutes = (
                 total_seconds % 3600
             ) // 60
 
-
             conn.rollback()
-
 
             return jsonify({
                 "success": False,
@@ -1004,11 +891,6 @@ def claim_ad():
                     next_window.isoformat()
             })
 
-
-        # -------------------------------------------------
-        # ADD COINS
-        # -------------------------------------------------
-
         cursor.execute("""
             UPDATE users
 
@@ -1025,20 +907,11 @@ def claim_ad():
             telegram_id
         ))
 
-
-        updated_user = (
-            cursor.fetchone()
-        )
-
-
-        # -------------------------------------------------
-        # INCREASE AD COUNT
-        # -------------------------------------------------
+        updated_user = cursor.fetchone()
 
         new_count = (
             ads_watched + 1
         )
-
 
         cursor.execute("""
             UPDATE ad_usage
@@ -1053,11 +926,6 @@ def claim_ad():
             now,
             telegram_id
         ))
-
-
-        # -------------------------------------------------
-        # SAVE HISTORY
-        # -------------------------------------------------
 
         cursor.execute("""
             INSERT INTO ad_claims (
@@ -1074,9 +942,7 @@ def claim_ad():
             AD_REWARD
         ))
 
-
         conn.commit()
-
 
         return jsonify({
             "success": True,
@@ -1091,7 +957,6 @@ def claim_ad():
             "user":
                 updated_user
         })
-
 
     except Exception as e:
 
@@ -1108,7 +973,6 @@ def claim_ad():
                 "Ad reward error"
         }), 500
 
-
     finally:
 
         cursor.close()
@@ -1119,11 +983,9 @@ def claim_ad():
 # GET ACTIVE TASKS
 # =========================================================
 #
-# IMPORTANT:
-# A task completed by a user is NOT returned.
+# This is the original endpoint.
 #
-# When a new task is created, it has a new ID,
-# therefore it automatically appears for the user.
+# It is kept so existing functionality does not break.
 #
 # =========================================================
 
@@ -1138,10 +1000,6 @@ def get_tasks(telegram_id):
 
     try:
 
-        # -------------------------------------------------
-        # CHECK USER
-        # -------------------------------------------------
-
         cursor.execute("""
             SELECT telegram_id
 
@@ -1152,9 +1010,7 @@ def get_tasks(telegram_id):
             telegram_id,
         ))
 
-
         user = cursor.fetchone()
-
 
         if not user:
 
@@ -1163,11 +1019,6 @@ def get_tasks(telegram_id):
                 "message":
                     "User not found"
             }), 404
-
-
-        # -------------------------------------------------
-        # ACTIVE TASKS NOT COMPLETED
-        # -------------------------------------------------
 
         cursor.execute("""
             SELECT
@@ -1200,15 +1051,12 @@ def get_tasks(telegram_id):
             telegram_id,
         ))
 
-
         tasks = cursor.fetchall()
-
 
         return jsonify({
             "success": True,
             "tasks": tasks
         })
-
 
     except Exception as e:
 
@@ -1223,6 +1071,124 @@ def get_tasks(telegram_id):
                 "Could not load tasks"
         }), 500
 
+    finally:
+
+        cursor.close()
+        conn.close()
+
+
+# =========================================================
+# GET AVAILABLE TASKS
+# =========================================================
+#
+# IMPORTANT:
+#
+# index.html calls:
+#
+# /api/tasks/available/<telegram_id>
+#
+# The old app.py did not have this endpoint.
+#
+# This endpoint fixes the task loading problem.
+#
+# =========================================================
+
+@app.route(
+    "/api/tasks/available/<int:telegram_id>",
+    methods=["GET"]
+)
+def get_available_tasks(telegram_id):
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    try:
+
+        # -------------------------------------------------
+        # CHECK USER
+        # -------------------------------------------------
+
+        cursor.execute("""
+            SELECT
+                telegram_id
+
+            FROM users
+
+            WHERE telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        user = cursor.fetchone()
+
+        if not user:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "User not found"
+            }), 404
+
+        # -------------------------------------------------
+        # GET ACTIVE + NOT COMPLETED TASKS
+        # -------------------------------------------------
+
+        cursor.execute("""
+            SELECT
+                t.id,
+                t.title,
+                t.description,
+                t.link,
+                t.reward_coins,
+                t.active,
+                t.created_at
+
+            FROM tasks t
+
+            WHERE t.active = TRUE
+
+              AND NOT EXISTS (
+
+                    SELECT 1
+
+                    FROM completed_tasks ct
+
+                    WHERE ct.telegram_id = %s
+
+                      AND ct.task_id = t.id
+
+              )
+
+            ORDER BY
+                t.created_at DESC,
+                t.id DESC
+        """, (
+            telegram_id,
+        ))
+
+        tasks = cursor.fetchall()
+
+        # -------------------------------------------------
+        # RETURN TASKS
+        # -------------------------------------------------
+
+        return jsonify({
+            "success": True,
+            "tasks": tasks
+        })
+
+    except Exception as e:
+
+        print(
+            "Get available tasks error:",
+            e
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Could not load available tasks"
+        }), 500
 
     finally:
 
@@ -1263,15 +1229,12 @@ def completed_tasks(
             telegram_id,
         ))
 
-
         tasks = cursor.fetchall()
-
 
         return jsonify({
             "success": True,
             "tasks": tasks
         })
-
 
     except Exception as e:
 
@@ -1286,7 +1249,6 @@ def completed_tasks(
                 "Could not load completed tasks"
         }), 500
 
-
     finally:
 
         cursor.close()
@@ -1295,10 +1257,6 @@ def completed_tasks(
 
 # =========================================================
 # CLAIM TASK
-# 1000 COINS
-#
-# ONE REWARD PER TASK / USER
-#
 # =========================================================
 
 @app.route(
@@ -1311,7 +1269,6 @@ def claim_task():
         silent=True
     )
 
-
     if not data:
 
         return jsonify({
@@ -1319,7 +1276,6 @@ def claim_task():
             "message":
                 "No data received"
         }), 400
-
 
     telegram_id = data.get(
         "telegram_id"
@@ -1329,7 +1285,6 @@ def claim_task():
         "task_id"
     )
 
-
     if not telegram_id:
 
         return jsonify({
@@ -1338,7 +1293,6 @@ def claim_task():
                 "Telegram ID is required"
         }), 400
 
-
     if not task_id:
 
         return jsonify({
@@ -1346,7 +1300,6 @@ def claim_task():
             "message":
                 "Task ID is required"
         }), 400
-
 
     conn = get_db()
     cursor = conn.cursor()
@@ -1371,9 +1324,7 @@ def claim_task():
             telegram_id,
         ))
 
-
         user = cursor.fetchone()
-
 
         if not user:
 
@@ -1383,9 +1334,8 @@ def claim_task():
                     "User not found"
             }), 404
 
-
         # -------------------------------------------------
-        # CHECK TASK
+        # GET TASK
         # -------------------------------------------------
 
         cursor.execute("""
@@ -1404,14 +1354,11 @@ def claim_task():
             task_id,
         ))
 
-
         task = cursor.fetchone()
-
 
         if not task:
 
             conn.rollback()
-
 
             return jsonify({
                 "success": False,
@@ -1419,15 +1366,13 @@ def claim_task():
                     "Task not found"
             }), 404
 
-
         # -------------------------------------------------
-        # TASK MUST BE ACTIVE
+        # TASK ACTIVE?
         # -------------------------------------------------
 
         if not task["active"]:
 
             conn.rollback()
-
 
             return jsonify({
                 "success": False,
@@ -1435,13 +1380,13 @@ def claim_task():
                     "Task is no longer available"
             })
 
-
         # -------------------------------------------------
-        # CHECK ALREADY COMPLETED
+        # CHECK COMPLETED
         # -------------------------------------------------
 
         cursor.execute("""
-            SELECT id
+            SELECT
+                id
 
             FROM completed_tasks
 
@@ -1455,16 +1400,13 @@ def claim_task():
             task_id
         ))
 
-
         already_completed = (
             cursor.fetchone()
         )
 
-
         if already_completed:
 
             conn.rollback()
-
 
             return jsonify({
                 "success": False,
@@ -1474,16 +1416,24 @@ def claim_task():
                     True
             })
 
-
         # -------------------------------------------------
-        # TASK REWARD
+        # GET REWARD
         # -------------------------------------------------
 
-        reward = int(
-            task["reward_coins"]
-            or TASK_REWARD
-        )
+        try:
 
+            reward = int(
+                task["reward_coins"]
+                or TASK_REWARD
+            )
+
+        except Exception:
+
+            reward = TASK_REWARD
+
+        if reward <= 0:
+
+            reward = TASK_REWARD
 
         # -------------------------------------------------
         # ADD COINS
@@ -1505,11 +1455,9 @@ def claim_task():
             telegram_id
         ))
 
-
         updated_user = (
             cursor.fetchone()
         )
-
 
         # -------------------------------------------------
         # SAVE COMPLETED TASK
@@ -1533,9 +1481,7 @@ def claim_task():
             reward
         ))
 
-
         conn.commit()
-
 
         return jsonify({
             "success": True,
@@ -1549,11 +1495,9 @@ def claim_task():
                 updated_user
         })
 
-
     except psycopg2.errors.UniqueViolation:
 
         conn.rollback()
-
 
         return jsonify({
             "success": False,
@@ -1562,7 +1506,6 @@ def claim_task():
             "already_completed":
                 True
         })
-
 
     except Exception as e:
 
@@ -1579,7 +1522,6 @@ def claim_task():
                 "Task reward error"
         }), 500
 
-
     finally:
 
         cursor.close()
@@ -1587,16 +1529,7 @@ def claim_task():
 
 
 # =========================================================
-# ADMIN / TASK CREATION
-# =========================================================
-#
-# مرحله 36:
-# فعلاً API ساده برای ایجاد تسک.
-#
-# در مراحل بعدی این بخش را به پنل ادمین
-# وصل می‌کنیم تا بدون تغییر کد بتوانی
-# تسک اضافه/حذف/فعال/غیرفعال کنی.
-#
+# CREATE TASK
 # =========================================================
 
 @app.route(
@@ -1609,7 +1542,6 @@ def create_task():
         silent=True
     )
 
-
     if not data:
 
         return jsonify({
@@ -1617,7 +1549,6 @@ def create_task():
             "message":
                 "No data received"
         }), 400
-
 
     title = data.get(
         "title"
@@ -1638,7 +1569,6 @@ def create_task():
         TASK_REWARD
     )
 
-
     if not title:
 
         return jsonify({
@@ -1646,7 +1576,6 @@ def create_task():
             "message":
                 "Task title is required"
         }), 400
-
 
     try:
 
@@ -1658,11 +1587,9 @@ def create_task():
 
         reward = TASK_REWARD
 
-
     if reward <= 0:
 
         reward = TASK_REWARD
-
 
     conn = get_db()
     cursor = conn.cursor()
@@ -1694,11 +1621,9 @@ def create_task():
             reward
         ))
 
-
         task = cursor.fetchone()
 
         conn.commit()
-
 
         return jsonify({
             "success": True,
@@ -1707,7 +1632,6 @@ def create_task():
             "task":
                 task
         })
-
 
     except Exception as e:
 
@@ -1724,7 +1648,6 @@ def create_task():
                 "Could not create task"
         }), 500
 
-
     finally:
 
         cursor.close()
@@ -1732,7 +1655,7 @@ def create_task():
 
 
 # =========================================================
-# ADMIN / DEACTIVATE TASK
+# DEACTIVATE TASK
 # =========================================================
 
 @app.route(
@@ -1758,14 +1681,11 @@ def deactivate_task(task_id):
             task_id,
         ))
 
-
         task = cursor.fetchone()
-
 
         if not task:
 
             conn.rollback()
-
 
             return jsonify({
                 "success": False,
@@ -1773,9 +1693,7 @@ def deactivate_task(task_id):
                     "Task not found"
             }), 404
 
-
         conn.commit()
-
 
         return jsonify({
             "success": True,
@@ -1784,7 +1702,6 @@ def deactivate_task(task_id):
             "task":
                 task
         })
-
 
     except Exception as e:
 
@@ -1800,7 +1717,6 @@ def deactivate_task(task_id):
             "message":
                 "Could not deactivate task"
         }), 500
-
 
     finally:
 
