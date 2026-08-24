@@ -12,10 +12,7 @@
 
     <title>EarnPool</title>
 
-    <!-- Telegram Mini App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <!-- AdsGram -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <style>
@@ -154,7 +151,8 @@
         }
 
         .reward-button,
-        .watch-ad-button {
+        .watch-ad-button,
+        .referral-button {
             width: 100%;
             border: none;
             background: #2d7dff;
@@ -167,8 +165,15 @@
             cursor: pointer;
         }
 
+        .referral-button:active,
+        .reward-button:active,
+        .watch-ad-button:active {
+            opacity: .85;
+        }
+
         .reward-button:disabled,
-        .watch-ad-button:disabled {
+        .watch-ad-button:disabled,
+        .referral-button:disabled {
             background: #303744;
             color: #8f98a8;
             cursor: not-allowed;
@@ -176,7 +181,8 @@
 
         .reward-status,
         .ads-message,
-        .task-message {
+        .task-message,
+        .referral-message {
             text-align: center;
             margin-top: 14px;
             font-size: 14px;
@@ -185,7 +191,8 @@
 
         .reward-success,
         .ads-success,
-        .task-success {
+        .task-success,
+        .referral-success {
             color: #58d68d;
         }
 
@@ -196,11 +203,14 @@
 
         .reward-error,
         .ads-error,
-        .task-error {
+        .task-error,
+        .referral-error {
             color: #ff7777;
         }
 
-        .ads-panel {
+        .ads-panel,
+        .tasks-panel,
+        .referral-panel {
             margin-top: 20px;
         }
 
@@ -225,10 +235,6 @@
         }
 
         /* TASKS */
-
-        .tasks-panel {
-            margin-top: 20px;
-        }
 
         .task-card {
             background: #111722;
@@ -278,6 +284,106 @@
             color: #8f98a8;
             padding: 25px 10px;
             line-height: 1.7;
+        }
+
+        /* REFERRAL */
+
+        .referral-card {
+            background: #111722;
+            border-radius: 15px;
+            padding: 16px;
+            margin-top: 14px;
+        }
+
+        .referral-label {
+            color: #aeb5c1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .referral-link-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .referral-link {
+            flex: 1;
+            min-width: 0;
+            background: #191e29;
+            border: 1px solid #293242;
+            border-radius: 11px;
+            padding: 12px;
+            color: white;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+        .copy-button {
+            border: none;
+            background: #2d7dff;
+            color: white;
+            border-radius: 11px;
+            padding: 12px 13px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .referral-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .referral-stat {
+            background: #191e29;
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+        }
+
+        .referral-stat-value {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .referral-stat-label {
+            color: #8f98a8;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .referral-reward-info {
+            background: #191e29;
+            border-radius: 12px;
+            padding: 13px;
+            margin-top: 10px;
+            text-align: center;
+            color: #aeb5c1;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .referral-reward-info strong {
+            color: #ffd166;
+        }
+
+        .share-button {
+            width: 100%;
+            border: none;
+            background: #229ed9;
+            color: white;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         /* BOTTOM NAV */
@@ -349,6 +455,11 @@
             .coins {
                 font-size: 27px;
             }
+
+            .referral-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
         }
 
     </style>
@@ -465,6 +576,8 @@
             class="reward-status"
         ></div>
 
+        <!-- ADS -->
+
         <div
             id="adsPanel"
             class="ads-panel"
@@ -522,6 +635,8 @@
 
         </div>
 
+        <!-- TASKS -->
+
         <div
             id="tasksPanel"
             class="tasks-panel"
@@ -533,6 +648,107 @@
             <div
                 id="taskMessage"
                 class="task-message"
+            ></div>
+
+        </div>
+
+        <!-- REFERRAL -->
+
+        <div
+            id="referralPanel"
+            class="referral-panel"
+            style="display:none;"
+        >
+
+            <div class="referral-card">
+
+                <div
+                    class="referral-label"
+                    id="referralLinkLabel"
+                >
+                    Your referral link
+                </div>
+
+                <div class="referral-link-box">
+
+                    <div
+                        class="referral-link"
+                        id="referralLink"
+                    >
+                        Loading...
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        id="copyReferralButton"
+                        onclick="copyReferralLink()"
+                    >
+                        📋
+                    </button>
+
+                </div>
+
+                <button
+                    class="share-button"
+                    id="shareReferralButton"
+                    onclick="shareReferralLink()"
+                >
+                    📤 Share on Telegram
+                </button>
+
+            </div>
+
+            <div class="referral-stats">
+
+                <div class="referral-stat">
+
+                    <div
+                        class="referral-stat-value"
+                        id="referralCount"
+                    >
+                        0
+                    </div>
+
+                    <div
+                        class="referral-stat-label"
+                        id="referralCountLabel"
+                    >
+                        Referrals
+                    </div>
+
+                </div>
+
+                <div class="referral-stat">
+
+                    <div
+                        class="referral-stat-value"
+                        id="referralEarned"
+                    >
+                        0
+                    </div>
+
+                    <div
+                        class="referral-stat-label"
+                        id="referralEarnedLabel"
+                    >
+                        Earned from referrals
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div
+                class="referral-reward-info"
+                id="referralRewardInfo"
+            >
+                You receive <strong>5,000 🪙</strong> and your friend receives
+                <strong>5,000 🪙</strong> for every successful referral.
+            </div>
+
+            <div
+                id="referralMessage"
+                class="referral-message"
             ></div>
 
         </div>
@@ -646,6 +862,18 @@ const TASK_REWARD = 1000;
 
 const AD_LIMIT = 10;
 
+/*
+=========================================================
+REFERRAL SETTINGS
+=========================================================
+*/
+
+const REFERRAL_REWARD = 5000;
+
+const BOT_USERNAME =
+    "EarnPooll_bot";
+
+
 const translations = {
 
     en: {
@@ -745,6 +973,39 @@ const translations = {
 
         tasksLoading:
             "⏳ Loading tasks...",
+
+        referralLinkLabel:
+            "Your referral link",
+
+        referralCountLabel:
+            "Referrals",
+
+        referralEarnedLabel:
+            "Earned from referrals",
+
+        copyReferral:
+            "📋",
+
+        copiedReferral:
+            "✅ Copied",
+
+        shareReferral:
+            "📤 Share on Telegram",
+
+        referralRewardInfo:
+            "You receive <strong>5,000 🪙</strong> and your friend receives <strong>5,000 🪙</strong> for every successful referral.",
+
+        referralLoaded:
+            "Invite your friends and earn 5,000 coins.",
+
+        referralLoadError:
+            "❌ Could not load referral information.",
+
+        referralCopyError:
+            "❌ Could not copy the referral link.",
+
+        referralShareText:
+            "🎁 Join EarnPool and earn coins! Use my referral link:",
 
         error:
             "Something went wrong. Please try again."
@@ -867,6 +1128,39 @@ const translations = {
         tasksLoading:
             "⏳ در حال دریافت تسک‌ها...",
 
+        referralLinkLabel:
+            "لینک دعوت شما",
+
+        referralCountLabel:
+            "تعداد دعوت‌ها",
+
+        referralEarnedLabel:
+            "درآمد از رفرال",
+
+        copyReferral:
+            "📋",
+
+        copiedReferral:
+            "✅ کپی شد",
+
+        shareReferral:
+            "📤 اشتراک‌گذاری در تلگرام",
+
+        referralRewardInfo:
+            "برای هر دعوت موفق، شما <strong>۵,۰۰۰ 🪙</strong> و دوست شما نیز <strong>۵,۰۰۰ 🪙</strong> دریافت می‌کند.",
+
+        referralLoaded:
+            "دوستان خود را دعوت کنید و ۵,۰۰۰ سکه دریافت کنید.",
+
+        referralLoadError:
+            "❌ دریافت اطلاعات رفرال ناموفق بود.",
+
+        referralCopyError:
+            "❌ کپی لینک رفرال ناموفق بود.",
+
+        referralShareText:
+            "🎁 به EarnPool بپیوند و سکه دریافت کن! از لینک دعوت من استفاده کن:",
+
         error:
             "خطایی رخ داد. دوباره تلاش کنید."
 
@@ -988,6 +1282,39 @@ const translations = {
         tasksLoading:
             "⏳ جارٍ تحميل المهام...",
 
+        referralLinkLabel:
+            "رابط الإحالة الخاص بك",
+
+        referralCountLabel:
+            "الإحالات",
+
+        referralEarnedLabel:
+            "الأرباح من الإحالات",
+
+        copyReferral:
+            "📋",
+
+        copiedReferral:
+            "✅ تم النسخ",
+
+        shareReferral:
+            "📤 مشاركة على تيليجرام",
+
+        referralRewardInfo:
+            "تحصل على <strong>5,000 🪙</strong> ويحصل صديقك أيضًا على <strong>5,000 🪙</strong> لكل إحالة ناجحة.",
+
+        referralLoaded:
+            "ادعُ أصدقاءك واربح 5,000 عملة.",
+
+        referralLoadError:
+            "❌ تعذر تحميل معلومات الإحالة.",
+
+        referralCopyError:
+            "❌ تعذر نسخ رابط الإحالة.",
+
+        referralShareText:
+            "🎁 انضم إلى EarnPool واربح العملات! استخدم رابط الإحالة الخاص بي:",
+
         error:
             "حدث خطأ. حاول مرة أخرى."
 
@@ -1008,6 +1335,7 @@ const sectionIcons = {
 
 let currentSection = "daily";
 
+
 function updateBalance() {
 
     document
@@ -1024,6 +1352,7 @@ function updateBalance() {
         "≈ $" + usd.toFixed(6);
 
 }
+
 
 function detectLanguage() {
 
@@ -1059,6 +1388,7 @@ function detectLanguage() {
 
 }
 
+
 function getLanguage() {
 
     return (
@@ -1067,7 +1397,9 @@ function getLanguage() {
     );
 
 }
-    function applyLanguage(lang) {
+
+
+function applyLanguage(lang) {
 
     if (!translations[lang]) {
         lang = "en";
@@ -1126,6 +1458,31 @@ function getLanguage() {
     document.getElementById(
         "watchAdButton"
     ).textContent = t.watchAd;
+
+    document.getElementById(
+        "referralLinkLabel"
+    ).textContent = t.referralLinkLabel;
+
+    document.getElementById(
+        "referralCountLabel"
+    ).textContent = t.referralCountLabel;
+
+    document.getElementById(
+        "referralEarnedLabel"
+    ).textContent = t.referralEarnedLabel;
+
+    document.getElementById(
+        "copyReferralButton"
+    ).textContent = t.copyReferral;
+
+    document.getElementById(
+        "shareReferralButton"
+    ).textContent = t.shareReferral;
+
+    document.getElementById(
+        "referralRewardInfo"
+    ).innerHTML =
+        t.referralRewardInfo;
 
     showSection(
         currentSection,
@@ -1325,6 +1682,11 @@ function showSection(
             "tasksPanel"
         );
 
+    const referralPanel =
+        document.getElementById(
+            "referralPanel"
+        );
+
 
     /* ==========================================
        DAILY
@@ -1342,6 +1704,9 @@ function showSection(
             "none";
 
         tasksPanel.style.display =
+            "none";
+
+        referralPanel.style.display =
             "none";
 
         checkDailyReward();
@@ -1367,6 +1732,9 @@ function showSection(
         tasksPanel.style.display =
             "none";
 
+        referralPanel.style.display =
+            "none";
+
         loadAdsStatus();
 
     }
@@ -1390,7 +1758,36 @@ function showSection(
         tasksPanel.style.display =
             "block";
 
+        referralPanel.style.display =
+            "none";
+
         loadTasks();
+
+    }
+
+
+    /* ==========================================
+       REFERRAL
+    ========================================== */
+
+    else if (section === "referral") {
+
+        rewardButton.style.display =
+            "none";
+
+        rewardStatus.style.display =
+            "none";
+
+        adsPanel.style.display =
+            "none";
+
+        tasksPanel.style.display =
+            "none";
+
+        referralPanel.style.display =
+            "block";
+
+        loadReferral();
 
     }
 
@@ -1411,6 +1808,9 @@ function showSection(
             "none";
 
         tasksPanel.style.display =
+            "none";
+
+        referralPanel.style.display =
             "none";
 
     }
@@ -1531,6 +1931,290 @@ async function registerUser() {
         console.error(
             "User registration error:",
             error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   REFERRAL
+===================================================== */
+
+function getReferralLink() {
+
+    if (!user || !user.id) {
+        return "";
+    }
+
+    return (
+        "https://t.me/" +
+        BOT_USERNAME +
+        "?startapp=" +
+        encodeURIComponent(user.id)
+    );
+
+}
+
+
+async function loadReferral() {
+
+    if (!user) {
+        return;
+    }
+
+    const linkElement =
+        document.getElementById(
+            "referralLink"
+        );
+
+    const countElement =
+        document.getElementById(
+            "referralCount"
+        );
+
+    const earnedElement =
+        document.getElementById(
+            "referralEarned"
+        );
+
+    const message =
+        document.getElementById(
+            "referralMessage"
+        );
+
+    const referralLink =
+        getReferralLink();
+
+    linkElement.textContent =
+        referralLink || "Unavailable";
+
+    /*
+     API مربوط به Backend.
+     در مرحله app.py با Backend واقعی
+     هماهنگ می‌شود.
+    */
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/referral/" +
+                encodeURIComponent(user.id)
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            data.success
+        ) {
+
+            countElement.textContent =
+                Number(
+                    data.referral_count || 0
+                ).toLocaleString();
+
+            earnedElement.textContent =
+                Number(
+                    data.total_earned || 0
+                ).toLocaleString();
+
+            if (data.referral_link) {
+
+                linkElement.textContent =
+                    data.referral_link;
+
+            }
+
+            message.className =
+                "referral-message referral-success";
+
+            message.textContent =
+                translations[
+                    getLanguage()
+                ].referralLoaded;
+
+        } else {
+
+            /*
+             اگر API هنوز در app.py اضافه نشده باشد،
+             اطلاعات پایه لینک همچنان نمایش داده می‌شود.
+            */
+
+            countElement.textContent =
+                "0";
+
+            earnedElement.textContent =
+                "0";
+
+            message.textContent =
+                translations[
+                    getLanguage()
+                ].referralLoadError;
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Referral loading error:",
+            error
+        );
+
+        /*
+         لینک Referral مستقل از API ساخته می‌شود.
+        */
+
+        countElement.textContent =
+            "0";
+
+        earnedElement.textContent =
+            "0";
+
+        message.className =
+            "referral-message referral-error";
+
+        message.textContent =
+            translations[
+                getLanguage()
+            ].referralLoadError;
+
+    }
+
+}
+
+
+async function copyReferralLink() {
+
+    const link =
+        getReferralLink();
+
+    const button =
+        document.getElementById(
+            "copyReferralButton"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+    if (!link) {
+        return;
+    }
+
+    try {
+
+        if (
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+        ) {
+
+            await navigator.clipboard.writeText(
+                link
+            );
+
+        } else {
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
+
+            textarea.value =
+                link;
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.opacity =
+                "0";
+
+            document.body.appendChild(
+                textarea
+            );
+
+            textarea.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            textarea.remove();
+
+        }
+
+        button.textContent =
+            t.copiedReferral;
+
+        setTimeout(
+            function() {
+
+                button.textContent =
+                    t.copyReferral;
+
+            },
+            1500
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Copy referral error:",
+            error
+        );
+
+        const message =
+            document.getElementById(
+                "referralMessage"
+            );
+
+        message.className =
+            "referral-message referral-error";
+
+        message.textContent =
+            t.referralCopyError;
+
+    }
+
+}
+
+
+function shareReferralLink() {
+
+    const link =
+        getReferralLink();
+
+    if (!link) {
+        return;
+    }
+
+    const t =
+        translations[getLanguage()];
+
+    const shareUrl =
+        "https://t.me/share/url?url=" +
+        encodeURIComponent(link) +
+        "&text=" +
+        encodeURIComponent(
+            t.referralShareText
+        );
+
+    if (
+        tg &&
+        typeof tg.openTelegramLink ===
+        "function"
+    ) {
+
+        tg.openTelegramLink(
+            shareUrl
+        );
+
+    } else {
+
+        window.open(
+            shareUrl,
+            "_blank"
         );
 
     }
@@ -1898,694 +2582,4 @@ async function loadAdsStatus() {
 
         if (
             data.ads_remaining <= 0
-        ) {
-
-            button.disabled = true;
-
-            message.className =
-                "ads-message ads-waiting";
-
-            message.textContent =
-                t.adLimit +
-                " " +
-                t.adsReset +
-                " " +
-                (
-                    data.hours_until_reset ||
-                    0
-                ) +
-                "h " +
-                (
-                    data.minutes_until_reset ||
-                    0
-                ) +
-                "m";
-
-        } else {
-
-            button.disabled = false;
-
-            message.textContent = "";
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Ads status error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   WATCH ADSGRAM AD
-===================================================== */
-
-async function watchAd() {
-
-    if (!user) {
-        return;
-    }
-
-    const button =
-        document.getElementById(
-            "watchAdButton"
-        );
-
-    const message =
-        document.getElementById(
-            "adsMessage"
-        );
-
-    const t =
-        translations[getLanguage()];
-
-
-    if (!AdController) {
-
-        message.className =
-            "ads-message ads-error";
-
-        message.textContent =
-            t.adError;
-
-        return;
-
-    }
-
-
-    button.disabled = true;
-
-    message.className =
-        "ads-message ads-waiting";
-
-    message.textContent =
-        "⏳ Loading advertisement...";
-
-
-    try {
-
-        /*
-         نمایش تبلیغ
-        */
-
-        const result =
-            await AdController.show();
-
-
-        /*
-         فقط اگر تبلیغ کامل دیده شده باشد
-         درخواست پاداش به سرور ارسال می‌شود.
-        */
-
-        if (
-            !result ||
-            result.done !== true
-        ) {
-
-            message.className =
-                "ads-message ads-error";
-
-            message.textContent =
-                t.adError;
-
-            await loadAdsStatus();
-
-            return;
-
-        }
-
-
-        message.textContent =
-            "⏳ Processing reward...";
-
-
-        /*
-         دریافت پاداش از Backend
-        */
-
-        const response =
-            await fetch(
-                "/api/ads/claim",
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            telegram_id:
-                                user.id
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (data.success) {
-
-            coins =
-                Number(
-                    data.user.coins
-                );
-
-            updateBalance();
-
-
-            document.getElementById(
-                "adsWatched"
-            ).textContent =
-                data.ads_watched;
-
-
-            document.getElementById(
-                "adsRemaining"
-            ).textContent =
-                data.ads_remaining;
-
-
-            message.className =
-                "ads-message ads-success";
-
-            message.textContent =
-                t.adSuccess;
-
-
-            if (
-                data.ads_remaining <= 0
-            ) {
-
-                button.disabled = true;
-
-            } else {
-
-                button.disabled = false;
-
-            }
-
-        } else {
-
-            message.className =
-                "ads-message ads-error";
-
-            message.textContent =
-                data.message ||
-                t.adError;
-
-            await loadAdsStatus();
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "AdsGram error:",
-            error
-        );
-
-        message.className =
-            "ads-message ads-error";
-
-        message.textContent =
-            t.adError;
-
-        await loadAdsStatus();
-
-    }
-
-}
-
-
-/* =====================================================
-   TASKS
-===================================================== */
-
-async function loadTasks() {
-
-    if (!user) {
-        return;
-    }
-
-    const list =
-        document.getElementById(
-            "tasksList"
-        );
-
-    const message =
-        document.getElementById(
-            "taskMessage"
-        );
-
-    const t =
-        translations[getLanguage()];
-
-
-    list.innerHTML = "";
-
-    message.className =
-        "task-message";
-
-    message.textContent =
-        t.tasksLoading;
-
-
-    try {
-
-        /*
-         دریافت فقط تسک‌هایی که
-         کاربر قبلاً انجام نداده است.
-        */
-
-        const response =
-            await fetch(
-                "/api/tasks/available/" +
-                encodeURIComponent(user.id)
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-
-            message.className =
-                "task-message task-error";
-
-            message.textContent =
-                data.message ||
-                t.error;
-
-            return;
-
-        }
-
-
-        const tasks =
-            Array.isArray(data.tasks)
-                ? data.tasks
-                : [];
-
-
-        list.innerHTML = "";
-
-        message.textContent = "";
-
-
-        if (tasks.length === 0) {
-
-            message.className =
-                "task-message";
-
-            message.textContent =
-                t.noTasks;
-
-            return;
-
-        }
-
-
-        tasks.forEach(
-            function(task) {
-
-                createTaskCard(task);
-
-            }
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Tasks loading error:",
-            error
-        );
-
-        message.className =
-            "task-message task-error";
-
-        message.textContent =
-            t.error;
-
-    }
-
-}
-
-
-/* =====================================================
-   CREATE TASK CARD
-===================================================== */
-
-function createTaskCard(task) {
-
-    const list =
-        document.getElementById(
-            "tasksList"
-        );
-
-    const t =
-        translations[getLanguage()];
-
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-    card.className =
-        "task-card";
-
-
-    const title =
-        document.createElement(
-            "div"
-        );
-
-    title.className =
-        "task-title";
-
-    title.textContent =
-        task.title ||
-        "Task";
-
-
-    const description =
-        document.createElement(
-            "div"
-        );
-
-    description.className =
-        "task-description";
-
-    description.textContent =
-        task.description ||
-        "";
-
-
-    const reward =
-        document.createElement(
-            "div"
-        );
-
-    reward.className =
-        "task-reward";
-
-    reward.textContent =
-        t.taskReward;
-
-
-    const button =
-        document.createElement(
-            "button"
-        );
-
-    button.className =
-        "task-button";
-
-    button.textContent =
-        t.completeTask;
-
-
-    button.onclick =
-        function() {
-
-            completeTask(
-                task,
-                button
-            );
-
-        };
-
-
-    card.appendChild(title);
-
-    if (task.description) {
-        card.appendChild(description);
-    }
-
-    card.appendChild(reward);
-
-    card.appendChild(button);
-
-    list.appendChild(card);
-
-}
-
-
-/* =====================================================
-   COMPLETE TASK
-===================================================== */
-
-async function completeTask(
-    task,
-    button
-) {
-
-    if (!user) {
-        return;
-    }
-
-
-    if (!task || !task.id) {
-        return;
-    }
-
-
-    const message =
-        document.getElementById(
-            "taskMessage"
-        );
-
-    const t =
-        translations[getLanguage()];
-
-
-    button.disabled = true;
-
-    button.textContent =
-        "⏳";
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/tasks/claim",
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            telegram_id:
-                                user.id,
-
-                            task_id:
-                                task.id
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (data.success) {
-
-            /*
-             به‌روزرسانی موجودی
-            */
-
-            coins =
-                Number(
-                    data.user.coins
-                );
-
-            updateBalance();
-
-
-            /*
-             نمایش موفقیت
-            */
-
-            message.className =
-                "task-message task-success";
-
-            message.textContent =
-                t.taskSuccess;
-
-
-            /*
-             حذف فوری تسک از صفحه
-             */
-
-            const card =
-                button.closest(
-                    ".task-card"
-                );
-
-            if (card) {
-
-                card.remove();
-
-            }
-
-
-            /*
-             اگر دیگر تسکی باقی نمانده
-            */
-
-            const list =
-                document.getElementById(
-                    "tasksList"
-                );
-
-            if (
-                !list.children.length
-            ) {
-
-                message.textContent =
-                    t.noTasks;
-
-            }
-
-        } else {
-
-            button.disabled = false;
-
-            button.textContent =
-                t.completeTask;
-
-
-            message.className =
-                "task-message task-error";
-
-
-            if (
-                data.already_completed
-            ) {
-
-                message.textContent =
-                    t.taskAlready;
-
-                /*
-                 اگر سرور بگوید قبلاً انجام شده،
-                 آن تسک از صفحه حذف می‌شود.
-                */
-
-                const card =
-                    button.closest(
-                        ".task-card"
-                    );
-
-                if (card) {
-                    card.remove();
-                }
-
-            } else {
-
-                message.textContent =
-                    data.message ||
-                    t.error;
-
-            }
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Task claim error:",
-            error
-        );
-
-        button.disabled = false;
-
-        button.textContent =
-            t.completeTask;
-
-        message.className =
-            "task-message task-error";
-
-        message.textContent =
-            t.error;
-
-    }
-
-}
-
-
-/* =====================================================
-   START USER
-===================================================== */
-
-async function startUser() {
-
-    await registerUser();
-
-    await loadUserBalance();
-
-    await checkDailyReward();
-
-}
-
-
-/* =====================================================
-   INITIAL LANGUAGE
-===================================================== */
-
-let savedLanguage =
-    localStorage.getItem(
-        "language"
-    );
-
-
-if (
-    !savedLanguage ||
-    !translations[savedLanguage]
-) {
-
-    savedLanguage =
-        detectLanguage();
-
-}
-
-
-applyLanguage(
-    savedLanguage
-);
-
-
-updateBalance();
-
-
-startUser();
-
-</script>
-
-</body>
-
-</html>
+  
