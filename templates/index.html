@@ -176,8 +176,7 @@
 
         .reward-status,
         .ads-message,
-        .task-message,
-        .referral-message {
+        .task-message {
             text-align: center;
             margin-top: 14px;
             font-size: 14px;
@@ -186,8 +185,7 @@
 
         .reward-success,
         .ads-success,
-        .task-success,
-        .referral-success {
+        .task-success {
             color: #58d68d;
         }
 
@@ -198,14 +196,11 @@
 
         .reward-error,
         .ads-error,
-        .task-error,
-        .referral-error {
+        .task-error {
             color: #ff7777;
         }
 
-        .ads-panel,
-        .tasks-panel,
-        .referral-panel {
+        .ads-panel {
             margin-top: 20px;
         }
 
@@ -230,6 +225,10 @@
         }
 
         /* TASKS */
+
+        .tasks-panel {
+            margin-top: 20px;
+        }
 
         .task-card {
             background: #111722;
@@ -279,85 +278,6 @@
             color: #8f98a8;
             padding: 25px 10px;
             line-height: 1.7;
-        }
-
-        /* REFERRAL */
-
-        .referral-info {
-            background: #111722;
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .referral-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 9px 0;
-            border-bottom: 1px solid #242b37;
-            font-size: 14px;
-        }
-
-        .referral-row:last-child {
-            border-bottom: none;
-        }
-
-        .referral-label {
-            color: #aeb5c1;
-        }
-
-        .referral-value {
-            color: white;
-            font-weight: bold;
-        }
-
-        .referral-link-box {
-            margin-top: 15px;
-            background: #111722;
-            border-radius: 14px;
-            padding: 12px;
-        }
-
-        .referral-link {
-            width: 100%;
-            border: 1px solid #303744;
-            background: #191e29;
-            color: #dce2ea;
-            border-radius: 10px;
-            padding: 11px;
-            font-size: 12px;
-            text-align: center;
-            outline: none;
-        }
-
-        .referral-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .referral-button {
-            flex: 1;
-            border: none;
-            border-radius: 12px;
-            padding: 13px 8px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .copy-referral-button {
-            background: #2d7dff;
-        }
-
-        .share-referral-button {
-            background: #229ed9;
-        }
-
-        .referral-button:disabled {
-            background: #303744;
-            color: #8f98a8;
         }
 
         /* BOTTOM NAV */
@@ -429,15 +349,6 @@
             .coins {
                 font-size: 27px;
             }
-
-            .referral-buttons {
-                gap: 7px;
-            }
-
-            .referral-button {
-                font-size: 12px;
-            }
-
         }
 
     </style>
@@ -492,8 +403,6 @@
 
     </div>
 
-    <!-- BALANCE -->
-
     <div class="balance-card">
 
         <div
@@ -520,8 +429,6 @@
 
     </div>
 
-    <!-- CONTENT -->
-
     <div class="content-card">
 
         <div
@@ -545,8 +452,6 @@
             Claim your daily reward and earn coins every 12 hours.
         </div>
 
-        <!-- DAILY -->
-
         <button
             id="rewardButton"
             class="reward-button"
@@ -560,8 +465,6 @@
             class="reward-status"
         ></div>
 
-        <!-- ADS -->
-
         <div
             id="adsPanel"
             class="ads-panel"
@@ -571,29 +474,18 @@
             <div class="ads-info">
 
                 <div class="ads-row">
-
                     <span id="adsWatchedLabel">
                         Ads watched
                     </span>
 
                     <strong>
-
-                        <span id="adsWatched">
-                            0
-                        </span>
-
+                        <span id="adsWatched">0</span>
                         /
-
-                        <span id="adsLimit">
-                            10
-                        </span>
-
+                        <span id="adsLimit">10</span>
                     </strong>
-
                 </div>
 
                 <div class="ads-row">
-
                     <span id="adsRemainingLabel">
                         Ads remaining
                     </span>
@@ -601,11 +493,9 @@
                     <strong id="adsRemaining">
                         10
                     </strong>
-
                 </div>
 
                 <div class="ads-row">
-
                     <span id="adsRewardLabel">
                         Reward
                     </span>
@@ -613,7 +503,6 @@
                     <strong>
                         2,000 🪙
                     </strong>
-
                 </div>
 
             </div>
@@ -633,8 +522,6 @@
 
         </div>
 
-        <!-- TASKS -->
-
         <div
             id="tasksPanel"
             class="tasks-panel"
@@ -650,116 +537,9 @@
 
         </div>
 
-        <!-- REFERRAL -->
-
-        <div
-            id="referralPanel"
-            class="referral-panel"
-            style="display:none;"
-        >
-
-            <div class="referral-info">
-
-                <div class="referral-row">
-
-                    <span
-                        class="referral-label"
-                        id="referralsCountLabel"
-                    >
-                        Friends invited
-                    </span>
-
-                    <strong
-                        class="referral-value"
-                        id="referralsCount"
-                    >
-                        0
-                    </strong>
-
-                </div>
-
-                <div class="referral-row">
-
-                    <span
-                        class="referral-label"
-                        id="referralRewardLabel"
-                    >
-                        Reward per referral
-                    </span>
-
-                    <strong
-                        class="referral-value"
-                        id="referralReward"
-                    >
-                        5,000 🪙
-                    </strong>
-
-                </div>
-
-                <div class="referral-row">
-
-                    <span
-                        class="referral-label"
-                        id="referralEarningsLabel"
-                    >
-                        Referral earnings
-                    </span>
-
-                    <strong
-                        class="referral-value"
-                        id="referralEarnings"
-                    >
-                        0 🪙
-                    </strong>
-
-                </div>
-
-            </div>
-
-            <div class="referral-link-box">
-
-                <input
-                    type="text"
-                    id="referralLink"
-                    class="referral-link"
-                    readonly
-                    value=""
-                >
-
-                <div class="referral-buttons">
-
-                    <button
-                        id="copyReferralButton"
-                        class="referral-button copy-referral-button"
-                        onclick="copyReferralLink()"
-                    >
-                        📋 Copy Link
-                    </button>
-
-                    <button
-                        id="shareReferralButton"
-                        class="referral-button share-referral-button"
-                        onclick="shareReferralLink()"
-                    >
-                        📤 Share
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div
-                id="referralMessage"
-                class="referral-message"
-            ></div>
-
-        </div>
-
     </div>
 
 </div>
-
-<!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
 
@@ -825,8 +605,7 @@
 
 <script>
 
-const tg =
-    window.Telegram.WebApp;
+const tg = window.Telegram.WebApp;
 
 tg.ready();
 tg.expand();
@@ -864,14 +643,8 @@ let coins = 0;
 const DAILY_REWARD = 1000;
 const AD_REWARD = 2000;
 const TASK_REWARD = 1000;
-const REFERRAL_REWARD = 5000;
 
 const AD_LIMIT = 10;
-
-
-/* =====================================================
-   TRANSLATIONS
-===================================================== */
 
 const translations = {
 
@@ -904,7 +677,7 @@ const translations = {
         referralTitle: "Referral",
 
         referralText:
-            "Invite friends and earn 5,000 coins for every successful referral.",
+            "Invite friends and earn referral rewards.",
 
         withdrawTitle: "Withdraw",
 
@@ -973,30 +746,6 @@ const translations = {
         tasksLoading:
             "⏳ Loading tasks...",
 
-        friendsInvited:
-            "Friends invited",
-
-        rewardPerReferral:
-            "Reward per referral",
-
-        referralEarnings:
-            "Referral earnings",
-
-        copyLink:
-            "📋 Copy Link",
-
-        linkCopied:
-            "✅ Referral link copied!",
-
-        share:
-            "📤 Share",
-
-        referralShared:
-            "✅ Referral link opened for sharing.",
-
-        referralLoadError:
-            "❌ Could not load referral information.",
-
         error:
             "Something went wrong. Please try again."
 
@@ -1047,7 +796,7 @@ const translations = {
             "رفرال",
 
         referralText:
-            "دوستان خود را دعوت کنید و برای هر رفرال موفق ۵,۰۰۰ سکه بگیرید.",
+            "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
 
         withdrawTitle:
             "برداشت",
@@ -1118,30 +867,6 @@ const translations = {
         tasksLoading:
             "⏳ در حال دریافت تسک‌ها...",
 
-        friendsInvited:
-            "تعداد دوستان دعوت‌شده",
-
-        rewardPerReferral:
-            "پاداش هر رفرال",
-
-        referralEarnings:
-            "درآمد رفرال",
-
-        copyLink:
-            "📋 کپی لینک",
-
-        linkCopied:
-            "✅ لینک رفرال کپی شد!",
-
-        share:
-            "📤 اشتراک‌گذاری",
-
-        referralShared:
-            "✅ لینک برای اشتراک‌گذاری باز شد.",
-
-        referralLoadError:
-            "❌ اطلاعات رفرال دریافت نشد.",
-
         error:
             "خطایی رخ داد. دوباره تلاش کنید."
 
@@ -1192,7 +917,7 @@ const translations = {
             "الإحالة",
 
         referralText:
-            "ادعُ أصدقاءك واربح 5,000 عملة لكل إحالة ناجحة.",
+            "ادعُ أصدقاءك واربح مكافآت الإحالة.",
 
         withdrawTitle:
             "السحب",
@@ -1263,41 +988,12 @@ const translations = {
         tasksLoading:
             "⏳ جارٍ تحميل المهام...",
 
-        friendsInvited:
-            "الأصدقاء المدعوون",
-
-        rewardPerReferral:
-            "مكافأة الإحالة",
-
-        referralEarnings:
-            "أرباح الإحالة",
-
-        copyLink:
-            "📋 نسخ الرابط",
-
-        linkCopied:
-            "✅ تم نسخ رابط الإحالة!",
-
-        share:
-            "📤 مشاركة",
-
-        referralShared:
-            "✅ تم فتح الرابط للمشاركة.",
-
-        referralLoadError:
-            "❌ تعذر تحميل معلومات الإحالة.",
-
         error:
             "حدث خطأ. حاول مرة أخرى."
 
     }
 
 };
-
-
-/* =====================================================
-   SECTION ICONS
-===================================================== */
 
 const sectionIcons = {
 
@@ -1311,11 +1007,6 @@ const sectionIcons = {
 };
 
 let currentSection = "daily";
-
-
-/* =====================================================
-   UPDATE BALANCE
-===================================================== */
 
 function updateBalance() {
 
@@ -1333,11 +1024,6 @@ function updateBalance() {
         "≈ $" + usd.toFixed(6);
 
 }
-
-
-/* =====================================================
-   DETECT LANGUAGE
-===================================================== */
 
 function detectLanguage() {
 
@@ -1373,11 +1059,6 @@ function detectLanguage() {
 
 }
 
-
-/* =====================================================
-   GET LANGUAGE
-===================================================== */
-
 function getLanguage() {
 
     return (
@@ -1386,46 +1067,32 @@ function getLanguage() {
     );
 
 }
-
-
-/* =====================================================
-   APPLY LANGUAGE
-===================================================== */
-
-function applyLanguage(lang) {
+    function applyLanguage(lang) {
 
     if (!translations[lang]) {
         lang = "en";
     }
 
-    const t =
-        translations[lang];
+    const t = translations[lang];
 
-    document.documentElement.lang =
-        lang;
+    document.documentElement.lang = lang;
 
     document.documentElement.dir =
-        lang === "en"
-            ? "ltr"
-            : "rtl";
+        lang === "en" ? "ltr" : "rtl";
 
     document.getElementById(
         "balanceTitle"
-    ).textContent =
-        t.balance;
+    ).textContent = t.balance;
 
     document
         .querySelectorAll("[data-key]")
         .forEach(function(element) {
 
             const key =
-                element.getAttribute(
-                    "data-key"
-                );
+                element.getAttribute("data-key");
 
             if (t[key]) {
-                element.textContent =
-                    t[key];
+                element.textContent = t[key];
             }
 
         });
@@ -1442,59 +1109,27 @@ function applyLanguage(lang) {
 
     document.getElementById(
         "rewardButton"
-    ).textContent =
-        t.claim;
+    ).textContent = t.claim;
 
     document.getElementById(
         "adsWatchedLabel"
-    ).textContent =
-        t.adsWatched;
+    ).textContent = t.adsWatched;
 
     document.getElementById(
         "adsRemainingLabel"
-    ).textContent =
-        t.adsRemaining;
+    ).textContent = t.adsRemaining;
 
     document.getElementById(
         "adsRewardLabel"
-    ).textContent =
-        t.adsReward;
+    ).textContent = t.adsReward;
 
     document.getElementById(
         "watchAdButton"
-    ).textContent =
-        t.watchAd;
-
-    document.getElementById(
-        "referralsCountLabel"
-    ).textContent =
-        t.friendsInvited;
-
-    document.getElementById(
-        "referralRewardLabel"
-    ).textContent =
-        t.rewardPerReferral;
-
-    document.getElementById(
-        "referralEarningsLabel"
-    ).textContent =
-        t.referralEarnings;
-
-    document.getElementById(
-        "copyReferralButton"
-    ).textContent =
-        t.copyLink;
-
-    document.getElementById(
-        "shareReferralButton"
-    ).textContent =
-        t.share;
+    ).textContent = t.watchAd;
 
     showSection(
         currentSection,
-        document.querySelector(
-            ".nav-button.active"
-        )
+        document.querySelector(".nav-button.active")
     );
 
 }
@@ -1573,32 +1208,23 @@ function showSection(
     button
 ) {
 
-    currentSection =
-        section;
+    currentSection = section;
 
     document
         .querySelectorAll(".nav-button")
         .forEach(function(btn) {
 
-            btn.classList.remove(
-                "active"
-            );
+            btn.classList.remove("active");
 
         });
 
     if (button) {
-
-        button.classList.add(
-            "active"
-        );
-
+        button.classList.add("active");
     }
 
-    const lang =
-        getLanguage();
+    const lang = getLanguage();
 
-    const t =
-        translations[lang];
+    const t = translations[lang];
 
     const content = {
 
@@ -1679,7 +1305,6 @@ function showSection(
     ).textContent =
         content[section].text;
 
-
     const rewardButton =
         document.getElementById(
             "rewardButton"
@@ -1700,13 +1325,10 @@ function showSection(
             "tasksPanel"
         );
 
-    const referralPanel =
-        document.getElementById(
-            "referralPanel"
-        );
 
-
-    /* DAILY */
+    /* ==========================================
+       DAILY
+    ========================================== */
 
     if (section === "daily") {
 
@@ -1722,15 +1344,14 @@ function showSection(
         tasksPanel.style.display =
             "none";
 
-        referralPanel.style.display =
-            "none";
-
         checkDailyReward();
 
     }
 
 
-    /* ADS */
+    /* ==========================================
+       ADS
+    ========================================== */
 
     else if (section === "ads") {
 
@@ -1746,15 +1367,14 @@ function showSection(
         tasksPanel.style.display =
             "none";
 
-        referralPanel.style.display =
-            "none";
-
         loadAdsStatus();
 
     }
 
 
-    /* TASKS */
+    /* ==========================================
+       TASKS
+    ========================================== */
 
     else if (section === "tasks") {
 
@@ -1770,39 +1390,14 @@ function showSection(
         tasksPanel.style.display =
             "block";
 
-        referralPanel.style.display =
-            "none";
-
         loadTasks();
 
     }
 
 
-    /* REFERRAL */
-
-    else if (section === "referral") {
-
-        rewardButton.style.display =
-            "none";
-
-        rewardStatus.style.display =
-            "none";
-
-        adsPanel.style.display =
-            "none";
-
-        tasksPanel.style.display =
-            "none";
-
-        referralPanel.style.display =
-            "block";
-
-        loadReferral();
-
-    }
-
-
-    /* OTHER */
+    /* ==========================================
+       OTHER SECTIONS
+    ========================================== */
 
     else {
 
@@ -1816,9 +1411,6 @@ function showSection(
             "none";
 
         tasksPanel.style.display =
-            "none";
-
-        referralPanel.style.display =
             "none";
 
     }
@@ -1841,9 +1433,7 @@ async function loadUserBalance() {
         const response =
             await fetch(
                 "/api/user/" +
-                encodeURIComponent(
-                    user.id
-                )
+                encodeURIComponent(user.id)
             );
 
         const data =
@@ -1934,30 +1524,6 @@ async function registerUser() {
                 data.user
             );
 
-            /*
-             اگر Referral موفق شده باشد،
-             موجودی را دوباره از سرور می‌گیریم.
-            */
-
-            if (
-                data.referral &&
-                data.referral.success
-            ) {
-
-                coins =
-                    Number(
-                        data.user.coins || 0
-                    );
-
-                updateBalance();
-
-                console.log(
-                    "Referral processed:",
-                    data.referral
-                );
-
-            }
-
         }
 
     } catch (error) {
@@ -1987,9 +1553,7 @@ async function checkDailyReward() {
         const response =
             await fetch(
                 "/api/user/" +
-                encodeURIComponent(
-                    user.id
-                )
+                encodeURIComponent(user.id)
             );
 
         const data =
@@ -2018,21 +1582,17 @@ async function checkDailyReward() {
             );
 
         const t =
-            translations[
-                getLanguage()
-            ];
+            translations[getLanguage()];
 
 
         if (!lastReward) {
 
-            button.disabled =
-                false;
+            button.disabled = false;
 
             button.textContent =
                 t.claim;
 
-            status.textContent =
-                "";
+            status.textContent = "";
 
             return;
 
@@ -2040,18 +1600,11 @@ async function checkDailyReward() {
 
 
         const lastTime =
-            new Date(
-                lastReward
-            ).getTime();
+            new Date(lastReward).getTime();
 
         const nextTime =
             lastTime +
-            (
-                12 *
-                60 *
-                60 *
-                1000
-            );
+            (12 * 60 * 60 * 1000);
 
         const now =
             Date.now();
@@ -2059,22 +1612,19 @@ async function checkDailyReward() {
 
         if (now >= nextTime) {
 
-            button.disabled =
-                false;
+            button.disabled = false;
 
             button.textContent =
                 t.claim;
 
-            status.textContent =
-                "";
+            status.textContent = "";
 
             return;
 
         }
 
 
-        button.disabled =
-            true;
+        button.disabled = true;
 
         button.textContent =
             t.claimed;
@@ -2107,9 +1657,7 @@ function updateWaitingTime(nextTime) {
         );
 
     const t =
-        translations[
-            getLanguage()
-        ];
+        translations[getLanguage()];
 
     function update() {
 
@@ -2186,12 +1734,9 @@ async function claimDailyReward() {
         );
 
     const t =
-        translations[
-            getLanguage()
-        ];
+        translations[getLanguage()];
 
-    button.disabled =
-        true;
+    button.disabled = true;
 
     try {
 
@@ -2251,8 +1796,7 @@ async function claimDailyReward() {
 
         } else {
 
-            button.disabled =
-                true;
+            button.disabled = true;
 
             button.textContent =
                 t.claimed;
@@ -2285,8 +1829,7 @@ async function claimDailyReward() {
             error
         );
 
-        button.disabled =
-            false;
+        button.disabled = false;
 
         status.className =
             "reward-status reward-error";
@@ -2314,9 +1857,7 @@ async function loadAdsStatus() {
         const response =
             await fetch(
                 "/api/ads/status/" +
-                encodeURIComponent(
-                    user.id
-                )
+                encodeURIComponent(user.id)
             );
 
         const data =
@@ -2352,17 +1893,14 @@ async function loadAdsStatus() {
             );
 
         const t =
-            translations[
-                getLanguage()
-            ];
+            translations[getLanguage()];
 
 
         if (
             data.ads_remaining <= 0
         ) {
 
-            button.disabled =
-                true;
+            button.disabled = true;
 
             message.className =
                 "ads-message ads-waiting";
@@ -2385,11 +1923,9 @@ async function loadAdsStatus() {
 
         } else {
 
-            button.disabled =
-                false;
+            button.disabled = false;
 
-            message.textContent =
-                "";
+            message.textContent = "";
 
         }
 
@@ -2426,9 +1962,7 @@ async function watchAd() {
         );
 
     const t =
-        translations[
-            getLanguage()
-        ];
+        translations[getLanguage()];
 
 
     if (!AdController) {
@@ -2444,8 +1978,7 @@ async function watchAd() {
     }
 
 
-    button.disabled =
-        true;
+    button.disabled = true;
 
     message.className =
         "ads-message ads-waiting";
@@ -2456,9 +1989,18 @@ async function watchAd() {
 
     try {
 
+        /*
+         نمایش تبلیغ
+        */
+
         const result =
             await AdController.show();
 
+
+        /*
+         فقط اگر تبلیغ کامل دیده شده باشد
+         درخواست پاداش به سرور ارسال می‌شود.
+        */
 
         if (
             !result ||
@@ -2481,6 +2023,10 @@ async function watchAd() {
         message.textContent =
             "⏳ Processing reward...";
 
+
+        /*
+         دریافت پاداش از Backend
+        */
 
         const response =
             await fetch(
@@ -2543,13 +2089,11 @@ async function watchAd() {
                 data.ads_remaining <= 0
             ) {
 
-                button.disabled =
-                    true;
+                button.disabled = true;
 
             } else {
 
-                button.disabled =
-                    false;
+                button.disabled = false;
 
             }
 
@@ -2587,7 +2131,7 @@ async function watchAd() {
 
 
 /* =====================================================
-   LOAD TASKS
+   TASKS
 ===================================================== */
 
 async function loadTasks() {
@@ -2607,13 +2151,10 @@ async function loadTasks() {
         );
 
     const t =
-        translations[
-            getLanguage()
-        ];
+        translations[getLanguage()];
 
 
-    list.innerHTML =
-        "";
+    list.innerHTML = "";
 
     message.className =
         "task-message";
@@ -2624,12 +2165,15 @@ async function loadTasks() {
 
     try {
 
+        /*
+         دریافت فقط تسک‌هایی که
+         کاربر قبلاً انجام نداده است.
+        */
+
         const response =
             await fetch(
                 "/api/tasks/available/" +
-                encodeURIComponent(
-                    user.id
-                )
+                encodeURIComponent(user.id)
             );
 
 
@@ -2657,13 +2201,391 @@ async function loadTasks() {
                 : [];
 
 
-        list.innerHTML =
-            "";
+        list.innerHTML = "";
 
-        message.textContent =
-            "";
+        message.textContent = "";
 
 
         if (tasks.length === 0) {
 
             message.className =
+                "task-message";
+
+            message.textContent =
+                t.noTasks;
+
+            return;
+
+        }
+
+
+        tasks.forEach(
+            function(task) {
+
+                createTaskCard(task);
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Tasks loading error:",
+            error
+        );
+
+        message.className =
+            "task-message task-error";
+
+        message.textContent =
+            t.error;
+
+    }
+
+}
+
+
+/* =====================================================
+   CREATE TASK CARD
+===================================================== */
+
+function createTaskCard(task) {
+
+    const list =
+        document.getElementById(
+            "tasksList"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+    card.className =
+        "task-card";
+
+
+    const title =
+        document.createElement(
+            "div"
+        );
+
+    title.className =
+        "task-title";
+
+    title.textContent =
+        task.title ||
+        "Task";
+
+
+    const description =
+        document.createElement(
+            "div"
+        );
+
+    description.className =
+        "task-description";
+
+    description.textContent =
+        task.description ||
+        "";
+
+
+    const reward =
+        document.createElement(
+            "div"
+        );
+
+    reward.className =
+        "task-reward";
+
+    reward.textContent =
+        t.taskReward;
+
+
+    const button =
+        document.createElement(
+            "button"
+        );
+
+    button.className =
+        "task-button";
+
+    button.textContent =
+        t.completeTask;
+
+
+    button.onclick =
+        function() {
+
+            completeTask(
+                task,
+                button
+            );
+
+        };
+
+
+    card.appendChild(title);
+
+    if (task.description) {
+        card.appendChild(description);
+    }
+
+    card.appendChild(reward);
+
+    card.appendChild(button);
+
+    list.appendChild(card);
+
+}
+
+
+/* =====================================================
+   COMPLETE TASK
+===================================================== */
+
+async function completeTask(
+    task,
+    button
+) {
+
+    if (!user) {
+        return;
+    }
+
+
+    if (!task || !task.id) {
+        return;
+    }
+
+
+    const message =
+        document.getElementById(
+            "taskMessage"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "⏳";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/tasks/claim",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            telegram_id:
+                                user.id,
+
+                            task_id:
+                                task.id
+
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            /*
+             به‌روزرسانی موجودی
+            */
+
+            coins =
+                Number(
+                    data.user.coins
+                );
+
+            updateBalance();
+
+
+            /*
+             نمایش موفقیت
+            */
+
+            message.className =
+                "task-message task-success";
+
+            message.textContent =
+                t.taskSuccess;
+
+
+            /*
+             حذف فوری تسک از صفحه
+             */
+
+            const card =
+                button.closest(
+                    ".task-card"
+                );
+
+            if (card) {
+
+                card.remove();
+
+            }
+
+
+            /*
+             اگر دیگر تسکی باقی نمانده
+            */
+
+            const list =
+                document.getElementById(
+                    "tasksList"
+                );
+
+            if (
+                !list.children.length
+            ) {
+
+                message.textContent =
+                    t.noTasks;
+
+            }
+
+        } else {
+
+            button.disabled = false;
+
+            button.textContent =
+                t.completeTask;
+
+
+            message.className =
+                "task-message task-error";
+
+
+            if (
+                data.already_completed
+            ) {
+
+                message.textContent =
+                    t.taskAlready;
+
+                /*
+                 اگر سرور بگوید قبلاً انجام شده،
+                 آن تسک از صفحه حذف می‌شود.
+                */
+
+                const card =
+                    button.closest(
+                        ".task-card"
+                    );
+
+                if (card) {
+                    card.remove();
+                }
+
+            } else {
+
+                message.textContent =
+                    data.message ||
+                    t.error;
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Task claim error:",
+            error
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            t.completeTask;
+
+        message.className =
+            "task-message task-error";
+
+        message.textContent =
+            t.error;
+
+    }
+
+}
+
+
+/* =====================================================
+   START USER
+===================================================== */
+
+async function startUser() {
+
+    await registerUser();
+
+    await loadUserBalance();
+
+    await checkDailyReward();
+
+}
+
+
+/* =====================================================
+   INITIAL LANGUAGE
+===================================================== */
+
+let savedLanguage =
+    localStorage.getItem(
+        "language"
+    );
+
+
+if (
+    !savedLanguage ||
+    !translations[savedLanguage]
+) {
+
+    savedLanguage =
+        detectLanguage();
+
+}
+
+
+applyLanguage(
+    savedLanguage
+);
+
+
+updateBalance();
+
+
+startUser();
+
+</script>
+
+</body>
+
+</html>
