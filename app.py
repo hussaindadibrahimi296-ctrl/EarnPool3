@@ -1,10 +1,9 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
-
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request, render_template
 
 
 # =========================================================
@@ -12,6 +11,21 @@ from flask import Flask, jsonify, render_template, request
 # =========================================================
 
 app = Flask(__name__)
+
+
+# =========================================================
+# SETTINGS
+# =========================================================
+
+DAILY_REWARD = 1000
+AD_REWARD = 2000
+TASK_REWARD = 1000
+
+AD_LIMIT = 10
+DAILY_HOURS = 12
+
+# AdsGram Task Block ID
+ADSGRAM_TASK_ID = "task-44183"
 
 
 # =========================================================
@@ -23,7 +37,7 @@ def get_db():
 
     if not database_url:
         raise RuntimeError(
-            "DATABASE_URL is not configured"
+            "DATABASE_URL is not configured."
         )
 
     return psycopg2.connect(
@@ -33,144 +47,266 @@ def get_db():
 
 
 # =========================================================
+# TIME
+# =========================================================
+
+def utc_now():
+    return datetime.now(timezone.utc)
+
+
+def normalize_datetime(value):
+    if value is None:
+        return None
+
+    if isinstance(value, datetime):
+        if value.tzinfo is None:
+            return value.replace(tzinfo=timezone.utc)
+
+        return value.astimezone(timezone.utc)
+
+    return value
+
+
+# =========================================================
 # DATABASE INITIALIZATION
 # =========================================================
 
 def init_db():
 
     conn = get_db()
-    cursor = conn.cursor()
 
     try:
+
+        cur = conn.cursor()
 
         # -------------------------------------------------
         # USERS
         # -------------------------------------------------
 
-        cursor.execute("""
+        cur.execute("""
             CREATE TABLE IF NOT EXISTS users (
-                id SERIAL PRIMARY KEY,
-                telegram_id BIGINT UNIQUE NOT NULL,
-                first_name TEXT,
-                username TEXT,
-                coins BIGINT DEFAULT 0,
-                language TEXT DEFAULT 'en',
-                referral_count INTEGER DEFAULT 0,
-                referred_by BIGINT,
-                last_daily_reward TIMESTAMP,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-
-        # -------------------------------------------------
-        # WITHDRAWALS
-        # -------------------------------------------------
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS withdrawals (
-                id SERIAL PRIMARY KEY,
-                telegram_id BIGINT NOT NULL,
-                coins BIGINT NOT NULL,
-                amount_usd NUMERIC(20, 6) NOT NULL,
-                method TEXT,
-                account TEXT,
-                status TEXT DEFAULT 'pending',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-
-        # -------------------------------------------------
-        # AD USAGE
-        # -------------------------------------------------
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS ad_usage (
                 telegram_id BIGINT PRIMARY KEY,
+                first_name TEXT DEFAULT '',
+                username TEXT DEFAULT '',
+                language TEXT DEFAULT 'en',
+                coins BIGINT DEFAULT 0,
+                last_daily_reward TIMESTAMPTZ,
                 ads_watched INTEGER DEFAULT 0,
-                window_started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                ads_reset_at TIMESTAMPTZ,
+                created_at TIMESTAMPTZ DEFAULT NOW(),
+                updated_at TIMESTAMPTZ DEFAULT NOW()
             )
         """)
 
         # -------------------------------------------------
-        # AD CLAIM HISTORY
+        # ADD MISSING COLUMNS TO EXISTING USERS TABLE
         # -------------------------------------------------
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS ad_claims (
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS first_name TEXT DEFAULT ''
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS username TEXT DEFAULT ''
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS language TEXT DEFAULT 'en'
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS coins BIGINT DEFAULT 0
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS last_daily_reward TIMESTAMPTZ
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS ads_watched INTEGER DEFAULT 0
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS ads_reset_at TIMESTAMPTZ
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW()
+        """)
+
+        cur.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()
+        """)
+
+        # -------------------------------------------------
+        # TASK COMPLETIONS
+        # -------------------------------------------------
+
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS task_completions (
                 id SERIAL PRIMARY KEY,
                 telegram_id BIGINT NOT NULL,
-                reward_coins BIGINT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
+                task_id TEXT NOT NULL,
+                reward BIGINT NOT NULL DEFAULT 1000,
+                completed_at TIMESTAMPTZ DEFAULT NOW(),
 
-        # -------------------------------------------------
-        # TASKS
-        # -------------------------------------------------
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS tasks (
-                id SERIAL PRIMARY KEY,
-                title TEXT NOT NULL,
-                description TEXT,
-                link TEXT,
-                reward_coins BIGINT DEFAULT 1000,
-                active BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-
-        # -------------------------------------------------
-        # COMPLETED TASKS
-        # -------------------------------------------------
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS completed_tasks (
-                id SERIAL PRIMARY KEY,
-                telegram_id BIGINT NOT NULL,
-                task_id INTEGER NOT NULL,
-                reward_coins BIGINT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE (telegram_id, task_id)
             )
         """)
 
+        # -------------------------------------------------
+        # INDEX
+        # -------------------------------------------------
+
+        cur.execute("""
+            CREATE INDEX IF NOT EXISTS
+            idx_task_completions_user
+            ON task_completions (telegram_id)
+        """)
+
         conn.commit()
-
-    except Exception as e:
-
-        conn.rollback()
-
-        print(
-            "Database initialization error:",
-            e
-        )
-
-        raise
 
     finally:
 
-        cursor.close()
         conn.close()
 
 
-# Initialize database
-init_db()
-
-
 # =========================================================
-# SETTINGS
+# DATABASE HELPERS
 # =========================================================
 
-DAILY_REWARD = 1000
-DAILY_INTERVAL_HOURS = 12
+def get_user(telegram_id):
 
-AD_REWARD = 2000
-MAX_ADS = 10
-AD_INTERVAL_HOURS = 12
+    conn = get_db()
 
-TASK_REWARD = 1000
+    try:
+
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT *
+            FROM users
+            WHERE telegram_id = %s
+        """, (telegram_id,))
+
+        return cur.fetchone()
+
+    finally:
+
+        conn.close()
+
+
+def ensure_user(
+    telegram_id,
+    first_name="",
+    username="",
+    language="en"
+):
+
+    conn = get_db()
+
+    try:
+
+        cur = conn.cursor()
+
+        cur.execute("""
+            INSERT INTO users (
+                telegram_id,
+                first_name,
+                username,
+                language,
+                coins,
+                ads_watched,
+                ads_reset_at
+            )
+            VALUES (
+                %s,
+                %s,
+                %s,
+                %s,
+                0,
+                0,
+                %s
+            )
+            ON CONFLICT (telegram_id)
+            DO UPDATE SET
+                first_name = EXCLUDED.first_name,
+                username = EXCLUDED.username,
+                language = EXCLUDED.language,
+                updated_at = NOW()
+            RETURNING *
+        """, (
+            telegram_id,
+            first_name or "",
+            username or "",
+            language or "en",
+            utc_now()
+        ))
+
+        user = cur.fetchone()
+
+        conn.commit()
+
+        return user
+
+    finally:
+
+        conn.close()
+
+
+def reset_ads_if_needed(cur, user):
+
+    now = utc_now()
+
+    reset_at = normalize_datetime(
+        user.get("ads_reset_at")
+    )
+
+    if reset_at is None:
+
+        cur.execute("""
+            UPDATE users
+            SET
+                ads_watched = 0,
+                ads_reset_at = %s,
+                updated_at = NOW()
+            WHERE telegram_id = %s
+        """, (
+            now,
+            user["telegram_id"]
+        ))
+
+        return 0, now
+
+    if now >= reset_at + timedelta(hours=24):
+
+        cur.execute("""
+            UPDATE users
+            SET
+                ads_watched = 0,
+                ads_reset_at = %s,
+                updated_at = NOW()
+            WHERE telegram_id = %s
+        """, (
+            now,
+            user["telegram_id"]
+        ))
+
+        return 0, now
+
+    return (
+        int(user.get("ads_watched") or 0),
+        reset_at
+    )
 
 
 # =========================================================
@@ -178,7 +314,9 @@ TASK_REWARD = 1000
 # =========================================================
 
 @app.route("/")
-def home():
+def index():
+
+    init_db()
 
     return render_template(
         "index.html"
@@ -186,108 +324,50 @@ def home():
 
 
 # =========================================================
-# API STATUS
-# =========================================================
-
-@app.route("/api/status")
-def status():
-
-    return jsonify({
-        "success": True,
-        "message": "EarnPool API is working",
-        "database": "connected"
-    })
-
-
-# =========================================================
-# CREATE / UPDATE USER
+# REGISTER USER
 # =========================================================
 
 @app.route(
     "/api/user",
     methods=["POST"]
 )
-def create_user():
-
-    data = request.get_json(
-        silent=True
-    )
-
-    if not data:
-
-        return jsonify({
-            "success": False,
-            "message": "No data received"
-        }), 400
-
-    telegram_id = data.get(
-        "telegram_id"
-    )
-
-    if not telegram_id:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Telegram ID is required"
-        }), 400
-
-    first_name = data.get(
-        "first_name",
-        ""
-    )
-
-    username = data.get(
-        "username",
-        ""
-    )
-
-    language = data.get(
-        "language",
-        "en"
-    )
-
-    conn = get_db()
-    cursor = conn.cursor()
+def register_user():
 
     try:
 
-        cursor.execute("""
-            INSERT INTO users (
-                telegram_id,
-                first_name,
-                username,
-                language
+        data = request.get_json(
+            silent=True
+        ) or {}
+
+        telegram_id = data.get(
+            "telegram_id"
+        )
+
+        if not telegram_id:
+            return jsonify({
+                "success": False,
+                "message": "telegram_id is required"
+            }), 400
+
+        telegram_id = int(
+            telegram_id
+        )
+
+        user = ensure_user(
+            telegram_id=telegram_id,
+            first_name=data.get(
+                "first_name",
+                ""
+            ),
+            username=data.get(
+                "username",
+                ""
+            ),
+            language=data.get(
+                "language",
+                "en"
             )
-
-            VALUES (
-                %s,
-                %s,
-                %s,
-                %s
-            )
-
-            ON CONFLICT (telegram_id)
-
-            DO UPDATE SET
-                first_name =
-                    EXCLUDED.first_name,
-                username =
-                    EXCLUDED.username,
-                language =
-                    EXCLUDED.language
-
-            RETURNING *
-        """, (
-            telegram_id,
-            first_name,
-            username,
-            language
-        ))
-
-        user = cursor.fetchone()
-
-        conn.commit()
+        )
 
         return jsonify({
             "success": True,
@@ -296,23 +376,15 @@ def create_user():
 
     except Exception as e:
 
-        conn.rollback()
-
         print(
-            "Create user error:",
+            "REGISTER USER ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Could not save user"
+            "message": "Server error"
         }), 500
-
-    finally:
-
-        cursor.close()
-        conn.close()
 
 
 # =========================================================
@@ -323,49 +395,36 @@ def create_user():
     "/api/user/<int:telegram_id>",
     methods=["GET"]
 )
-def get_user(telegram_id):
-
-    conn = get_db()
-    cursor = conn.cursor()
+def api_get_user(telegram_id):
 
     try:
 
-        cursor.execute("""
-            SELECT
-                telegram_id,
-                first_name,
-                username,
-                coins,
-                language,
-                referral_count,
-                last_daily_reward
-
-            FROM users
-
-            WHERE telegram_id = %s
-        """, (
-            telegram_id,
-        ))
-
-        user = cursor.fetchone()
+        user = get_user(
+            telegram_id
+        )
 
         if not user:
 
-            return jsonify({
-                "success": False,
-                "message":
-                    "User not found"
-            }), 404
+            user = ensure_user(
+                telegram_id
+            )
 
         return jsonify({
             "success": True,
             "user": user
         })
 
-    finally:
+    except Exception as e:
 
-        cursor.close()
-        conn.close()
+        print(
+            "GET USER ERROR:",
+            e
+        )
+
+        return jsonify({
+            "success": False,
+            "message": "Server error"
+        }), 500
 
 
 # =========================================================
@@ -378,136 +437,124 @@ def get_user(telegram_id):
 )
 def daily_reward():
 
-    data = request.get_json(
-        silent=True
-    )
-
-    if not data:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "No data received"
-        }), 400
-
-    telegram_id = data.get(
-        "telegram_id"
-    )
-
-    if not telegram_id:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Telegram ID is required"
-        }), 400
-
     conn = get_db()
-    cursor = conn.cursor()
 
     try:
 
-        cursor.execute("""
-            SELECT
-                telegram_id,
-                coins,
-                last_daily_reward
+        data = request.get_json(
+            silent=True
+        ) or {}
 
+        telegram_id = data.get(
+            "telegram_id"
+        )
+
+        if not telegram_id:
+            return jsonify({
+                "success": False,
+                "message": "telegram_id is required"
+            }), 400
+
+        telegram_id = int(
+            telegram_id
+        )
+
+        cur = conn.cursor()
+
+        # Lock user row
+        cur.execute("""
+            SELECT *
             FROM users
-
             WHERE telegram_id = %s
-
             FOR UPDATE
         """, (
             telegram_id,
         ))
 
-        user = cursor.fetchone()
+        user = cur.fetchone()
 
         if not user:
 
-            return jsonify({
-                "success": False,
-                "message":
-                    "User not found"
-            }), 404
+            cur.execute("""
+                INSERT INTO users (
+                    telegram_id,
+                    coins,
+                    ads_watched,
+                    ads_reset_at
+                )
+                VALUES (
+                    %s,
+                    0,
+                    0,
+                    %s
+                )
+                RETURNING *
+            """, (
+                telegram_id,
+                utc_now()
+            ))
 
-        now = datetime.utcnow()
+            user = cur.fetchone()
 
-        last_reward = (
-            user["last_daily_reward"]
+        last_reward = normalize_datetime(
+            user.get(
+                "last_daily_reward"
+            )
         )
+
+        now = utc_now()
+
+        # -------------------------------------------------
+        # CHECK 12 HOURS
+        # -------------------------------------------------
 
         if last_reward:
 
-            next_reward_time = (
-                last_reward
-                + timedelta(
-                    hours=DAILY_INTERVAL_HOURS
+            next_reward = (
+                last_reward +
+                timedelta(
+                    hours=DAILY_HOURS
                 )
             )
 
-            if now < next_reward_time:
+            if now < next_reward:
 
-                remaining = (
-                    next_reward_time - now
-                )
-
-                total_seconds = int(
-                    remaining.total_seconds()
-                )
-
-                hours = (
-                    total_seconds // 3600
-                )
-
-                minutes = (
-                    total_seconds % 3600
-                ) // 60
+                conn.rollback()
 
                 return jsonify({
                     "success": False,
                     "message":
-                        "Daily reward is not ready",
-                    "hours": hours,
-                    "minutes": minutes,
+                        "Daily reward is not available yet.",
                     "next_reward":
-                        next_reward_time.isoformat()
+                        next_reward.isoformat()
                 })
 
-        cursor.execute("""
+        # -------------------------------------------------
+        # ADD REWARD
+        # -------------------------------------------------
+
+        cur.execute("""
             UPDATE users
-
             SET
-                coins =
-                    coins + %s,
-                last_daily_reward =
-                    %s
-
+                coins = COALESCE(coins, 0) + %s,
+                last_daily_reward = %s,
+                updated_at = NOW()
             WHERE telegram_id = %s
-
-            RETURNING
-                telegram_id,
-                coins,
-                last_daily_reward
+            RETURNING *
         """, (
             DAILY_REWARD,
             now,
             telegram_id
         ))
 
-        updated_user = cursor.fetchone()
+        updated_user = cur.fetchone()
 
         conn.commit()
 
         return jsonify({
             "success": True,
-            "message":
-                "Daily reward claimed",
-            "reward":
-                DAILY_REWARD,
-            "user":
-                updated_user
+            "reward": DAILY_REWARD,
+            "user": updated_user
         })
 
     except Exception as e:
@@ -515,19 +562,17 @@ def daily_reward():
         conn.rollback()
 
         print(
-            "Daily reward error:",
+            "DAILY REWARD ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Daily reward error"
+            "message": "Server error"
         }), 500
 
     finally:
 
-        cursor.close()
         conn.close()
 
 
@@ -542,169 +587,118 @@ def daily_reward():
 def ads_status(telegram_id):
 
     conn = get_db()
-    cursor = conn.cursor()
 
     try:
 
-        cursor.execute("""
-            SELECT telegram_id
+        cur = conn.cursor()
 
+        cur.execute("""
+            SELECT *
             FROM users
-
             WHERE telegram_id = %s
+            FOR UPDATE
         """, (
             telegram_id,
         ))
 
-        user = cursor.fetchone()
+        user = cur.fetchone()
 
         if not user:
 
-            return jsonify({
-                "success": False,
-                "message":
-                    "User not found"
-            }), 404
+            user = ensure_user(
+                telegram_id
+            )
 
-        cursor.execute("""
-            SELECT
-                ads_watched,
-                window_started_at
+            # Re-open transaction
+            cur = conn.cursor()
 
-            FROM ad_usage
+            cur.execute("""
+                SELECT *
+                FROM users
+                WHERE telegram_id = %s
+                FOR UPDATE
+            """, (
+                telegram_id,
+            ))
 
-            WHERE telegram_id = %s
-        """, (
-            telegram_id,
-        ))
+            user = cur.fetchone()
 
-        usage = cursor.fetchone()
-
-        now = datetime.utcnow()
-
-        if not usage:
-
-            return jsonify({
-                "success": True,
-                "ads_watched": 0,
-                "ads_remaining":
-                    MAX_ADS,
-                "limit":
-                    MAX_ADS,
-                "reward_per_ad":
-                    AD_REWARD,
-                "window_hours":
-                    AD_INTERVAL_HOURS
-            })
-
-        window_started = (
-            usage["window_started_at"]
-        )
-
-        next_window = (
-            window_started
-            + timedelta(
-                hours=AD_INTERVAL_HOURS
+        ads_watched, reset_at = (
+            reset_ads_if_needed(
+                cur,
+                user
             )
         )
 
-        if now >= next_window:
+        now = utc_now()
 
-            cursor.execute("""
-                UPDATE ad_usage
-
-                SET
-                    ads_watched = 0,
-                    window_started_at =
-                        %s,
-                    updated_at = %s
-
-                WHERE telegram_id = %s
-            """, (
-                now,
-                now,
-                telegram_id
-            ))
-
-            conn.commit()
-
-            return jsonify({
-                "success": True,
-                "ads_watched": 0,
-                "ads_remaining":
-                    MAX_ADS,
-                "limit":
-                    MAX_ADS,
-                "reward_per_ad":
-                    AD_REWARD,
-                "window_hours":
-                    AD_INTERVAL_HOURS
-            })
-
-        watched = (
-            usage["ads_watched"]
-        )
-
-        remaining_ads = max(
+        remaining = max(
             0,
-            MAX_ADS - watched
+            AD_LIMIT - ads_watched
         )
 
-        remaining_seconds = int(
-            (
-                next_window - now
-            ).total_seconds()
+        next_reset = (
+            reset_at +
+            timedelta(hours=24)
         )
 
-        hours = (
-            remaining_seconds // 3600
-        )
+        if remaining <= 0:
 
-        minutes = (
-            remaining_seconds % 3600
-        ) // 60
+            seconds = max(
+                0,
+                int(
+                    (
+                        next_reset - now
+                    ).total_seconds()
+                )
+            )
+
+            hours = (
+                seconds // 3600
+            )
+
+            minutes = (
+                (seconds % 3600) // 60
+            )
+
+        else:
+
+            hours = 0
+            minutes = 0
+
+        conn.commit()
 
         return jsonify({
             "success": True,
-            "ads_watched":
-                watched,
-            "ads_remaining":
-                remaining_ads,
-            "limit":
-                MAX_ADS,
-            "reward_per_ad":
-                AD_REWARD,
-            "window_hours":
-                AD_INTERVAL_HOURS,
-            "hours_until_reset":
-                hours,
-            "minutes_until_reset":
-                minutes,
-            "next_window":
-                next_window.isoformat()
+            "ads_watched": ads_watched,
+            "limit": AD_LIMIT,
+            "ads_remaining": remaining,
+            "reward": AD_REWARD,
+            "hours_until_reset": hours,
+            "minutes_until_reset": minutes
         })
 
     except Exception as e:
 
+        conn.rollback()
+
         print(
-            "Ads status error:",
+            "ADS STATUS ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Could not load ads status"
+            "message": "Server error"
         }), 500
 
     finally:
 
-        cursor.close()
         conn.close()
 
 
 # =========================================================
-# CLAIM AD
+# CLAIM REWARDED AD
 # =========================================================
 
 @app.route(
@@ -713,249 +707,133 @@ def ads_status(telegram_id):
 )
 def claim_ad():
 
-    data = request.get_json(
-        silent=True
-    )
-
-    if not data:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "No data received"
-        }), 400
-
-    telegram_id = data.get(
-        "telegram_id"
-    )
-
-    if not telegram_id:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Telegram ID is required"
-        }), 400
-
     conn = get_db()
-    cursor = conn.cursor()
 
     try:
 
-        cursor.execute("""
-            SELECT
-                telegram_id,
-                coins
+        data = request.get_json(
+            silent=True
+        ) or {}
 
+        telegram_id = data.get(
+            "telegram_id"
+        )
+
+        if not telegram_id:
+            return jsonify({
+                "success": False,
+                "message": "telegram_id is required"
+            }), 400
+
+        telegram_id = int(
+            telegram_id
+        )
+
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT *
             FROM users
-
             WHERE telegram_id = %s
-
             FOR UPDATE
         """, (
             telegram_id,
         ))
 
-        user = cursor.fetchone()
+        user = cur.fetchone()
 
         if not user:
 
-            return jsonify({
-                "success": False,
-                "message":
-                    "User not found"
-            }), 404
-
-        now = datetime.utcnow()
-
-        cursor.execute("""
-            SELECT
-                ads_watched,
-                window_started_at
-
-            FROM ad_usage
-
-            WHERE telegram_id = %s
-
-            FOR UPDATE
-        """, (
-            telegram_id,
-        ))
-
-        usage = cursor.fetchone()
-
-        if not usage:
-
-            ads_watched = 0
-            window_started = now
-
-            cursor.execute("""
-                INSERT INTO ad_usage (
+            cur.execute("""
+                INSERT INTO users (
                     telegram_id,
+                    coins,
                     ads_watched,
-                    window_started_at,
-                    updated_at
+                    ads_reset_at
                 )
-
                 VALUES (
                     %s,
-                    %s,
-                    %s,
+                    0,
+                    0,
                     %s
                 )
+                RETURNING *
             """, (
                 telegram_id,
-                0,
-                now,
-                now
+                utc_now()
             ))
 
-        else:
+            user = cur.fetchone()
 
-            ads_watched = (
-                usage["ads_watched"]
+        ads_watched, reset_at = (
+            reset_ads_if_needed(
+                cur,
+                user
             )
+        )
 
-            window_started = (
-                usage["window_started_at"]
+        # -------------------------------------------------
+        # LIMIT
+        # -------------------------------------------------
+
+        if ads_watched >= AD_LIMIT:
+
+            next_reset = (
+                reset_at +
+                timedelta(hours=24)
             )
-
-            if (
-                now - window_started
-            ) >= timedelta(
-                hours=AD_INTERVAL_HOURS
-            ):
-
-                ads_watched = 0
-                window_started = now
-
-                cursor.execute("""
-                    UPDATE ad_usage
-
-                    SET
-                        ads_watched = 0,
-                        window_started_at =
-                            %s,
-                        updated_at = %s
-
-                    WHERE telegram_id = %s
-                """, (
-                    now,
-                    now,
-                    telegram_id
-                ))
-
-        if ads_watched >= MAX_ADS:
-
-            next_window = (
-                window_started
-                + timedelta(
-                    hours=AD_INTERVAL_HOURS
-                )
-            )
-
-            remaining = (
-                next_window - now
-            )
-
-            total_seconds = max(
-                0,
-                int(
-                    remaining.total_seconds()
-                )
-            )
-
-            hours = (
-                total_seconds // 3600
-            )
-
-            minutes = (
-                total_seconds % 3600
-            ) // 60
 
             conn.rollback()
 
             return jsonify({
                 "success": False,
                 "message":
-                    "You have reached the ad limit",
-                "ads_watched":
-                    MAX_ADS,
-                "ads_remaining":
-                    0,
-                "hours":
-                    hours,
-                "minutes":
-                    minutes,
-                "next_window":
-                    next_window.isoformat()
+                    "You have reached the daily ad limit.",
+                "ads_remaining": 0,
+                "next_reset":
+                    next_reset.isoformat()
             })
 
-        cursor.execute("""
+        # -------------------------------------------------
+        # GIVE REWARD
+        # -------------------------------------------------
+
+        cur.execute("""
             UPDATE users
-
-            SET coins =
-                coins + %s
-
+            SET
+                coins =
+                    COALESCE(coins, 0) + %s,
+                ads_watched =
+                    COALESCE(ads_watched, 0) + 1,
+                updated_at = NOW()
             WHERE telegram_id = %s
-
-            RETURNING
-                telegram_id,
-                coins
+            RETURNING *
         """, (
             AD_REWARD,
             telegram_id
         ))
 
-        updated_user = cursor.fetchone()
+        updated_user = cur.fetchone()
 
-        new_count = (
+        new_ads_watched = (
             ads_watched + 1
         )
 
-        cursor.execute("""
-            UPDATE ad_usage
-
-            SET
-                ads_watched = %s,
-                updated_at = %s
-
-            WHERE telegram_id = %s
-        """, (
-            new_count,
-            now,
-            telegram_id
-        ))
-
-        cursor.execute("""
-            INSERT INTO ad_claims (
-                telegram_id,
-                reward_coins
-            )
-
-            VALUES (
-                %s,
-                %s
-            )
-        """, (
-            telegram_id,
-            AD_REWARD
-        ))
+        ads_remaining = max(
+            0,
+            AD_LIMIT - new_ads_watched
+        )
 
         conn.commit()
 
         return jsonify({
             "success": True,
-            "message":
-                "Ad reward claimed",
-            "reward":
-                AD_REWARD,
+            "reward": AD_REWARD,
+            "user": updated_user,
             "ads_watched":
-                new_count,
+                new_ads_watched,
             "ads_remaining":
-                MAX_ADS - new_count,
-            "user":
-                updated_user
+                ads_remaining
         })
 
     except Exception as e:
@@ -963,300 +841,131 @@ def claim_ad():
         conn.rollback()
 
         print(
-            "Ad claim error:",
+            "AD CLAIM ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Ad reward error"
+            "message": "Server error"
         }), 500
 
     finally:
 
-        cursor.close()
         conn.close()
 
 
 # =========================================================
-# GET ACTIVE TASKS
-# =========================================================
-#
-# This is the original endpoint.
-#
-# It is kept so existing functionality does not break.
-#
-# =========================================================
-
-@app.route(
-    "/api/tasks/<int:telegram_id>",
-    methods=["GET"]
-)
-def get_tasks(telegram_id):
-
-    conn = get_db()
-    cursor = conn.cursor()
-
-    try:
-
-        cursor.execute("""
-            SELECT telegram_id
-
-            FROM users
-
-            WHERE telegram_id = %s
-        """, (
-            telegram_id,
-        ))
-
-        user = cursor.fetchone()
-
-        if not user:
-
-            return jsonify({
-                "success": False,
-                "message":
-                    "User not found"
-            }), 404
-
-        cursor.execute("""
-            SELECT
-                t.id,
-                t.title,
-                t.description,
-                t.link,
-                t.reward_coins,
-                t.created_at
-
-            FROM tasks t
-
-            WHERE t.active = TRUE
-
-              AND NOT EXISTS (
-
-                    SELECT 1
-
-                    FROM completed_tasks ct
-
-                    WHERE ct.telegram_id = %s
-
-                      AND ct.task_id = t.id
-
-              )
-
-            ORDER BY
-                t.created_at DESC
-        """, (
-            telegram_id,
-        ))
-
-        tasks = cursor.fetchall()
-
-        return jsonify({
-            "success": True,
-            "tasks": tasks
-        })
-
-    except Exception as e:
-
-        print(
-            "Get tasks error:",
-            e
-        )
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Could not load tasks"
-        }), 500
-
-    finally:
-
-        cursor.close()
-        conn.close()
-
-
-# =========================================================
-# GET AVAILABLE TASKS
-# =========================================================
-#
-# IMPORTANT:
-#
-# index.html calls:
-#
-# /api/tasks/available/<telegram_id>
-#
-# The old app.py did not have this endpoint.
-#
-# This endpoint fixes the task loading problem.
-#
+# ADSGRAM TASK
 # =========================================================
 
 @app.route(
     "/api/tasks/available/<int:telegram_id>",
     methods=["GET"]
 )
-def get_available_tasks(telegram_id):
+def available_tasks(telegram_id):
 
     conn = get_db()
-    cursor = conn.cursor()
 
     try:
 
-        # -------------------------------------------------
-        # CHECK USER
-        # -------------------------------------------------
+        cur = conn.cursor()
 
-        cursor.execute("""
-            SELECT
-                telegram_id
-
+        # Make sure user exists
+        cur.execute("""
+            SELECT telegram_id
             FROM users
-
             WHERE telegram_id = %s
         """, (
             telegram_id,
         ))
 
-        user = cursor.fetchone()
+        user = cur.fetchone()
 
         if not user:
 
+            conn.rollback()
+
             return jsonify({
-                "success": False,
-                "message":
-                    "User not found"
-            }), 404
+                "success": True,
+                "tasks": []
+            })
 
         # -------------------------------------------------
-        # GET ACTIVE + NOT COMPLETED TASKS
+        # CHECK ADSGRAM TASK COMPLETION
         # -------------------------------------------------
 
-        cursor.execute("""
-            SELECT
-                t.id,
-                t.title,
-                t.description,
-                t.link,
-                t.reward_coins,
-                t.active,
-                t.created_at
-
-            FROM tasks t
-
-            WHERE t.active = TRUE
-
-              AND NOT EXISTS (
-
-                    SELECT 1
-
-                    FROM completed_tasks ct
-
-                    WHERE ct.telegram_id = %s
-
-                      AND ct.task_id = t.id
-
-              )
-
-            ORDER BY
-                t.created_at DESC,
-                t.id DESC
-        """, (
-            telegram_id,
-        ))
-
-        tasks = cursor.fetchall()
-
-        # -------------------------------------------------
-        # RETURN TASKS
-        # -------------------------------------------------
-
-        return jsonify({
-            "success": True,
-            "tasks": tasks
-        })
-
-    except Exception as e:
-
-        print(
-            "Get available tasks error:",
-            e
-        )
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Could not load available tasks"
-        }), 500
-
-    finally:
-
-        cursor.close()
-        conn.close()
-
-
-# =========================================================
-# COMPLETED TASKS
-# =========================================================
-
-@app.route(
-    "/api/tasks/completed/<int:telegram_id>",
-    methods=["GET"]
-)
-def completed_tasks(
-    telegram_id
-):
-
-    conn = get_db()
-    cursor = conn.cursor()
-
-    try:
-
-        cursor.execute("""
-            SELECT
-                task_id,
-                reward_coins,
-                created_at
-
-            FROM completed_tasks
-
+        cur.execute("""
+            SELECT id
+            FROM task_completions
             WHERE telegram_id = %s
-
-            ORDER BY
-                created_at DESC
+              AND task_id = %s
+            LIMIT 1
         """, (
             telegram_id,
+            ADSGRAM_TASK_ID
         ))
 
-        tasks = cursor.fetchall()
+        completed = cur.fetchone()
+
+        if completed:
+
+            return jsonify({
+                "success": True,
+                "tasks": []
+            })
+
+        # -------------------------------------------------
+        # RETURN ADSGRAM TASK
+        # -------------------------------------------------
+
+        task = {
+            "id": ADSGRAM_TASK_ID,
+
+            "title":
+                "AdsGram Task",
+
+            "description":
+                "Complete the AdsGram task and claim your reward.",
+
+            "reward":
+                TASK_REWARD,
+
+            "adsgram": True,
+
+            "block_id":
+                ADSGRAM_TASK_ID,
+
+            "task_type":
+                "adsgram"
+        }
 
         return jsonify({
             "success": True,
-            "tasks": tasks
+            "tasks": [
+                task
+            ]
         })
 
     except Exception as e:
 
         print(
-            "Completed tasks error:",
+            "TASK LOAD ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Could not load completed tasks"
+            "message": "Server error"
         }), 500
 
     finally:
 
-        cursor.close()
         conn.close()
 
 
 # =========================================================
-# CLAIM TASK
+# CLAIM ADSGRAM TASK
 # =========================================================
 
 @app.route(
@@ -1265,211 +974,136 @@ def completed_tasks(
 )
 def claim_task():
 
-    data = request.get_json(
-        silent=True
-    )
-
-    if not data:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "No data received"
-        }), 400
-
-    telegram_id = data.get(
-        "telegram_id"
-    )
-
-    task_id = data.get(
-        "task_id"
-    )
-
-    if not telegram_id:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Telegram ID is required"
-        }), 400
-
-    if not task_id:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Task ID is required"
-        }), 400
-
     conn = get_db()
-    cursor = conn.cursor()
 
     try:
+
+        data = request.get_json(
+            silent=True
+        ) or {}
+
+        telegram_id = data.get(
+            "telegram_id"
+        )
+
+        task_id = data.get(
+            "task_id"
+        )
+
+        if not telegram_id:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "telegram_id is required"
+            }), 400
+
+        if not task_id:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "task_id is required"
+            }), 400
+
+        telegram_id = int(
+            telegram_id
+        )
+
+        task_id = str(
+            task_id
+        )
+
+        # -------------------------------------------------
+        # ONLY OUR ADSGRAM TASK
+        # -------------------------------------------------
+
+        if task_id != ADSGRAM_TASK_ID:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Invalid task."
+            }), 400
+
+        cur = conn.cursor()
 
         # -------------------------------------------------
         # LOCK USER
         # -------------------------------------------------
 
-        cursor.execute("""
-            SELECT
-                telegram_id,
-                coins
-
+        cur.execute("""
+            SELECT *
             FROM users
-
             WHERE telegram_id = %s
-
             FOR UPDATE
         """, (
             telegram_id,
         ))
 
-        user = cursor.fetchone()
+        user = cur.fetchone()
 
         if not user:
 
-            return jsonify({
-                "success": False,
-                "message":
-                    "User not found"
-            }), 404
+            cur.execute("""
+                INSERT INTO users (
+                    telegram_id,
+                    coins,
+                    ads_watched,
+                    ads_reset_at
+                )
+                VALUES (
+                    %s,
+                    0,
+                    0,
+                    %s
+                )
+                RETURNING *
+            """, (
+                telegram_id,
+                utc_now()
+            ))
+
+            user = cur.fetchone()
 
         # -------------------------------------------------
-        # GET TASK
+        # PREVENT DOUBLE REWARD
         # -------------------------------------------------
 
-        cursor.execute("""
-            SELECT
-                id,
-                title,
-                description,
-                link,
-                reward_coins,
-                active
-
-            FROM tasks
-
-            WHERE id = %s
-        """, (
-            task_id,
-        ))
-
-        task = cursor.fetchone()
-
-        if not task:
-
-            conn.rollback()
-
-            return jsonify({
-                "success": False,
-                "message":
-                    "Task not found"
-            }), 404
-
-        # -------------------------------------------------
-        # TASK ACTIVE?
-        # -------------------------------------------------
-
-        if not task["active"]:
-
-            conn.rollback()
-
-            return jsonify({
-                "success": False,
-                "message":
-                    "Task is no longer available"
-            })
-
-        # -------------------------------------------------
-        # CHECK COMPLETED
-        # -------------------------------------------------
-
-        cursor.execute("""
-            SELECT
-                id
-
-            FROM completed_tasks
-
+        cur.execute("""
+            SELECT id
+            FROM task_completions
             WHERE telegram_id = %s
-
               AND task_id = %s
-
-            LIMIT 1
+            FOR UPDATE
         """, (
             telegram_id,
             task_id
         ))
 
-        already_completed = (
-            cursor.fetchone()
-        )
+        existing = cur.fetchone()
 
-        if already_completed:
+        if existing:
 
             conn.rollback()
 
             return jsonify({
                 "success": False,
+                "already_completed": True,
                 "message":
-                    "Task already completed",
-                "already_completed":
-                    True
+                    "This task has already been completed."
             })
 
         # -------------------------------------------------
-        # GET REWARD
+        # SAVE COMPLETION
         # -------------------------------------------------
 
-        try:
-
-            reward = int(
-                task["reward_coins"]
-                or TASK_REWARD
-            )
-
-        except Exception:
-
-            reward = TASK_REWARD
-
-        if reward <= 0:
-
-            reward = TASK_REWARD
-
-        # -------------------------------------------------
-        # ADD COINS
-        # -------------------------------------------------
-
-        cursor.execute("""
-            UPDATE users
-
-            SET coins =
-                coins + %s
-
-            WHERE telegram_id = %s
-
-            RETURNING
-                telegram_id,
-                coins
-        """, (
-            reward,
-            telegram_id
-        ))
-
-        updated_user = (
-            cursor.fetchone()
-        )
-
-        # -------------------------------------------------
-        # SAVE COMPLETED TASK
-        # -------------------------------------------------
-
-        cursor.execute("""
-            INSERT INTO completed_tasks (
+        cur.execute("""
+            INSERT INTO task_completions (
                 telegram_id,
                 task_id,
-                reward_coins
+                reward
             )
-
             VALUES (
                 %s,
                 %s,
@@ -1478,21 +1112,35 @@ def claim_task():
         """, (
             telegram_id,
             task_id,
-            reward
+            TASK_REWARD
         ))
+
+        # -------------------------------------------------
+        # ADD COINS
+        # -------------------------------------------------
+
+        cur.execute("""
+            UPDATE users
+            SET
+                coins =
+                    COALESCE(coins, 0) + %s,
+                updated_at = NOW()
+            WHERE telegram_id = %s
+            RETURNING *
+        """, (
+            TASK_REWARD,
+            telegram_id
+        ))
+
+        updated_user = cur.fetchone()
 
         conn.commit()
 
         return jsonify({
             "success": True,
-            "message":
-                "Task reward claimed",
-            "reward":
-                reward,
-            "task_id":
-                task_id,
-            "user":
-                updated_user
+            "reward": TASK_REWARD,
+            "task_id": ADSGRAM_TASK_ID,
+            "user": updated_user
         })
 
     except psycopg2.errors.UniqueViolation:
@@ -1501,10 +1149,9 @@ def claim_task():
 
         return jsonify({
             "success": False,
+            "already_completed": True,
             "message":
-                "Task already completed",
-            "already_completed":
-                True
+                "This task has already been completed."
         })
 
     except Exception as e:
@@ -1512,216 +1159,174 @@ def claim_task():
         conn.rollback()
 
         print(
-            "Task claim error:",
+            "TASK CLAIM ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Task reward error"
+            "message": "Server error"
         }), 500
 
     finally:
 
-        cursor.close()
         conn.close()
 
 
 # =========================================================
-# CREATE TASK
+# TASK STATUS
 # =========================================================
 
 @app.route(
-    "/api/tasks",
-    methods=["POST"]
+    "/api/tasks/status/<int:telegram_id>",
+    methods=["GET"]
 )
-def create_task():
-
-    data = request.get_json(
-        silent=True
-    )
-
-    if not data:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "No data received"
-        }), 400
-
-    title = data.get(
-        "title"
-    )
-
-    description = data.get(
-        "description",
-        ""
-    )
-
-    link = data.get(
-        "link",
-        ""
-    )
-
-    reward = data.get(
-        "reward_coins",
-        TASK_REWARD
-    )
-
-    if not title:
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Task title is required"
-        }), 400
-
-    try:
-
-        reward = int(
-            reward
-        )
-
-    except Exception:
-
-        reward = TASK_REWARD
-
-    if reward <= 0:
-
-        reward = TASK_REWARD
+def task_status(telegram_id):
 
     conn = get_db()
-    cursor = conn.cursor()
 
     try:
 
-        cursor.execute("""
-            INSERT INTO tasks (
-                title,
-                description,
-                link,
-                reward_coins,
-                active
-            )
+        cur = conn.cursor()
 
-            VALUES (
-                %s,
-                %s,
-                %s,
-                %s,
-                TRUE
-            )
-
-            RETURNING *
+        cur.execute("""
+            SELECT id, completed_at
+            FROM task_completions
+            WHERE telegram_id = %s
+              AND task_id = %s
+            LIMIT 1
         """, (
-            title,
-            description,
-            link,
-            reward
+            telegram_id,
+            ADSGRAM_TASK_ID
         ))
 
-        task = cursor.fetchone()
-
-        conn.commit()
+        completed = cur.fetchone()
 
         return jsonify({
             "success": True,
-            "message":
-                "Task created",
-            "task":
-                task
+            "task_id":
+                ADSGRAM_TASK_ID,
+            "completed":
+                bool(completed),
+            "reward":
+                TASK_REWARD
         })
 
     except Exception as e:
 
-        conn.rollback()
-
         print(
-            "Create task error:",
+            "TASK STATUS ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Could not create task"
+            "message": "Server error"
         }), 500
 
     finally:
 
-        cursor.close()
         conn.close()
 
 
 # =========================================================
-# DEACTIVATE TASK
+# REFERRAL / ACCOUNT BASIC API
 # =========================================================
 
 @app.route(
-    "/api/tasks/<int:task_id>",
-    methods=["DELETE"]
+    "/api/account/<int:telegram_id>",
+    methods=["GET"]
 )
-def deactivate_task(task_id):
-
-    conn = get_db()
-    cursor = conn.cursor()
+def account(telegram_id):
 
     try:
 
-        cursor.execute("""
-            UPDATE tasks
+        user = get_user(
+            telegram_id
+        )
 
-            SET active = FALSE
-
-            WHERE id = %s
-
-            RETURNING *
-        """, (
-            task_id,
-        ))
-
-        task = cursor.fetchone()
-
-        if not task:
-
-            conn.rollback()
+        if not user:
 
             return jsonify({
                 "success": False,
                 "message":
-                    "Task not found"
+                    "User not found."
             }), 404
-
-        conn.commit()
 
         return jsonify({
             "success": True,
-            "message":
-                "Task deactivated",
-            "task":
-                task
+            "user": user
         })
 
     except Exception as e:
 
-        conn.rollback()
-
         print(
-            "Deactivate task error:",
+            "ACCOUNT ERROR:",
             e
         )
 
         return jsonify({
             "success": False,
-            "message":
-                "Could not deactivate task"
+            "message": "Server error"
         }), 500
 
-    finally:
 
-        cursor.close()
-        conn.close()
+# =========================================================
+# HEALTH CHECK
+# =========================================================
+
+@app.route(
+    "/health",
+    methods=["GET"]
+)
+def health():
+
+    try:
+
+        conn = get_db()
+
+        try:
+
+            cur = conn.cursor()
+
+            cur.execute(
+                "SELECT 1"
+            )
+
+            cur.fetchone()
+
+        finally:
+
+            conn.close()
+
+        return jsonify({
+            "success": True,
+            "status": "ok"
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "status": "error",
+            "message": str(e)
+        }), 500
+
+
+# =========================================================
+# STARTUP
+# =========================================================
+
+try:
+
+    init_db()
+
+except Exception as e:
+
+    print(
+        "DATABASE INITIALIZATION ERROR:",
+        e
+    )
 
 
 # =========================================================
@@ -1730,7 +1335,15 @@ def deactivate_task(task_id):
 
 if __name__ == "__main__":
 
+    port = int(
+        os.environ.get(
+            "PORT",
+            5000
+        )
+    )
+
     app.run(
         host="0.0.0.0",
-        port=5000
+        port=port,
+        debug=False
         )
