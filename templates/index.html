@@ -280,6 +280,23 @@
             line-height: 1.7;
         }
 
+        /* ADSGRAM TASK */
+
+        .adsgram-task-wrapper {
+            margin-top: 15px;
+        }
+
+        adsgram-task {
+            display: block;
+            width: 100%;
+
+            --adsgram-task-font-size: 15px;
+            --adsgram-task-icon-size: 42px;
+            --adsgram-task-icon-title-gap: 10px;
+            --adsgram-task-icon-border-radius: 10px;
+            --adsgram-task-button-width: 100%;
+        }
+
         /* BOTTOM NAV */
 
         .bottom-nav {
@@ -646,6 +663,25 @@ const TASK_REWARD = 1000;
 
 const AD_LIMIT = 10;
 
+/*
+=========================================================
+ADSGRAM TASK
+=========================================================
+*/
+
+const ADSGRAM_TASK_ID = "task-44183";
+
+let adsgramTaskElement = null;
+
+let adsgramTaskRewarded = false;
+
+
+/*
+=========================================================
+TRANSLATIONS
+=========================================================
+*/
+
 const translations = {
 
     en: {
@@ -745,6 +781,15 @@ const translations = {
 
         tasksLoading:
             "⏳ Loading tasks...",
+
+        taskError:
+            "❌ AdsGram task could not be loaded.",
+
+        taskNotFound:
+            "🎯 No AdsGram task is available right now.",
+
+        taskSession:
+            "🔄 Please restart the Mini App to receive a new task.",
 
         error:
             "Something went wrong. Please try again."
@@ -867,6 +912,15 @@ const translations = {
         tasksLoading:
             "⏳ در حال دریافت تسک‌ها...",
 
+        taskError:
+            "❌ تسک AdsGram بارگذاری نشد.",
+
+        taskNotFound:
+            "🎯 فعلاً تسک AdsGram موجود نیست.",
+
+        taskSession:
+            "🔄 برای دریافت تسک جدید، Mini App را دوباره باز کنید.",
+
         error:
             "خطایی رخ داد. دوباره تلاش کنید."
 
@@ -988,12 +1042,22 @@ const translations = {
         tasksLoading:
             "⏳ جارٍ تحميل المهام...",
 
+        taskError:
+            "❌ تعذر تحميل مهمة AdsGram.",
+
+        taskNotFound:
+            "🎯 لا توجد مهمة AdsGram متاحة حاليًا.",
+
+        taskSession:
+            "🔄 أعد تشغيل التطبيق المصغر للحصول على مهمة جديدة.",
+
         error:
             "حدث خطأ. حاول مرة أخرى."
 
     }
 
 };
+
 
 const sectionIcons = {
 
@@ -1007,6 +1071,7 @@ const sectionIcons = {
 };
 
 let currentSection = "daily";
+
 
 function updateBalance() {
 
@@ -1024,6 +1089,7 @@ function updateBalance() {
         "≈ $" + usd.toFixed(6);
 
 }
+
 
 function detectLanguage() {
 
@@ -1059,6 +1125,7 @@ function detectLanguage() {
 
 }
 
+
 function getLanguage() {
 
     return (
@@ -1067,6 +1134,8 @@ function getLanguage() {
     );
 
 }
+
+
 function applyLanguage(lang) {
 
     if (!translations[lang]) {
@@ -1989,18 +2058,9 @@ async function watchAd() {
 
     try {
 
-        /*
-         نمایش تبلیغ
-        */
-
         const result =
             await AdController.show();
 
-
-        /*
-         فقط اگر تبلیغ کامل دیده شده باشد
-         درخواست پاداش به سرور ارسال می‌شود.
-        */
 
         if (
             !result ||
@@ -2023,10 +2083,6 @@ async function watchAd() {
         message.textContent =
             "⏳ Processing reward...";
 
-
-        /*
-         دریافت پاداش از Backend
-        */
 
         const response =
             await fetch(
@@ -2132,6 +2188,7 @@ async function watchAd() {
 
 /* =====================================================
    TASKS
+   ADSGRAM TASK
 ===================================================== */
 
 async function loadTasks() {
@@ -2164,11 +2221,6 @@ async function loadTasks() {
 
 
     try {
-
-        /*
-         دریافت فقط تسک‌هایی که
-         کاربر قبلاً انجام نداده است.
-        */
 
         const response =
             await fetch(
@@ -2247,7 +2299,7 @@ async function loadTasks() {
 
 
 /* =====================================================
-   CREATE TASK CARD
+   CREATE ADSGRAM TASK CARD
 ===================================================== */
 
 function createTaskCard(task) {
@@ -2257,8 +2309,27 @@ function createTaskCard(task) {
             "tasksList"
         );
 
+    const message =
+        document.getElementById(
+            "taskMessage"
+        );
+
     const t =
         translations[getLanguage()];
+
+
+    /*
+    فقط Task موردنظر AdsGram
+    */
+
+    if (
+        !task ||
+        task.id !== ADSGRAM_TASK_ID
+    ) {
+
+        return;
+
+    }
 
 
     const card =
@@ -2280,7 +2351,7 @@ function createTaskCard(task) {
 
     title.textContent =
         task.title ||
-        "Task";
+        "AdsGram Task";
 
 
     const description =
@@ -2308,51 +2379,200 @@ function createTaskCard(task) {
         t.taskReward;
 
 
-    const button =
+    /*
+    ظرف Task واقعی AdsGram
+    */
+
+    const wrapper =
         document.createElement(
-            "button"
+            "div"
         );
 
-    button.className =
-        "task-button";
-
-    button.textContent =
-        t.completeTask;
+    wrapper.className =
+        "adsgram-task-wrapper";
 
 
-    button.onclick =
-        function() {
+    /*
+    کامپوننت رسمی AdsGram
+    */
 
-            completeTask(
-                task,
-                button
+    const adsTask =
+        document.createElement(
+            "adsgram-task"
+        );
+
+
+    adsTask.setAttribute(
+        "data-block-id",
+        ADSGRAM_TASK_ID
+    );
+
+
+    /*
+    برای تست:
+    false نگه داشته شده تا
+    Task واقعی دریافت شود.
+    */
+
+    adsTask.setAttribute(
+        "data-debug",
+        "false"
+    );
+
+
+    adsTask.setAttribute(
+        "data-debug-console",
+        "false"
+    );
+
+
+    /*
+    ذخیره reference
+    */
+
+    adsgramTaskElement =
+        adsTask;
+
+
+    /*
+    =====================================================
+    EVENT: reward
+    =====================================================
+    */
+
+    adsTask.addEventListener(
+        "reward",
+        async function(event) {
+
+            await handleAdsGramTaskReward(
+                card,
+                adsTask,
+                event
             );
 
-        };
+        }
+    );
 
 
-    card.appendChild(title);
+    /*
+    =====================================================
+    EVENT: onError
+    =====================================================
+    */
+
+    adsTask.addEventListener(
+        "onError",
+        function(event) {
+
+            console.error(
+                "AdsGram Task onError:",
+                event
+            );
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                t.taskError;
+
+        }
+    );
+
+
+    /*
+    =====================================================
+    EVENT: onBannerNotFound
+    =====================================================
+    */
+
+    adsTask.addEventListener(
+        "onBannerNotFound",
+        function(event) {
+
+            console.warn(
+                "AdsGram Task banner not found:",
+                event
+            );
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                t.taskNotFound;
+
+        }
+    );
+
+
+    /*
+    =====================================================
+    EVENT: onTooLongSession
+    =====================================================
+    */
+
+    adsTask.addEventListener(
+        "onTooLongSession",
+        function(event) {
+
+            console.warn(
+                "AdsGram Task session too long:",
+                event
+            );
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                t.taskSession;
+
+        }
+    );
+
+
+    wrapper.appendChild(
+        adsTask
+    );
+
+
+    card.appendChild(
+        title
+    );
+
 
     if (task.description) {
-        card.appendChild(description);
+
+        card.appendChild(
+            description
+        );
+
     }
 
-    card.appendChild(reward);
 
-    card.appendChild(button);
+    card.appendChild(
+        reward
+    );
 
-    list.appendChild(card);
+
+    card.appendChild(
+        wrapper
+    );
+
+
+    list.appendChild(
+        card
+    );
 
 }
 
 
 /* =====================================================
-   COMPLETE TASK
+   ADSGRAM TASK REWARD
 ===================================================== */
 
-async function completeTask(
-    task,
-    button
+async function handleAdsGramTaskReward(
+    card,
+    adsTask,
+    event
 ) {
 
     if (!user) {
@@ -2360,9 +2580,16 @@ async function completeTask(
     }
 
 
-    if (!task || !task.id) {
+    /*
+    جلوگیری از ارسال دوباره
+    */
+
+    if (adsgramTaskRewarded) {
         return;
     }
+
+
+    adsgramTaskRewarded = true;
 
 
     const message =
@@ -2374,10 +2601,11 @@ async function completeTask(
         translations[getLanguage()];
 
 
-    button.disabled = true;
+    message.className =
+        "task-message task-success";
 
-    button.textContent =
-        "⏳";
+    message.textContent =
+        "⏳ Processing reward...";
 
 
     try {
@@ -2401,7 +2629,7 @@ async function completeTask(
                                 user.id,
 
                             task_id:
-                                task.id
+                                ADSGRAM_TASK_ID
 
                         })
 
@@ -2413,11 +2641,13 @@ async function completeTask(
             await response.json();
 
 
-        if (data.success) {
+        /*
+        =================================================
+        SUCCESS
+        =================================================
+        */
 
-            /*
-             به‌روزرسانی موجودی
-            */
+        if (data.success) {
 
             coins =
                 Number(
@@ -2427,10 +2657,6 @@ async function completeTask(
             updateBalance();
 
 
-            /*
-             نمایش موفقیت
-            */
-
             message.className =
                 "task-message task-success";
 
@@ -2439,13 +2665,8 @@ async function completeTask(
 
 
             /*
-             حذف فوری تسک از صفحه
-             */
-
-            const card =
-                button.closest(
-                    ".task-card"
-                );
+            حذف Task از صفحه
+            */
 
             if (card) {
 
@@ -2454,14 +2675,19 @@ async function completeTask(
             }
 
 
+            adsgramTaskRewarded =
+                true;
+
+
             /*
-             اگر دیگر تسکی باقی نمانده
+            بررسی اینکه Task دیگری نیست
             */
 
             const list =
                 document.getElementById(
                     "tasksList"
                 );
+
 
             if (
                 !list.children.length
@@ -2472,120 +2698,61 @@ async function completeTask(
 
             }
 
-        } else {
 
-            button.disabled = false;
+            return;
 
-            button.textContent =
-                t.completeTask;
+        }
 
+
+        /*
+        =================================================
+        ALREADY COMPLETED
+        =================================================
+        */
+
+        if (
+            data.already_completed
+        ) {
 
             message.className =
                 "task-message task-error";
 
+            message.textContent =
+                t.taskAlready;
 
-            if (
-                data.already_completed
-            ) {
 
-                message.textContent =
-                    t.taskAlready;
+            if (card) {
 
-                /*
-                 اگر سرور بگوید قبلاً انجام شده،
-                 آن تسک از صفحه حذف می‌شود.
-                */
-
-                const card =
-                    button.closest(
-                        ".task-card"
-                    );
-
-                if (card) {
-                    card.remove();
-                }
-
-            } else {
-
-                message.textContent =
-                    data.message ||
-                    t.error;
+                card.remove();
 
             }
 
+
+            return;
+
         }
 
-    } catch (error) {
 
-        console.error(
-            "Task claim error:",
-            error
-        );
+        /*
+        =================================================
+        SERVER ERROR
+        =================================================
+        */
 
-        button.disabled = false;
+        adsgramTaskRewarded =
+            false;
 
-        button.textContent =
-            t.completeTask;
 
         message.className =
             "task-message task-error";
 
         message.textContent =
+            data.message ||
             t.error;
 
-    }
 
-}
+    } catch (error) {
 
-
-/* =====================================================
-   START USER
-===================================================== */
-
-async function startUser() {
-
-    await registerUser();
-
-    await loadUserBalance();
-
-    await checkDailyReward();
-
-}
-
-
-/* =====================================================
-   INITIAL LANGUAGE
-===================================================== */
-
-let savedLanguage =
-    localStorage.getItem(
-        "language"
-    );
-
-
-if (
-    !savedLanguage ||
-    !translations[savedLanguage]
-) {
-
-    savedLanguage =
-        detectLanguage();
-
-}
-
-
-applyLanguage(
-    savedLanguage
-);
-
-
-updateBalance();
-
-
-startUser();
-
-</script>
-
-</body>
-
-            </html>
+        console.error(
+            "AdsGram Task reward error:",
+       
