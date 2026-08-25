@@ -2203,10 +2203,44 @@ def claim_task():
 
         updated_user = cur.fetchone()
 
-        conn.commit()
+                conn.commit()
 
         return jsonify({
-            "success":
+            "success": True,
+            "reward": TASK_REWARD,
+            "task_id": ADSGRAM_TASK_ID,
+            "user": updated_user
+        })
+
+    except psycopg2.errors.UniqueViolation:
+
+        conn.rollback()
+
+        return jsonify({
+            "success": False,
+            "already_completed": True,
+            "message":
+                "This task has already been completed."
+        })
+
+    except Exception as e:
+
+        conn.rollback()
+
+        print(
+            "TASK CLAIM ERROR:",
+            e
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Server error"
+        }), 500
+
+    finally:
+
+        conn.close()
             
 
 # =========================================================
