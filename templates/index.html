@@ -2153,7 +2153,6 @@ async function loadTasks() {
     const t =
         translations[getLanguage()];
 
-
     list.innerHTML = "";
 
     message.className =
@@ -2162,13 +2161,7 @@ async function loadTasks() {
     message.textContent =
         t.tasksLoading;
 
-
     try {
-
-        /*
-         دریافت فقط تسک‌هایی که
-         کاربر قبلاً انجام نداده است.
-        */
 
         const response =
             await fetch(
@@ -2176,10 +2169,8 @@ async function loadTasks() {
                 encodeURIComponent(user.id)
             );
 
-
         const data =
             await response.json();
-
 
         if (!data.success) {
 
@@ -2191,8 +2182,31 @@ async function loadTasks() {
                 t.error;
 
             return;
-
         }
+
+        /*
+         * AdsGram خودش Task واقعی را
+         * نمایش و مدیریت می‌کند.
+         */
+
+        createAdsGramTask();
+
+        message.textContent = "";
+
+    } catch (error) {
+
+        console.error(
+            "Tasks loading error:",
+            error
+        );
+
+        message.className =
+            "task-message task-error";
+
+        message.textContent =
+            t.error;
+    }
+}
 
 
         const tasks =
@@ -2250,17 +2264,415 @@ async function loadTasks() {
    CREATE TASK CARD
 ===================================================== */
 
-function createTaskCard(task) {
+function createAdsGramTask() {
 
     const list =
         document.getElementById(
             "tasksList"
         );
 
+    const message =
+        document.getElementById(
+            "taskMessage"
+        );
+
     const t =
         translations[getLanguage()];
 
+    list.innerHTML = "";
 
+    /*
+     * =========================================
+     * ADSGRAM TASK
+     * =========================================
+     */
+
+    const task =
+        document.createElement(
+            "adsgram-task"
+        );
+
+    task.setAttribute(
+        "data-block-id",
+        "task-44183"
+    );
+
+    task.setAttribute(
+        "data-debug",
+        "false"
+    );
+
+    task.setAttribute(
+        "data-debug-console",
+        "false"
+    );
+
+    task.className =
+        "adsgram-task";
+
+
+    /*
+     * =========================================
+     * REWARD
+     * =========================================
+     */
+
+    const reward =
+        document.createElement(
+            "div"
+        );
+
+    reward.setAttribute(
+        "slot",
+        "reward"
+    );
+
+    reward.className =
+        "task-adsgram-reward";
+
+    reward.textContent =
+        "🪙 1000 coins";
+
+
+    /*
+     * =========================================
+     * BUTTON
+     * =========================================
+     */
+
+    const button =
+        document.createElement(
+            "div"
+        );
+
+    button.setAttribute(
+        "slot",
+        "button"
+    );
+
+    button.className =
+        "task-adsgram-button";
+
+    button.textContent =
+        t.completeTask;
+
+
+    /*
+     * =========================================
+     * CLAIM
+     * =========================================
+     */
+
+    const claim =
+        document.createElement(
+            "div"
+        );
+
+    claim.setAttribute(
+        "slot",
+        "claim"
+    );
+
+    claim.className =
+        "task-adsgram-claim";
+
+    claim.textContent =
+        "⏳ Verifying...";
+
+
+    /*
+     * =========================================
+     * DONE
+     * =========================================
+     */
+
+    const done =
+        document.createElement(
+            "div"
+        );
+
+    done.setAttribute(
+        "slot",
+        "done"
+    );
+
+    done.className =
+        "task-adsgram-done";
+
+    done.textContent =
+        "✅ Completed";
+
+
+    /*
+     * =========================================
+     * ADD ELEMENTS
+     * =========================================
+     */
+
+    task.appendChild(
+        reward
+    );
+
+    task.appendChild(
+        button
+    );
+
+    task.appendChild(
+        claim
+    );
+
+    task.appendChild(
+        done
+    );
+
+    list.appendChild(
+        task
+    );
+
+
+    /*
+     * =========================================
+     * TASK COMPLETED
+     * =========================================
+     *
+     * فقط وقتی AdsGram بگوید
+     * Task واقعاً انجام شده است.
+     */
+
+    task.addEventListener(
+        "reward",
+        async function(event) {
+
+            console.log(
+                "AdsGram task reward:",
+                event.detail
+            );
+
+            message.className =
+                "task-message task-success";
+
+            message.textContent =
+                "⏳ Verifying task...";
+
+            await claimAdsGramTask();
+
+        }
+    );
+
+
+    /*
+     * =========================================
+     * NO TASK
+     * =========================================
+     */
+
+    task.addEventListener(
+        "onBannerNotFound",
+        function(event) {
+
+            console.log(
+                "AdsGram: No task available",
+                event.detail
+            );
+
+            list.innerHTML = "";
+
+            message.className =
+                "task-message";
+
+            message.textContent =
+                t.noTasks;
+        }
+    );
+
+
+    /*
+     * =========================================
+     * ADSGRAM ERROR
+     * =========================================
+     */
+
+    task.addEventListener(
+        "onError",
+        function(event) {
+
+            console.error(
+                "AdsGram task error:",
+                event.detail
+            );
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                t.error;
+        }
+    );
+
+
+    /*
+     * =========================================
+     * TOO LONG SESSION
+     * =========================================
+     */
+
+    task.addEventListener(
+        "onTooLongSession",
+        function(event) {
+
+            console.warn(
+                "AdsGram session too long"
+            );
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                "Please restart the app and try again.";
+        }
+    );
+
+}
+
+async function claimAdsGramTask() {
+
+    if (!user) {
+        return;
+    }
+
+    const message =
+        document.getElementById(
+            "taskMessage"
+        );
+
+    const t =
+        translations[getLanguage()];
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/tasks/claim",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            telegram_id:
+                                user.id,
+
+                            task_id:
+                                "task-44183"
+
+                        })
+
+                }
+            );
+
+        const data =
+            await response.json();
+
+
+        /*
+         * =====================================
+         * SUCCESS
+         * =====================================
+         */
+
+        if (data.success) {
+
+            coins =
+                Number(
+                    data.user.coins
+                );
+
+            updateBalance();
+
+            message.className =
+                "task-message task-success";
+
+            message.textContent =
+                t.taskSuccess;
+
+
+            /*
+             * Task انجام شده است.
+             * دیگر برای این کاربر نمایش داده نشود.
+             */
+
+            const list =
+                document.getElementById(
+                    "tasksList"
+                );
+
+            list.innerHTML = "";
+
+            return;
+        }
+
+
+        /*
+         * =====================================
+         * ALREADY COMPLETED
+         * =====================================
+         */
+
+        if (
+            data.already_completed
+        ) {
+
+            message.className =
+                "task-message";
+
+            message.textContent =
+                t.taskAlready;
+
+            const list =
+                document.getElementById(
+                    "tasksList"
+                );
+
+            list.innerHTML = "";
+
+            return;
+        }
+
+
+        /*
+         * =====================================
+         * ERROR
+         * =====================================
+         */
+
+        message.className =
+            "task-message task-error";
+
+        message.textContent =
+            data.message ||
+            t.error;
+
+    } catch (error) {
+
+        console.error(
+            "AdsGram task claim error:",
+            error
+        );
+
+        message.className =
+            "task-message task-error";
+
+        message.textContent =
+            t.error;
+    }
+
+                }
     const card =
         document.createElement(
             "div"
