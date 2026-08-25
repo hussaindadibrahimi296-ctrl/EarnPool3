@@ -3,384 +3,384 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
-    <title>EarnPool</title>
+<title>EarnPool</title>
 
-    <!-- Telegram Mini App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!-- Telegram Mini App -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- AdsGram -->
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+<!-- AdsGram -->
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+    * {
+        box-sizing: border-box;
+    }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            min-height: 100%;
-            font-family: Arial, sans-serif;
-            background: #10131a;
-            color: white;
-        }
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        font-family: Arial, sans-serif;
+        background: #10131a;
+        color: white;
+    }
 
-        body {
-            padding-bottom: 88px;
-        }
+    body {
+        padding-bottom: 88px;
+    }
 
-        button {
-            font-family: inherit;
-        }
+    button {
+        font-family: inherit;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+    }
+
+    .logo {
+        font-size: 23px;
+        font-weight: bold;
+    }
+
+    .language-button {
+        border: none;
+        background: #1c2330;
+        color: white;
+        border-radius: 10px;
+        padding: 8px 11px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .language-menu {
+        display: none;
+        position: absolute;
+        top: 58px;
+        right: 15px;
+        background: #1c2330;
+        border-radius: 12px;
+        padding: 6px;
+        z-index: 100;
+        box-shadow: 0 8px 25px rgba(0,0,0,.35);
+    }
+
+    .language-menu.show {
+        display: block;
+    }
+
+    .language-option {
+        display: block;
+        width: 125px;
+        border: none;
+        background: transparent;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .language-option:active {
+        background: #293242;
+    }
+
+    .balance-card {
+        background: #191e29;
+        border-radius: 20px;
+        padding: 22px;
+        text-align: center;
+        margin-bottom: 18px;
+    }
+
+    .balance-title {
+        color: #9da5b4;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .coins {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .usd-value {
+        margin-top: 6px;
+        color: #8f98a8;
+        font-size: 15px;
+    }
+
+    .content-card {
+        background: #191e29;
+        border-radius: 20px;
+        padding: 22px;
+        min-height: 330px;
+    }
+
+    .content-icon {
+        font-size: 42px;
+        margin-bottom: 12px;
+    }
+
+    .content-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .content-text {
+        color: #aeb5c1;
+        line-height: 1.8;
+        font-size: 15px;
+    }
+
+    .reward-button,
+    .watch-ad-button {
+        width: 100%;
+        border: none;
+        background: #2d7dff;
+        color: white;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 18px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .reward-button:disabled,
+    .watch-ad-button:disabled {
+        background: #303744;
+        color: #8f98a8;
+        cursor: not-allowed;
+    }
+
+    .reward-status,
+    .ads-message,
+    .task-message {
+        text-align: center;
+        margin-top: 14px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .reward-success,
+    .ads-success,
+    .task-success {
+        color: #58d68d;
+    }
+
+    .reward-waiting,
+    .ads-waiting {
+        color: #aeb5c1;
+    }
+
+    .reward-error,
+    .ads-error,
+    .task-error {
+        color: #ff7777;
+    }
+
+    .ads-panel {
+        margin-top: 20px;
+    }
+
+    .ads-info {
+        background: #111722;
+        border-radius: 14px;
+        padding: 14px;
+        margin-top: 15px;
+    }
+
+    .ads-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+        color: #b5bdc9;
+        font-size: 14px;
+    }
+
+    .ads-row strong {
+        color: white;
+    }
+
+    /* TASKS */
+
+    .tasks-panel {
+        margin-top: 20px;
+    }
+
+    .task-card {
+        background: #111722;
+        border-radius: 15px;
+        padding: 15px;
+        margin-top: 12px;
+    }
+
+    .task-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 7px;
+    }
+
+    .task-description {
+        color: #aeb5c1;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    .task-reward {
+        color: #ffd166;
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .task-button {
+        width: 100%;
+        border: none;
+        background: #2d7dff;
+        color: white;
+        border-radius: 11px;
+        padding: 11px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .task-button:disabled {
+        background: #303744;
+        color: #8f98a8;
+    }
+
+    .no-tasks {
+        text-align: center;
+        color: #8f98a8;
+        padding: 25px 10px;
+        line-height: 1.7;
+    }
+
+    /* REFERRAL */
+
+    .referral-panel {
+        margin-top: 20px;
+    }
+
+    .referral-box {
+        background: #111722;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 12px;
+    }
+
+    .referral-label {
+        color: #aeb5c1;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .referral-value {
+        background: #191e29;
+        border-radius: 10px;
+        padding: 12px;
+        word-break: break-all;
+        font-size: 14px;
+        color: white;
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: #151922;
+        border-top: 1px solid #252b36;
+        padding: 7px 4px;
+        z-index: 50;
+    }
+
+    .nav-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        gap: 3px;
+    }
+
+    .nav-button {
+        flex: 1;
+        width: 16.666%;
+        min-width: 0;
+        border: none;
+        background: transparent;
+        color: #8f98a8;
+        border-radius: 11px;
+        padding: 6px 1px;
+        cursor: pointer;
+        font-size: 9px;
+        line-height: 1.2;
+    }
+
+    .nav-button.active {
+        background: #252d3b;
+        color: white;
+    }
+
+    .nav-icon {
+        display: block;
+        font-size: 20px;
+        line-height: 22px;
+        margin-bottom: 3px;
+    }
+
+    @media (max-width: 360px) {
 
         .app {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 18px;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-        }
-
-        .language-button {
-            border: none;
-            background: #1c2330;
-            color: white;
-            border-radius: 10px;
-            padding: 8px 11px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .language-menu {
-            display: none;
-            position: absolute;
-            top: 58px;
-            right: 15px;
-            background: #1c2330;
-            border-radius: 12px;
-            padding: 6px;
-            z-index: 100;
-            box-shadow: 0 8px 25px rgba(0,0,0,.35);
-        }
-
-        .language-menu.show {
-            display: block;
-        }
-
-        .language-option {
-            display: block;
-            width: 125px;
-            border: none;
-            background: transparent;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .language-option:active {
-            background: #293242;
-        }
-
-        .balance-card {
-            background: #191e29;
-            border-radius: 20px;
-            padding: 22px;
-            text-align: center;
-            margin-bottom: 18px;
-        }
-
-        .balance-title {
-            color: #9da5b4;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .coins {
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-        .usd-value {
-            margin-top: 6px;
-            color: #8f98a8;
-            font-size: 15px;
-        }
-
-        .content-card {
-            background: #191e29;
-            border-radius: 20px;
-            padding: 22px;
-            min-height: 330px;
-        }
-
-        .content-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
-        }
-
-        .content-title {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .content-text {
-            color: #aeb5c1;
-            line-height: 1.8;
-            font-size: 15px;
-        }
-
-        .reward-button,
-        .watch-ad-button {
-            width: 100%;
-            border: none;
-            background: #2d7dff;
-            color: white;
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 18px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .reward-button:disabled,
-        .watch-ad-button:disabled {
-            background: #303744;
-            color: #8f98a8;
-            cursor: not-allowed;
-        }
-
-        .reward-status,
-        .ads-message,
-        .task-message {
-            text-align: center;
-            margin-top: 14px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .reward-success,
-        .ads-success,
-        .task-success {
-            color: #58d68d;
-        }
-
-        .reward-waiting,
-        .ads-waiting {
-            color: #aeb5c1;
-        }
-
-        .reward-error,
-        .ads-error,
-        .task-error {
-            color: #ff7777;
-        }
-
-        .ads-panel {
-            margin-top: 20px;
-        }
-
-        .ads-info {
-            background: #111722;
-            border-radius: 14px;
-            padding: 14px;
-            margin-top: 15px;
-        }
-
-        .ads-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            color: #b5bdc9;
-            font-size: 14px;
-        }
-
-        .ads-row strong {
-            color: white;
-        }
-
-        /* TASKS */
-
-        .tasks-panel {
-            margin-top: 20px;
-        }
-
-        .task-card {
-            background: #111722;
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 12px;
-        }
-
-        .task-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
-
-        .task-description {
-            color: #aeb5c1;
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        .task-reward {
-            color: #ffd166;
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .task-button {
-            width: 100%;
-            border: none;
-            background: #2d7dff;
-            color: white;
-            border-radius: 11px;
-            padding: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .task-button:disabled {
-            background: #303744;
-            color: #8f98a8;
-        }
-
-        .no-tasks {
-            text-align: center;
-            color: #8f98a8;
-            padding: 25px 10px;
-            line-height: 1.7;
-        }
-
-        /* REFERRAL */
-
-        .referral-panel {
-            margin-top: 20px;
-        }
-
-        .referral-box {
-            background: #111722;
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 12px;
-        }
-
-        .referral-label {
-            color: #aeb5c1;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .referral-value {
-            background: #191e29;
-            border-radius: 10px;
             padding: 12px;
-            word-break: break-all;
-            font-size: 14px;
-            color: white;
-        }
-
-        /* BOTTOM NAV */
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            background: #151922;
-            border-top: 1px solid #252b36;
-            padding: 7px 4px;
-            z-index: 50;
-        }
-
-        .nav-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            gap: 3px;
         }
 
         .nav-button {
-            flex: 1;
-            width: 16.666%;
-            min-width: 0;
-            border: none;
-            background: transparent;
-            color: #8f98a8;
-            border-radius: 11px;
-            padding: 6px 1px;
-            cursor: pointer;
-            font-size: 9px;
-            line-height: 1.2;
-        }
-
-        .nav-button.active {
-            background: #252d3b;
-            color: white;
+            font-size: 8px;
         }
 
         .nav-icon {
-            display: block;
-            font-size: 20px;
-            line-height: 22px;
-            margin-bottom: 3px;
+            font-size: 18px;
         }
 
-        @media (max-width: 360px) {
-
-            .app {
-                padding: 12px;
-            }
-
-            .nav-button {
-                font-size: 8px;
-            }
-
-            .nav-icon {
-                font-size: 18px;
-            }
-
-            .logo {
-                font-size: 21px;
-            }
-
-            .coins {
-                font-size: 27px;
-            }
-
+        .logo {
+            font-size: 21px;
         }
 
-    </style>
+        .coins {
+            font-size: 27px;
+        }
+
+    }
+
+</style>
 
 </head>
 
@@ -403,6 +403,7 @@
         </button>
 
     </div>
+
 
     <div
         class="language-menu"
@@ -432,6 +433,9 @@
 
     </div>
 
+
+    <!-- BALANCE -->
+
     <div class="balance-card">
 
         <div
@@ -458,6 +462,9 @@
 
     </div>
 
+
+    <!-- MAIN CONTENT -->
+
     <div class="content-card">
 
         <div
@@ -481,6 +488,9 @@
             Claim your daily reward and earn coins every 12 hours.
         </div>
 
+
+        <!-- DAILY -->
+
         <button
             id="rewardButton"
             class="reward-button"
@@ -493,6 +503,9 @@
             id="rewardStatus"
             class="reward-status"
         ></div>
+
+
+        <!-- ADS -->
 
         <div
             id="adsPanel"
@@ -524,6 +537,7 @@
 
                 </div>
 
+
                 <div class="ads-row">
 
                     <span id="adsRemainingLabel">
@@ -535,6 +549,7 @@
                     </strong>
 
                 </div>
+
 
                 <div class="ads-row">
 
@@ -550,6 +565,7 @@
 
             </div>
 
+
             <button
                 id="watchAdButton"
                 class="watch-ad-button"
@@ -558,12 +574,16 @@
                 📺 Watch Ad +2,000
             </button>
 
+
             <div
                 id="adsMessage"
                 class="ads-message"
             ></div>
 
         </div>
+
+
+        <!-- TASKS -->
 
         <div
             id="tasksPanel"
@@ -580,7 +600,8 @@
 
         </div>
 
-        <!-- REFERRAL PANEL -->
+
+        <!-- REFERRAL -->
 
         <div
             id="referralPanel"
@@ -606,6 +627,7 @@
 
             </div>
 
+
             <div class="referral-box">
 
                 <div
@@ -630,6 +652,9 @@
 
 </div>
 
+
+<!-- BOTTOM NAV -->
+
 <div class="bottom-nav">
 
     <div class="nav-container">
@@ -640,7 +665,9 @@
             onclick="showSection('daily', this)"
         >
 
-            <span class="nav-icon">🎁</span>
+            <span class="nav-icon">
+                🎁
+            </span>
 
             <span data-key="daily">
                 Daily
@@ -648,13 +675,16 @@
 
         </button>
 
+
         <button
             class="nav-button"
             data-section="ads"
             onclick="showSection('ads', this)"
         >
 
-            <span class="nav-icon">📺</span>
+            <span class="nav-icon">
+                📺
+            </span>
 
             <span data-key="ads">
                 Ads
@@ -662,13 +692,16 @@
 
         </button>
 
+
         <button
             class="nav-button"
             data-section="tasks"
             onclick="showSection('tasks', this)"
         >
 
-            <span class="nav-icon">🎯</span>
+            <span class="nav-icon">
+                🎯
+            </span>
 
             <span data-key="tasks">
                 Tasks
@@ -676,13 +709,16 @@
 
         </button>
 
+
         <button
             class="nav-button"
             data-section="referral"
             onclick="showSection('referral', this)"
         >
 
-            <span class="nav-icon">👥</span>
+            <span class="nav-icon">
+                👥
+            </span>
 
             <span data-key="referral">
                 Referral
@@ -690,13 +726,16 @@
 
         </button>
 
+
         <button
             class="nav-button"
             data-section="withdraw"
             onclick="showSection('withdraw', this)"
         >
 
-            <span class="nav-icon">💰</span>
+            <span class="nav-icon">
+                💰
+            </span>
 
             <span data-key="withdraw">
                 Withdraw
@@ -704,13 +743,16 @@
 
         </button>
 
+
         <button
             class="nav-button"
             data-section="account"
             onclick="showSection('account', this)"
         >
 
-            <span class="nav-icon">👤</span>
+            <span class="nav-icon">
+                👤
+            </span>
 
             <span data-key="account">
                 Account
@@ -722,42 +764,20 @@
 
 </div>
 
+
 <script>
+
+/* =====================================================
+   TELEGRAM
+===================================================== */
 
 const tg = window.Telegram.WebApp;
 
 tg.ready();
 tg.expand();
 
-
-/* =====================================================
-   TELEGRAM USER
-===================================================== */
-
 const user =
     tg.initDataUnsafe?.user || null;
-
-
-/* =====================================================
-   REFERRAL BASIC DATA
-   این بخش فقط اطلاعات کاربر تلگرام را آماده می‌کند.
-   ساخت و نمایش لینک در قسمت دوم انجام می‌شود.
-===================================================== */
-
-const telegramUserId =
-    user?.id || null;
-
-
-/*
-   اگر Telegram username ربات در URL
-   یا تنظیمات بعدی مشخص شود، در قسمت دوم
-   لینک به شکل زیر ساخته خواهد شد:
-
-   https://t.me/BOT_USERNAME?start=USER_ID
-
-   فعلاً هیچ URL فرضی اینجا قرار نداده‌ایم
-   تا لینک اشتباه ساخته نشود.
-*/
 
 
 /* =====================================================
@@ -791,18 +811,55 @@ try {
 
 
 /* =====================================================
-   BALANCE
+   VARIABLES
 ===================================================== */
 
 let coins = 0;
 
 const DAILY_REWARD = 1000;
-
 const AD_REWARD = 2000;
-
 const TASK_REWARD = 1000;
 
 const AD_LIMIT = 10;
+
+
+/* =====================================================
+   REFERRAL CONFIG
+===================================================== */
+
+/*
+   نام کاربری ربات را اینجا قرار بده.
+
+   مثال:
+   EarnPoolBot
+
+   بدون @
+*/
+
+const BOT_USERNAME = "@EarnPooll_bot";
+
+
+/*
+   ساخت لینک رفرال Telegram
+
+   فرمت:
+   https://t.me/BOT_USERNAME?start=123456789
+*/
+
+function createReferralLink() {
+
+    if (!user || !user.id) {
+        return "";
+    }
+
+    return (
+        "https://t.me/" +
+        BOT_USERNAME +
+        "?start=" +
+        encodeURIComponent(user.id)
+    );
+
+}
 
 
 /* =====================================================
@@ -1271,412 +1328,63 @@ function getLanguage() {
     );
 
 }
-    <script>
-
-/* =====================================================
-   APPLY LANGUAGE
-===================================================== */
-
-function applyLanguage(lang) {
-
-    if (!translations[lang]) {
-        lang = "en";
-    }
-
-    const t = translations[lang];
-
-    document.documentElement.lang = lang;
-
-    document.documentElement.dir =
-        lang === "en" ? "ltr" : "rtl";
-
-    document.getElementById(
-        "balanceTitle"
-    ).textContent = t.balance;
-
-    document
-        .querySelectorAll("[data-key]")
-        .forEach(function(element) {
-
-            const key =
-                element.getAttribute("data-key");
-
-            if (t[key]) {
-                element.textContent = t[key];
-            }
-
-        });
-
-    document.getElementById(
-        "languageButton"
-    ).textContent = {
-
-        en: "🌐 EN",
-        fa: "🌐 FA",
-        ar: "🌐 AR"
-
-    }[lang];
-
-    document.getElementById(
-        "rewardButton"
-    ).textContent = t.claim;
-
-    document.getElementById(
-        "adsWatchedLabel"
-    ).textContent = t.adsWatched;
-
-    document.getElementById(
-        "adsRemainingLabel"
-    ).textContent = t.adsRemaining;
-
-    document.getElementById(
-        "adsRewardLabel"
-    ).textContent = t.adsReward;
-
-    document.getElementById(
-        "watchAdButton"
-    ).textContent = t.watchAd;
-
-    showSection(
-        currentSection,
-        document.querySelector(".nav-button.active")
-    );
-
-}
 
 
 /* =====================================================
-   CHANGE LANGUAGE
+   LOAD REFERRAL DISPLAY
 ===================================================== */
 
-function changeLanguage(lang) {
+/*
+   این تابع فقط لینک را داخل صفحه
+   نمایش می‌دهد.
 
-    if (!translations[lang]) {
-        lang = "en";
-    }
+   موجودی را تغییر نمی‌دهد.
+   API موجودی را تغییر نمی‌دهد.
+   Daily / Ads / Tasks را تغییر نمی‌دهد.
+*/
 
-    localStorage.setItem(
-        "language",
-        lang
-    );
+function loadReferralDisplay() {
 
-    applyLanguage(lang);
-
-    document
-        .getElementById("languageMenu")
-        .classList.remove("show");
-
-}
-
-
-/* =====================================================
-   LANGUAGE MENU
-===================================================== */
-
-function toggleLanguageMenu() {
-
-    document
-        .getElementById("languageMenu")
-        .classList.toggle("show");
-
-}
-
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const menu =
-            document.getElementById(
-                "languageMenu"
-            );
-
-        const button =
-            document.getElementById(
-                "languageButton"
-            );
-
-        if (
-            !menu.contains(event.target) &&
-            !button.contains(event.target)
-        ) {
-
-            menu.classList.remove("show");
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   SHOW SECTION
-===================================================== */
-
-function showSection(
-    section,
-    button
-) {
-
-    currentSection = section;
-
-    document
-        .querySelectorAll(".nav-button")
-        .forEach(function(btn) {
-
-            btn.classList.remove("active");
-
-        });
-
-    if (button) {
-        button.classList.add("active");
-    }
-
-    const lang = getLanguage();
-
-    const t = translations[lang];
-
-    const content = {
-
-        daily: {
-
-            title:
-                t.dailyTitle,
-
-            text:
-                t.dailyText
-
-        },
-
-        ads: {
-
-            title:
-                t.adsTitle,
-
-            text:
-                t.adsText
-
-        },
-
-        tasks: {
-
-            title:
-                t.tasksTitle,
-
-            text:
-                t.tasksText
-
-        },
-
-        referral: {
-
-            title:
-                t.referralTitle,
-
-            text:
-                t.referralText
-
-        },
-
-        withdraw: {
-
-            title:
-                t.withdrawTitle,
-
-            text:
-                t.withdrawText
-
-        },
-
-        account: {
-
-            title:
-                t.accountTitle,
-
-            text:
-                t.accountText
-
-        }
-
-    };
-
-    document.getElementById(
-        "contentIcon"
-    ).textContent =
-        sectionIcons[section];
-
-    document.getElementById(
-        "contentTitle"
-    ).textContent =
-        content[section].title;
-
-    document.getElementById(
-        "contentText"
-    ).textContent =
-        content[section].text;
-
-    const rewardButton =
+    const linkElement =
         document.getElementById(
-            "rewardButton"
+            "referralLink"
         );
 
-    const rewardStatus =
-        document.getElementById(
-            "rewardStatus"
-        );
-
-    const adsPanel =
-        document.getElementById(
-            "adsPanel"
-        );
-
-    const tasksPanel =
-        document.getElementById(
-            "tasksPanel"
-        );
-
-    const referralPanel =
-        document.getElementById(
-            "referralPanel"
-        );
+    if (!linkElement) {
+        return;
+    }
 
 
-    /* ==========================================
-       DAILY
-    ========================================== */
+    if (!user || !user.id) {
 
-    if (section === "daily") {
+        linkElement.textContent =
+            "Telegram user not detected";
 
-        rewardButton.style.display =
-            "block";
-
-        rewardStatus.style.display =
-            "block";
-
-        adsPanel.style.display =
-            "none";
-
-        tasksPanel.style.display =
-            "none";
-
-        referralPanel.style.display =
-            "none";
-
-        checkDailyReward();
+        return;
 
     }
 
 
-    /* ==========================================
-       ADS
-    ========================================== */
-
-    else if (section === "ads") {
-
-        rewardButton.style.display =
-            "none";
-
-        rewardStatus.style.display =
-            "none";
-
-        adsPanel.style.display =
-            "block";
-
-        tasksPanel.style.display =
-            "none";
-
-        referralPanel.style.display =
-            "none";
-
-        loadAdsStatus();
-
-    }
+    const referralLink =
+        createReferralLink();
 
 
-    /* ==========================================
-       TASKS
-    ========================================== */
+    if (referralLink) {
 
-    else if (section === "tasks") {
+        linkElement.textContent =
+            referralLink;
 
-        rewardButton.style.display =
-            "none";
+    } else {
 
-        rewardStatus.style.display =
-            "none";
-
-        adsPanel.style.display =
-            "none";
-
-        tasksPanel.style.display =
-            "block";
-
-        referralPanel.style.display =
-            "none";
-
-        loadTasks();
-
-    }
-
-
-    /* ==========================================
-       REFERRAL
-    ========================================== */
-
-    else if (section === "referral") {
-
-        rewardButton.style.display =
-            "none";
-
-        rewardStatus.style.display =
-            "none";
-
-        adsPanel.style.display =
-            "none";
-
-        tasksPanel.style.display =
-            "none";
-
-        referralPanel.style.display =
-            "block";
-
-        /*
-         وقتی بخش رفرال باز می‌شود،
-         اطلاعات رفرال از سرور دریافت می‌شود.
-        */
-
-        loadReferralData();
-
-    }
-
-
-    /* ==========================================
-       OTHER SECTIONS
-    ========================================== */
-
-    else {
-
-        rewardButton.style.display =
-            "none";
-
-        rewardStatus.style.display =
-            "none";
-
-        adsPanel.style.display =
-            "none";
-
-        tasksPanel.style.display =
-            "none";
-
-        referralPanel.style.display =
-            "none";
+        linkElement.textContent =
+            "Loading...";
 
     }
 
 }
 
-
-/* =====================================================
+    </script>
+    /* =====================================================
    LOAD USER BALANCE
 ===================================================== */
 
@@ -1694,6 +1402,13 @@ async function loadUserBalance() {
                 encodeURIComponent(user.id)
             );
 
+        if (!response.ok) {
+            throw new Error(
+                "User API HTTP error: " +
+                response.status
+            );
+        }
+
         const data =
             await response.json();
 
@@ -1702,21 +1417,42 @@ async function loadUserBalance() {
             data.user
         ) {
 
-            coins =
-                Number(
-                    data.user.coins || 0
-                );
+            /*
+             * مهم:
+             * فقط زمانی موجودی را تغییر می‌دهیم
+             * که سرور واقعاً coins را برگردانده باشد.
+             *
+             * بنابراین خطای referral یا نبودن referral_link
+             * باعث صفر شدن موجودی نمی‌شود.
+             */
 
-            updateBalance();
+            if (
+                data.user.coins !== undefined &&
+                data.user.coins !== null
+            ) {
+
+                coins =
+                    Number(data.user.coins);
+
+                if (
+                    !Number.isFinite(coins) ||
+                    coins < 0
+                ) {
+                    coins = 0;
+                }
+
+                updateBalance();
+
+            }
 
 
             /*
-             اگر سرور تعداد رفرال را برگرداند،
-             همان لحظه در بخش رفرال نیز ذخیره می‌شود.
-            */
+             * Referral count
+             */
 
             if (
-                data.user.referral_count !== undefined
+                data.user.referral_count !== undefined &&
+                data.user.referral_count !== null
             ) {
 
                 const referralCount =
@@ -1737,9 +1473,8 @@ async function loadUserBalance() {
 
 
             /*
-             اگر سرور لینک رفرال را برگرداند،
-             لینک نیز ذخیره و نمایش داده می‌شود.
-            */
+             * Referral link
+             */
 
             if (
                 data.user.referral_link
@@ -1795,8 +1530,9 @@ async function loadReferralData() {
 
 
     /*
-     حالت اولیه هنگام بارگذاری
-    */
+     * Loading فقط برای رفرال است.
+     * به موجودی دست نمی‌زنیم.
+     */
 
     if (linkElement) {
 
@@ -1805,20 +1541,8 @@ async function loadReferralData() {
 
     }
 
-    if (countElement) {
-
-        countElement.textContent =
-            "0";
-
-    }
-
 
     try {
-
-        /*
-         همان API موجود کاربر استفاده می‌شود
-         تا API جدیدی خراب یا اضافه نشود.
-        */
 
         const response =
             await fetch(
@@ -1847,66 +1571,52 @@ async function loadReferralData() {
         ) {
 
             throw new Error(
-                "Invalid referral response"
+                "Invalid user response"
             );
 
         }
 
 
-        const referralData =
-            data.user;
-
-
-        /* ==========================================
-           REFERRAL COUNT
-        ========================================== */
+        /*
+         * تعداد رفرال
+         */
 
         if (countElement) {
 
             const count =
                 Number(
-                    referralData.referral_count || 0
+                    data.user.referral_count || 0
                 );
 
             countElement.textContent =
-                count.toLocaleString();
+                Number.isFinite(count)
+                    ? count.toLocaleString()
+                    : "0";
 
         }
 
 
-        /* ==========================================
-           REFERRAL LINK
-        ========================================== */
+        /*
+         * لینک رفرال
+         */
 
         if (linkElement) {
 
             if (
-                referralData.referral_link
+                data.user.referral_link
             ) {
 
                 linkElement.textContent =
-                    referralData.referral_link;
+                    data.user.referral_link;
 
-            }
-
-            else {
-
-                /*
-                 اگر سرور هنوز لینک را ارسال نکند،
-                 Loading بی‌نهایت نمایش داده نمی‌شود.
-                */
+            } else {
 
                 linkElement.textContent =
                     "Referral link unavailable";
 
-                console.warn(
-                    "Server did not return referral_link."
-                );
-
             }
 
         }
-
 
     } catch (error) {
 
@@ -1916,18 +1626,15 @@ async function loadReferralData() {
         );
 
 
+        /*
+         * فقط خود بخش Referral خطا می‌گیرد.
+         * موجودی و دکمه‌های دیگر دستکاری نمی‌شوند.
+         */
+
         if (linkElement) {
 
             linkElement.textContent =
                 "Unable to load referral link";
-
-        }
-
-
-        if (countElement) {
-
-            countElement.textContent =
-                "0";
 
         }
 
@@ -1943,7 +1650,7 @@ async function loadReferralData() {
 async function registerUser() {
 
     if (!user) {
-        return;
+        return false;
     }
 
     const language =
@@ -1985,8 +1692,20 @@ async function registerUser() {
                 }
             );
 
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Register HTTP error: " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
+
 
         if (data.success) {
 
@@ -1995,7 +1714,11 @@ async function registerUser() {
                 data.user
             );
 
+            return true;
+
         }
+
+        return false;
 
     } catch (error) {
 
@@ -2003,6 +1726,8 @@ async function registerUser() {
             "User registration error:",
             error
         );
+
+        return false;
 
     }
 
@@ -2019,6 +1744,21 @@ async function checkDailyReward() {
         return;
     }
 
+    const button =
+        document.getElementById(
+            "rewardButton"
+        );
+
+    const status =
+        document.getElementById(
+            "rewardStatus"
+        );
+
+    if (!button || !status) {
+        return;
+    }
+
+
     try {
 
         const response =
@@ -2027,8 +1767,20 @@ async function checkDailyReward() {
                 encodeURIComponent(user.id)
             );
 
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Daily API HTTP error: " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
+
 
         if (
             !data.success ||
@@ -2039,22 +1791,17 @@ async function checkDailyReward() {
 
         }
 
+
         const lastReward =
             data.user.last_daily_reward;
-
-        const button =
-            document.getElementById(
-                "rewardButton"
-            );
-
-        const status =
-            document.getElementById(
-                "rewardStatus"
-            );
 
         const t =
             translations[getLanguage()];
 
+
+        /*
+         * هیچ last reward
+         */
 
         if (!lastReward) {
 
@@ -2071,17 +1818,12 @@ async function checkDailyReward() {
 
 
         const lastTime =
-            new Date(lastReward).getTime();
-
-        const nextTime =
-            lastTime +
-            (12 * 60 * 60 * 1000);
-
-        const now =
-            Date.now();
+            new Date(
+                lastReward
+            ).getTime();
 
 
-        if (now >= nextTime) {
+        if (!Number.isFinite(lastTime)) {
 
             button.disabled = false;
 
@@ -2094,6 +1836,39 @@ async function checkDailyReward() {
 
         }
 
+
+        const nextTime =
+            lastTime +
+            (12 * 60 * 60 * 1000);
+
+
+        const now =
+            Date.now();
+
+
+        /*
+         * Reward available
+         */
+
+        if (
+            now >= nextTime
+        ) {
+
+            button.disabled = false;
+
+            button.textContent =
+                t.claim;
+
+            status.textContent = "";
+
+            return;
+
+        }
+
+
+        /*
+         * Reward waiting
+         */
 
         button.disabled = true;
 
@@ -2127,8 +1902,13 @@ function updateWaitingTime(nextTime) {
             "rewardStatus"
         );
 
+    if (!status) {
+        return;
+    }
+
     const t =
         translations[getLanguage()];
+
 
     function update() {
 
@@ -2136,7 +1916,10 @@ function updateWaitingTime(nextTime) {
             nextTime -
             Date.now();
 
-        if (remaining <= 0) {
+
+        if (
+            remaining <= 0
+        ) {
 
             checkDailyReward();
 
@@ -2144,21 +1927,26 @@ function updateWaitingTime(nextTime) {
 
         }
 
+
         const totalMinutes =
             Math.ceil(
                 remaining / 60000
             );
+
 
         const hours =
             Math.floor(
                 totalMinutes / 60
             );
 
+
         const minutes =
             totalMinutes % 60;
 
+
         status.className =
             "reward-status reward-waiting";
+
 
         status.textContent =
             t.waiting +
@@ -2170,7 +1958,9 @@ function updateWaitingTime(nextTime) {
 
     }
 
+
     update();
+
 
     setTimeout(
         function() {
@@ -2204,10 +1994,16 @@ async function claimDailyReward() {
             "rewardStatus"
         );
 
+    if (!button || !status) {
+        return;
+    }
+
     const t =
         translations[getLanguage()];
 
+
     button.disabled = true;
+
 
     try {
 
@@ -2234,27 +2030,64 @@ async function claimDailyReward() {
                 }
             );
 
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Daily reward HTTP error: " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
 
 
-        if (data.success) {
+        if (
+            data.success &&
+            data.user
+        ) {
 
-            coins =
-                Number(
-                    data.user.coins
-                );
+            /*
+             * فقط موجودی واقعی برگشتی از سرور
+             * استفاده می‌شود.
+             */
 
-            updateBalance();
+            if (
+                data.user.coins !== undefined &&
+                data.user.coins !== null
+            ) {
+
+                coins =
+                    Number(
+                        data.user.coins
+                    );
+
+                if (
+                    !Number.isFinite(coins) ||
+                    coins < 0
+                ) {
+                    coins = 0;
+                }
+
+                updateBalance();
+
+            }
+
 
             button.textContent =
                 t.claimed;
 
+
             status.className =
                 "reward-status reward-success";
 
+
             status.textContent =
                 t.congratulations;
+
 
             setTimeout(
                 function() {
@@ -2265,17 +2098,27 @@ async function claimDailyReward() {
                 1500
             );
 
+
         } else {
 
-            button.disabled = true;
+            /*
+             * فقط وقتی سرور واقعاً می‌گوید
+             * reward قابل دریافت نیست،
+             * دکمه غیرفعال می‌شود.
+             */
 
-            button.textContent =
-                t.claimed;
+            if (
+                data.next_reward
+            ) {
 
-            status.className =
-                "reward-status reward-waiting";
+                button.disabled = true;
 
-            if (data.next_reward) {
+                button.textContent =
+                    t.claimed;
+
+                status.className =
+                    "reward-status reward-waiting";
+
 
                 updateWaitingTime(
                     new Date(
@@ -2284,6 +2127,11 @@ async function claimDailyReward() {
                 );
 
             } else {
+
+                button.disabled = false;
+
+                status.className =
+                    "reward-status reward-error";
 
                 status.textContent =
                     data.message ||
@@ -2299,6 +2147,11 @@ async function claimDailyReward() {
             "Daily reward error:",
             error
         );
+
+
+        /*
+         * در خطای شبکه دکمه دوباره فعال می‌شود.
+         */
 
         button.disabled = false;
 
@@ -2323,6 +2176,17 @@ async function loadAdsStatus() {
         return;
     }
 
+    const button =
+        document.getElementById(
+            "watchAdButton"
+        );
+
+    const message =
+        document.getElementById(
+            "adsMessage"
+        );
+
+
     try {
 
         const response =
@@ -2331,50 +2195,84 @@ async function loadAdsStatus() {
                 encodeURIComponent(user.id)
             );
 
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Ads status HTTP error: " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
+
 
         if (!data.success) {
             return;
         }
 
-        document.getElementById(
-            "adsWatched"
-        ).textContent =
-            data.ads_watched;
 
-        document.getElementById(
-            "adsLimit"
-        ).textContent =
-            data.limit;
-
-        document.getElementById(
-            "adsRemaining"
-        ).textContent =
-            data.ads_remaining;
-
-        const button =
+        const watched =
             document.getElementById(
-                "watchAdButton"
+                "adsWatched"
             );
 
-        const message =
+        const limit =
             document.getElementById(
-                "adsMessage"
+                "adsLimit"
             );
+
+        const remaining =
+            document.getElementById(
+                "adsRemaining"
+            );
+
+
+        if (watched) {
+
+            watched.textContent =
+                data.ads_watched ?? 0;
+
+        }
+
+
+        if (limit) {
+
+            limit.textContent =
+                data.limit ?? 0;
+
+        }
+
+
+        if (remaining) {
+
+            remaining.textContent =
+                data.ads_remaining ?? 0;
+
+        }
+
+
+        if (!button || !message) {
+            return;
+        }
+
 
         const t =
             translations[getLanguage()];
 
 
         if (
-            data.ads_remaining <= 0
+            Number(data.ads_remaining || 0) <= 0
         ) {
 
             button.disabled = true;
 
             message.className =
                 "ads-message ads-waiting";
+
 
             message.textContent =
                 t.adLimit +
@@ -2395,6 +2293,9 @@ async function loadAdsStatus() {
         } else {
 
             button.disabled = false;
+
+            message.className =
+                "ads-message";
 
             message.textContent = "";
 
@@ -2422,6 +2323,7 @@ async function watchAd() {
         return;
     }
 
+
     const button =
         document.getElementById(
             "watchAdButton"
@@ -2432,11 +2334,29 @@ async function watchAd() {
             "adsMessage"
         );
 
+
+    if (!button || !message) {
+        return;
+    }
+
+
     const t =
         translations[getLanguage()];
 
 
-    if (!AdController) {
+    /*
+     * مهم:
+     * اگر AdController تعریف نشده باشد،
+     * JavaScript خطا نمی‌دهد.
+     */
+
+    if (
+        typeof AdController ===
+        "undefined" ||
+        !AdController ||
+        typeof AdController.show !==
+        "function"
+    ) {
 
         message.className =
             "ads-message ads-error";
@@ -2510,30 +2430,76 @@ async function watchAd() {
             );
 
 
+        if (!response.ok) {
+
+            throw new Error(
+                "Ads claim HTTP error: " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
 
 
-        if (data.success) {
+        if (
+            data.success &&
+            data.user
+        ) {
 
-            coins =
-                Number(
-                    data.user.coins
+            /*
+             * فقط موجودی واقعی سرور.
+             */
+
+            if (
+                data.user.coins !== undefined &&
+                data.user.coins !== null
+            ) {
+
+                coins =
+                    Number(
+                        data.user.coins
+                    );
+
+                if (
+                    !Number.isFinite(coins) ||
+                    coins < 0
+                ) {
+                    coins = 0;
+                }
+
+                updateBalance();
+
+            }
+
+
+            const watched =
+                document.getElementById(
+                    "adsWatched"
                 );
 
-            updateBalance();
+            const remaining =
+                document.getElementById(
+                    "adsRemaining"
+                );
 
 
-            document.getElementById(
-                "adsWatched"
-            ).textContent =
-                data.ads_watched;
+            if (watched) {
+
+                watched.textContent =
+                    data.ads_watched ?? 0;
+
+            }
 
 
-            document.getElementById(
-                "adsRemaining"
-            ).textContent =
-                data.ads_remaining;
+            if (remaining) {
+
+                remaining.textContent =
+                    data.ads_remaining ?? 0;
+
+            }
 
 
             message.className =
@@ -2544,7 +2510,7 @@ async function watchAd() {
 
 
             if (
-                data.ads_remaining <= 0
+                Number(data.ads_remaining || 0) <= 0
             ) {
 
                 button.disabled = true;
@@ -2575,11 +2541,13 @@ async function watchAd() {
             error
         );
 
+
         message.className =
             "ads-message ads-error";
 
         message.textContent =
             t.adError;
+
 
         await loadAdsStatus();
 
@@ -2598,6 +2566,7 @@ async function loadTasks() {
         return;
     }
 
+
     const list =
         document.getElementById(
             "tasksList"
@@ -2607,6 +2576,12 @@ async function loadTasks() {
         document.getElementById(
             "taskMessage"
         );
+
+
+    if (!list || !message) {
+        return;
+    }
+
 
     const t =
         translations[getLanguage()];
@@ -2628,6 +2603,17 @@ async function loadTasks() {
                 "/api/tasks/available/" +
                 encodeURIComponent(user.id)
             );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Tasks HTTP error: " +
+                response.status
+            );
+
+        }
+
 
         const data =
             await response.json();
@@ -2656,7 +2642,9 @@ async function loadTasks() {
         list.innerHTML = "";
 
 
-        if (tasks.length === 0) {
+        if (
+            tasks.length === 0
+        ) {
 
             message.className =
                 "task-message";
@@ -2688,6 +2676,7 @@ async function loadTasks() {
             error
         );
 
+
         message.className =
             "task-message task-error";
 
@@ -2709,6 +2698,12 @@ function createTaskCard(task) {
         document.getElementById(
             "tasksList"
         );
+
+
+    if (!list || !task) {
+        return;
+    }
+
 
     const t =
         translations[getLanguage()];
@@ -2761,29 +2756,41 @@ function createTaskCard(task) {
         t.taskReward;
 
 
+    /*
+     * AdsGram Task
+     */
+
     const adsTask =
         document.createElement(
             "adsgram-task"
         );
+
 
     adsTask.setAttribute(
         "data-block-id",
         "task-44183"
     );
 
+
     adsTask.setAttribute(
         "data-debug",
         "false"
     );
+
 
     adsTask.setAttribute(
         "data-debug-console",
         "false"
     );
 
+
     adsTask.className =
         "task";
 
+
+    /*
+     * جلوگیری از ارسال چندباره reward
+     */
 
     let rewardSent = false;
 
@@ -2796,7 +2803,9 @@ function createTaskCard(task) {
                 return;
             }
 
+
             rewardSent = true;
+
 
             await claimAdsGramTask(
                 task,
@@ -2830,6 +2839,12 @@ function createTaskCard(task) {
                     "taskMessage"
                 );
 
+
+            if (!message) {
+                return;
+            }
+
+
             message.className =
                 "task-message task-error";
 
@@ -2849,6 +2864,12 @@ function createTaskCard(task) {
                     "taskMessage"
                 );
 
+
+            if (!message) {
+                return;
+            }
+
+
             message.className =
                 "task-message task-error";
 
@@ -2861,15 +2882,31 @@ function createTaskCard(task) {
 
     card.appendChild(title);
 
-    if (task.description) {
-        card.appendChild(description);
+
+    if (
+        task.description
+    ) {
+
+        card.appendChild(
+            description
+        );
+
     }
 
-    card.appendChild(reward);
 
-    card.appendChild(adsTask);
+    card.appendChild(
+        reward
+    );
 
-    list.appendChild(card);
+
+    card.appendChild(
+        adsTask
+    );
+
+
+    list.appendChild(
+        card
+    );
 
 }
 
@@ -2889,8 +2926,13 @@ async function claimAdsGramTask(
     }
 
 
-    if (!task || !task.id) {
+    if (
+        !task ||
+        !task.id
+    ) {
+
         return;
+
     }
 
 
@@ -2899,8 +2941,14 @@ async function claimAdsGramTask(
             "taskMessage"
         );
 
+
     const t =
         translations[getLanguage()];
+
+
+    if (!message) {
+        return;
+    }
 
 
     message.className =
@@ -2939,18 +2987,49 @@ async function claimAdsGramTask(
             );
 
 
+        if (!response.ok) {
+
+            throw new Error(
+                "Task claim HTTP error: " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
 
 
-        if (data.success) {
+        if (
+            data.success &&
+            data.user
+        ) {
 
-            coins =
-                Number(
-                    data.user.coins
-                );
+            /*
+             * فقط موجودی برگشتی سرور.
+             */
 
-            updateBalance();
+            if (
+                data.user.coins !== undefined &&
+                data.user.coins !== null
+            ) {
+
+                coins =
+                    Number(
+                        data.user.coins
+                    );
+
+                if (
+                    !Number.isFinite(coins) ||
+                    coins < 0
+                ) {
+                    coins = 0;
+                }
+
+                updateBalance();
+
+            }
 
 
             message.className =
@@ -2960,8 +3039,14 @@ async function claimAdsGramTask(
                 t.taskSuccess;
 
 
+            /*
+             * حذف فقط همان Task
+             */
+
             if (card) {
+
                 card.remove();
+
             }
 
 
@@ -2972,6 +3057,7 @@ async function claimAdsGramTask(
 
 
             if (
+                list &&
                 !list.children.length
             ) {
 
@@ -2988,19 +3074,25 @@ async function claimAdsGramTask(
             ) {
 
                 if (card) {
+
                     card.remove();
+
                 }
+
 
                 message.className =
                     "task-message";
 
+
                 message.textContent =
                     t.taskAlready;
+
 
             } else {
 
                 message.className =
                     "task-message task-error";
+
 
                 message.textContent =
                     data.message ||
@@ -3017,8 +3109,10 @@ async function claimAdsGramTask(
             error
         );
 
+
         message.className =
             "task-message task-error";
+
 
         message.textContent =
             t.error;
@@ -3034,23 +3128,29 @@ async function claimAdsGramTask(
 
 async function startUser() {
 
+    if (!user) {
+        return;
+    }
+
+
     /*
-     ابتدا کاربر ثبت می‌شود.
-     این قسمت حذف یا تغییر داده نشده.
-    */
+     * اول ثبت کاربر
+     */
 
     await registerUser();
 
+
     /*
-     سپس موجودی و اطلاعات اولیه کاربر
-     دریافت می‌شود.
-    */
+     * بعد دریافت موجودی واقعی
+     * از سرور
+     */
 
     await loadUserBalance();
 
+
     /*
-     وضعیت Daily
-    */
+     * بعد بررسی Daily
+     */
 
     await checkDailyReward();
 
@@ -3083,8 +3183,17 @@ applyLanguage(
 );
 
 
+/*
+ * موجودی اولیه فقط از متغیر فعلی نمایش داده می‌شود.
+ * بعد از startUser، موجودی واقعی از سرور می‌آید.
+ */
+
 updateBalance();
 
+
+/*
+ * شروع کاربر
+ */
 
 startUser();
 
@@ -3092,4 +3201,4 @@ startUser();
 
 </body>
 
-</html>
+                    </html>
