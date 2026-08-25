@@ -1965,6 +1965,10 @@ def available_tasks(telegram_id):
 
         cur = conn.cursor()
 
+        # -------------------------------------------------
+        # CHECK USER
+        # -------------------------------------------------
+
         cur.execute("""
             SELECT telegram_id
             FROM users
@@ -1977,12 +1981,14 @@ def available_tasks(telegram_id):
 
         if not user:
 
-            conn.rollback()
-
             return jsonify({
                 "success": True,
                 "tasks": []
             })
+
+        # -------------------------------------------------
+        # CHECK TASK COMPLETION
+        # -------------------------------------------------
 
         cur.execute("""
             SELECT id
@@ -2004,34 +2010,24 @@ def available_tasks(telegram_id):
                 "tasks": []
             })
 
+        # -------------------------------------------------
+        # RETURN ADSGRAM TASK
+        # -------------------------------------------------
+
         task = {
-            "id":
-                ADSGRAM_TASK_ID,
-
-            "title":
-                "AdsGram Task",
-
+            "id": ADSGRAM_TASK_ID,
+            "title": "AdsGram Task",
             "description":
                 "Complete the AdsGram task and claim your reward.",
-
-            "reward":
-                TASK_REWARD,
-
-            "adsgram":
-                True,
-
-            "block_id":
-                ADSGRAM_TASK_ID,
-
-            "task_type":
-                "adsgram"
+            "reward": TASK_REWARD,
+            "adsgram": True,
+            "block_id": ADSGRAM_TASK_ID,
+            "task_type": "adsgram"
         }
 
         return jsonify({
             "success": True,
-            "tasks": [
-                task
-            ]
+            "tasks": [task]
         })
 
     except Exception as e:
@@ -2102,6 +2098,10 @@ def claim_task():
             task_id
         )
 
+        # -------------------------------------------------
+        # ONLY ALLOWED TASK
+        # -------------------------------------------------
+
         if task_id != ADSGRAM_TASK_ID:
 
             return jsonify({
@@ -2111,6 +2111,10 @@ def claim_task():
             }), 400
 
         cur = conn.cursor()
+
+        # -------------------------------------------------
+        # CHECK USER
+        # -------------------------------------------------
 
         cur.execute("""
             SELECT *
@@ -2125,36 +2129,25 @@ def claim_task():
 
         if not user:
 
-            cur.execute("""
-                INSERT INTO users (
-                    telegram_id,
-                    coins,
-                    ads_watched,
-                    ads_reset_at
-                )
-                VALUES (
-                    %s,
-                    0,
-                    0,
-                    %s
-                )
-                RETURNING *
-            """, (
-                telegram_id,
-                utc_now()
-            ))
+            return jsonify({
+                "success": False,
+                "message":
+                    "User not found."
+            }), 404
 
-            user = cur.fetchone()
+        # -------------------------------------------------
+        # CHECK ALREADY COMPLETED
+        # -------------------------------------------------
 
         cur.execute("""
             SELECT id
             FROM task_completions
             WHERE telegram_id = %s
               AND task_id = %s
-            FOR UPDATE
+            LIMIT 1
         """, (
             telegram_id,
-            task_id
+            ADSGRAM_TASK_ID
         ))
 
         existing = cur.fetchone()
@@ -2170,6 +2163,10 @@ def claim_task():
                     "This task has already been completed."
             })
 
+        # -------------------------------------------------
+        # SAVE TASK COMPLETION
+        # -------------------------------------------------
+
         cur.execute("""
             INSERT INTO task_completions (
                 telegram_id,
@@ -2183,9 +2180,13 @@ def claim_task():
             )
         """, (
             telegram_id,
-            task_id,
+            ADSGRAM_TASK_ID,
             TASK_REWARD
         ))
+
+        # -------------------------------------------------
+        # ADD REWARD
+        # -------------------------------------------------
 
         cur.execute("""
             UPDATE users
@@ -2205,44 +2206,8 @@ def claim_task():
         conn.commit()
 
         return jsonify({
-            "success": True,
-            "reward": TASK_REWARD,
-            "task_id":
-                ADSGRAM_TASK_ID,
-            "user":
-                updated_user
-        })
-
-    except psycopg2.errors.UniqueViolation:
-
-        conn.rollback()
-
-        return jsonify({
-            "success": False,
-            "already_completed": True,
-            "message":
-                "This task has already been completed."
-        })
-
-    except Exception as e:
-
-        conn.rollback()
-
-        print(
-            "TASK CLAIM ERROR:",
-            e
-        )
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Server error"
-        }), 500
-
-    finally:
-
-        conn.close()
-
+            "success":
+            
 
 # =========================================================
 # TASK STATUS
