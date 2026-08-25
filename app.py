@@ -2319,29 +2319,6 @@ def process_referral(
 
     cur = conn.cursor()
 
-    # -----------------------------------------------------
-    # CHECK REFERRAL ALREADY EXISTS
-    # -----------------------------------------------------
-
-    cur.execute("""
-        SELECT id
-        FROM referrals
-        WHERE referred_telegram_id = %s
-        LIMIT 1
-        FOR UPDATE
-    """, (
-        referred_telegram_id,
-    ))
-
-    existing = cur.fetchone()
-
-    if existing:
-
-        return {
-            "success": False,
-            "reason": "already_referred"
-        }
-
     # =========================================================
 # REFERRAL HELPER
 # =========================================================
