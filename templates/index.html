@@ -349,6 +349,7 @@
             .coins {
                 font-size: 27px;
             }
+
         }
 
     </style>
@@ -1989,18 +1990,9 @@ async function watchAd() {
 
     try {
 
-        /*
-         نمایش تبلیغ
-        */
-
         const result =
             await AdController.show();
 
-
-        /*
-         فقط اگر تبلیغ کامل دیده شده باشد
-         درخواست پاداش به سرور ارسال می‌شود.
-        */
 
         if (
             !result ||
@@ -2023,10 +2015,6 @@ async function watchAd() {
         message.textContent =
             "⏳ Processing reward...";
 
-
-        /*
-         دریافت پاداش از Backend
-        */
 
         const response =
             await fetch(
@@ -2165,17 +2153,11 @@ async function loadTasks() {
 
     try {
 
-        /*
-         دریافت فقط تسک‌هایی که
-         کاربر قبلاً انجام نداده است.
-        */
-
         const response =
             await fetch(
                 "/api/tasks/available/" +
                 encodeURIComponent(user.id)
             );
-
 
         const data =
             await response.json();
@@ -2203,8 +2185,6 @@ async function loadTasks() {
 
         list.innerHTML = "";
 
-        message.textContent = "";
-
 
         if (tasks.length === 0) {
 
@@ -2219,6 +2199,11 @@ async function loadTasks() {
         }
 
 
+        /*
+         فقط تسک‌هایی که هنوز برای
+         کاربر کامل نشده‌اند نمایش داده می‌شوند.
+        */
+
         tasks.forEach(
             function(task) {
 
@@ -2226,6 +2211,9 @@ async function loadTasks() {
 
             }
         );
+
+
+        message.textContent = "";
 
 
     } catch (error) {
@@ -2247,7 +2235,7 @@ async function loadTasks() {
 
 
 /* =====================================================
-   CREATE TASK CARD
+   CREATE ADSGRAM TASK CARD
 ===================================================== */
 
 function createTaskCard(task) {
@@ -2280,7 +2268,7 @@ function createTaskCard(task) {
 
     title.textContent =
         task.title ||
-        "Task";
+        "AdsGram Task";
 
 
     const description =
@@ -2308,27 +2296,116 @@ function createTaskCard(task) {
         t.taskReward;
 
 
-    const button =
+    /*
+     AdsGram Task Web Component
+
+     مهم:
+     blockId باید از نوع Task باشد
+     و فرمت آن task-xxx است.
+    */
+
+    const adsTask =
         document.createElement(
-            "button"
+            "adsgram-task"
         );
 
-    button.className =
-        "task-button";
+    adsTask.setAttribute(
+    "data-block-id",
+    "task-44183"
+);
 
-    button.textContent =
-        t.completeTask;
+    adsTask.setAttribute(
+        "data-debug",
+        "false"
+    );
+
+    adsTask.setAttribute(
+        "data-debug-console",
+        "false"
+    );
+
+    adsTask.className =
+        "task";
 
 
-    button.onclick =
-        function() {
+    /*
+     تا زمانی که event reward
+     از AdsGram دریافت نشده،
+     هیچ پاداشی به سرور ارسال نمی‌شود.
+    */
 
-            completeTask(
+    let rewardSent = false;
+
+
+    adsTask.addEventListener(
+        "reward",
+        async function() {
+
+            if (rewardSent) {
+                return;
+            }
+
+            rewardSent = true;
+
+            await claimAdsGramTask(
                 task,
-                button
+                card,
+                adsTask
             );
 
-        };
+        }
+    );
+
+
+    adsTask.addEventListener(
+        "onError",
+        function(event) {
+
+            console.error(
+                "AdsGram Task error:",
+                event
+            );
+
+        }
+    );
+
+
+    adsTask.addEventListener(
+        "onBannerNotFound",
+        function() {
+
+            const message =
+                document.getElementById(
+                    "taskMessage"
+                );
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                t.noTasks;
+
+        }
+    );
+
+
+    adsTask.addEventListener(
+        "onTooLongSession",
+        function() {
+
+            const message =
+                document.getElementById(
+                    "taskMessage"
+                );
+
+            message.className =
+                "task-message task-error";
+
+            message.textContent =
+                t.error;
+
+        }
+    );
 
 
     card.appendChild(title);
@@ -2339,7 +2416,7 @@ function createTaskCard(task) {
 
     card.appendChild(reward);
 
-    card.appendChild(button);
+    card.appendChild(adsTask);
 
     list.appendChild(card);
 
@@ -2347,12 +2424,13 @@ function createTaskCard(task) {
 
 
 /* =====================================================
-   COMPLETE TASK
+   CLAIM ADSGRAM TASK REWARD
 ===================================================== */
 
-async function completeTask(
+async function claimAdsGramTask(
     task,
-    button
+    card,
+    adsTask
 ) {
 
     if (!user) {
@@ -2374,10 +2452,11 @@ async function completeTask(
         translations[getLanguage()];
 
 
-    button.disabled = true;
+    message.className =
+        "task-message";
 
-    button.textContent =
-        "⏳";
+    message.textContent =
+        "⏳ Processing reward...";
 
 
     try {
@@ -2416,7 +2495,8 @@ async function completeTask(
         if (data.success) {
 
             /*
-             به‌روزرسانی موجودی
+             فقط بعد از event واقعی reward
+             موجودی کاربر به‌روزرسانی می‌شود.
             */
 
             coins =
@@ -2427,10 +2507,6 @@ async function completeTask(
             updateBalance();
 
 
-            /*
-             نمایش موفقیت
-            */
-
             message.className =
                 "task-message task-success";
 
@@ -2439,29 +2515,20 @@ async function completeTask(
 
 
             /*
-             حذف فوری تسک از صفحه
-             */
-
-            const card =
-                button.closest(
-                    ".task-card"
-                );
+             تسک بعد از یک بار موفقیت
+             فوراً از صفحه حذف می‌شود.
+            */
 
             if (card) {
-
                 card.remove();
-
             }
 
-
-            /*
-             اگر دیگر تسکی باقی نمانده
-            */
 
             const list =
                 document.getElementById(
                     "tasksList"
                 );
+
 
             if (
                 !list.children.length
@@ -2472,40 +2539,32 @@ async function completeTask(
 
             }
 
+
         } else {
 
-            button.disabled = false;
-
-            button.textContent =
-                t.completeTask;
-
-
-            message.className =
-                "task-message task-error";
-
+            /*
+             اگر سرور بگوید قبلاً انجام شده،
+             تسک دیگر نمایش داده نمی‌شود.
+            */
 
             if (
                 data.already_completed
             ) {
 
-                message.textContent =
-                    t.taskAlready;
-
-                /*
-                 اگر سرور بگوید قبلاً انجام شده،
-                 آن تسک از صفحه حذف می‌شود.
-                */
-
-                const card =
-                    button.closest(
-                        ".task-card"
-                    );
-
                 if (card) {
                     card.remove();
                 }
 
+                message.className =
+                    "task-message";
+
+                message.textContent =
+                    t.taskAlready;
+
             } else {
+
+                message.className =
+                    "task-message task-error";
 
                 message.textContent =
                     data.message ||
@@ -2518,14 +2577,9 @@ async function completeTask(
     } catch (error) {
 
         console.error(
-            "Task claim error:",
+            "AdsGram task claim error:",
             error
         );
-
-        button.disabled = false;
-
-        button.textContent =
-            t.completeTask;
 
         message.className =
             "task-message task-error";
