@@ -2075,46 +2075,27 @@ def claim_task():
         )
 
         if not telegram_id:
-
             return jsonify({
                 "success": False,
-                "message":
-                    "telegram_id is required"
+                "message": "telegram_id is required"
             }), 400
 
         if not task_id:
-
             return jsonify({
                 "success": False,
-                "message":
-                    "task_id is required"
+                "message": "task_id is required"
             }), 400
 
-        telegram_id = int(
-            telegram_id
-        )
-
-        task_id = str(
-            task_id
-        )
-
-        # -------------------------------------------------
-        # ONLY ALLOWED TASK
-        # -------------------------------------------------
+        telegram_id = int(telegram_id)
+        task_id = str(task_id)
 
         if task_id != ADSGRAM_TASK_ID:
-
             return jsonify({
                 "success": False,
-                "message":
-                    "Invalid task."
+                "message": "Invalid task."
             }), 400
 
         cur = conn.cursor()
-
-        # -------------------------------------------------
-        # CHECK USER
-        # -------------------------------------------------
 
         cur.execute("""
             SELECT *
@@ -2128,16 +2109,12 @@ def claim_task():
         user = cur.fetchone()
 
         if not user:
+            conn.rollback()
 
             return jsonify({
                 "success": False,
-                "message":
-                    "User not found."
+                "message": "User not found."
             }), 404
-
-        # -------------------------------------------------
-        # CHECK ALREADY COMPLETED
-        # -------------------------------------------------
 
         cur.execute("""
             SELECT id
@@ -2145,6 +2122,7 @@ def claim_task():
             WHERE telegram_id = %s
               AND task_id = %s
             LIMIT 1
+            FOR UPDATE
         """, (
             telegram_id,
             ADSGRAM_TASK_ID
@@ -2153,7 +2131,6 @@ def claim_task():
         existing = cur.fetchone()
 
         if existing:
-
             conn.rollback()
 
             return jsonify({
@@ -2162,10 +2139,6 @@ def claim_task():
                 "message":
                     "This task has already been completed."
             })
-
-        # -------------------------------------------------
-        # SAVE TASK COMPLETION
-        # -------------------------------------------------
 
         cur.execute("""
             INSERT INTO task_completions (
@@ -2184,11 +2157,7 @@ def claim_task():
             TASK_REWARD
         ))
 
-        # -------------------------------------------------
-        # ADD REWARD
-        # -------------------------------------------------
-
-            cur.execute("""
+        cur.execute("""
             UPDATE users
             SET
                 coins =
@@ -2241,7 +2210,7 @@ def claim_task():
     finally:
 
         conn.close()
-            
+  
 
 # =========================================================
 # TASK STATUS
