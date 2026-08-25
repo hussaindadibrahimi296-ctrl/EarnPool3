@@ -1,540 +1,601 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html><html lang="en" dir="ltr"><head><meta charset="UTF-8">
 
-<head>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
-    <meta charset="UTF-8">
+<title>EarnPool</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+<!-- Telegram Mini App -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <title>EarnPool</title>
+<!-- AdsGram -->
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-    <!-- Telegram Mini App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
 
-    <!-- AdsGram -->
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    * {
+        box-sizing: border-box;
+    }
 
-    <style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        font-family: Arial, sans-serif;
+        background: #10131a;
+        color: white;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    body {
+        padding-bottom: 88px;
+    }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            min-height: 100%;
-            font-family: Arial, sans-serif;
-            background: #10131a;
-            color: white;
-        }
+    button {
+        font-family: inherit;
+    }
 
-        body {
-            padding-bottom: 88px;
-        }
+    .app {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 15px;
+    }
 
-        button {
-            font-family: inherit;
-        }
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+    }
+
+    .logo {
+        font-size: 23px;
+        font-weight: bold;
+    }
+
+    .language-button {
+        border: none;
+        background: #1c2330;
+        color: white;
+        border-radius: 10px;
+        padding: 8px 11px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .language-menu {
+        display: none;
+        position: absolute;
+        top: 58px;
+        right: 15px;
+        background: #1c2330;
+        border-radius: 12px;
+        padding: 6px;
+        z-index: 100;
+        box-shadow: 0 8px 25px rgba(0,0,0,.35);
+    }
+
+    .language-menu.show {
+        display: block;
+    }
+
+    .language-option {
+        display: block;
+        width: 125px;
+        border: none;
+        background: transparent;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .language-option:active {
+        background: #293242;
+    }
+
+    .balance-card {
+        background: #191e29;
+        border-radius: 20px;
+        padding: 22px;
+        text-align: center;
+        margin-bottom: 18px;
+    }
+
+    .balance-title {
+        color: #9da5b4;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .coins {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .usd-value {
+        margin-top: 6px;
+        color: #8f98a8;
+        font-size: 15px;
+    }
+
+    .content-card {
+        background: #191e29;
+        border-radius: 20px;
+        padding: 22px;
+        min-height: 330px;
+    }
+
+    .content-icon {
+        font-size: 42px;
+        margin-bottom: 12px;
+    }
+
+    .content-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .content-text {
+        color: #aeb5c1;
+        line-height: 1.8;
+        font-size: 15px;
+    }
+
+    .reward-button,
+    .watch-ad-button {
+        width: 100%;
+        border: none;
+        background: #2d7dff;
+        color: white;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 18px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .reward-button:disabled,
+    .watch-ad-button:disabled {
+        background: #303744;
+        color: #8f98a8;
+        cursor: not-allowed;
+    }
+
+    .reward-status,
+    .ads-message,
+    .task-message {
+        text-align: center;
+        margin-top: 14px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .reward-success,
+    .ads-success,
+    .task-success {
+        color: #58d68d;
+    }
+
+    .reward-waiting,
+    .ads-waiting {
+        color: #aeb5c1;
+    }
+
+    .reward-error,
+    .ads-error,
+    .task-error {
+        color: #ff7777;
+    }
+
+    .ads-panel {
+        margin-top: 20px;
+    }
+
+    .ads-info {
+        background: #111722;
+        border-radius: 14px;
+        padding: 14px;
+        margin-top: 15px;
+    }
+
+    .ads-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+        color: #b5bdc9;
+        font-size: 14px;
+    }
+
+    .ads-row strong {
+        color: white;
+    }
+
+    /* TASKS */
+
+    .tasks-panel {
+        margin-top: 20px;
+    }
+
+    .task-card {
+        background: #111722;
+        border-radius: 15px;
+        padding: 15px;
+        margin-top: 12px;
+    }
+
+    .task-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 7px;
+    }
+
+    .task-description {
+        color: #aeb5c1;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    .task-reward {
+        color: #ffd166;
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .task-button {
+        width: 100%;
+        border: none;
+        background: #2d7dff;
+        color: white;
+        border-radius: 11px;
+        padding: 11px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .task-button:disabled {
+        background: #303744;
+        color: #8f98a8;
+    }
+
+    .no-tasks {
+        text-align: center;
+        color: #8f98a8;
+        padding: 25px 10px;
+        line-height: 1.7;
+    }
+
+    /* REFERRAL */
+
+    .referral-panel {
+        margin-top: 20px;
+    }
+
+    .referral-box {
+        background: #111722;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 12px;
+    }
+
+    .referral-label {
+        color: #aeb5c1;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .referral-value {
+        background: #191e29;
+        border-radius: 10px;
+        padding: 12px;
+        word-break: break-all;
+        font-size: 14px;
+        color: white;
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: #151922;
+        border-top: 1px solid #252b36;
+        padding: 7px 4px;
+        z-index: 50;
+    }
+
+    .nav-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        gap: 3px;
+    }
+
+    .nav-button {
+        flex: 1;
+        width: 16.666%;
+        min-width: 0;
+        border: none;
+        background: transparent;
+        color: #8f98a8;
+        border-radius: 11px;
+        padding: 6px 1px;
+        cursor: pointer;
+        font-size: 9px;
+        line-height: 1.2;
+    }
+
+    .nav-button.active {
+        background: #252d3b;
+        color: white;
+    }
+
+    .nav-icon {
+        display: block;
+        font-size: 20px;
+        line-height: 22px;
+        margin-bottom: 3px;
+    }
+
+    @media (max-width: 360px) {
 
         .app {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 18px;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-        }
-
-        .language-button {
-            border: none;
-            background: #1c2330;
-            color: white;
-            border-radius: 10px;
-            padding: 8px 11px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .language-menu {
-            display: none;
-            position: absolute;
-            top: 58px;
-            right: 15px;
-            background: #1c2330;
-            border-radius: 12px;
-            padding: 6px;
-            z-index: 100;
-            box-shadow: 0 8px 25px rgba(0,0,0,.35);
-        }
-
-        .language-menu.show {
-            display: block;
-        }
-
-        .language-option {
-            display: block;
-            width: 125px;
-            border: none;
-            background: transparent;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .language-option:active {
-            background: #293242;
-        }
-
-        .balance-card {
-            background: #191e29;
-            border-radius: 20px;
-            padding: 22px;
-            text-align: center;
-            margin-bottom: 18px;
-        }
-
-        .balance-title {
-            color: #9da5b4;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .coins {
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-        .usd-value {
-            margin-top: 6px;
-            color: #8f98a8;
-            font-size: 15px;
-        }
-
-        .content-card {
-            background: #191e29;
-            border-radius: 20px;
-            padding: 22px;
-            min-height: 330px;
-        }
-
-        .content-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
-        }
-
-        .content-title {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .content-text {
-            color: #aeb5c1;
-            line-height: 1.8;
-            font-size: 15px;
-        }
-
-        .reward-button,
-        .watch-ad-button {
-            width: 100%;
-            border: none;
-            background: #2d7dff;
-            color: white;
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 18px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .reward-button:disabled,
-        .watch-ad-button:disabled {
-            background: #303744;
-            color: #8f98a8;
-            cursor: not-allowed;
-        }
-
-        .reward-status,
-        .ads-message,
-        .task-message {
-            text-align: center;
-            margin-top: 14px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .reward-success,
-        .ads-success,
-        .task-success {
-            color: #58d68d;
-        }
-
-        .reward-waiting,
-        .ads-waiting {
-            color: #aeb5c1;
-        }
-
-        .reward-error,
-        .ads-error,
-        .task-error {
-            color: #ff7777;
-        }
-
-        .ads-panel {
-            margin-top: 20px;
-        }
-
-        .ads-info {
-            background: #111722;
-            border-radius: 14px;
-            padding: 14px;
-            margin-top: 15px;
-        }
-
-        .ads-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            color: #b5bdc9;
-            font-size: 14px;
-        }
-
-        .ads-row strong {
-            color: white;
-        }
-
-        /* TASKS */
-
-        .tasks-panel {
-            margin-top: 20px;
-        }
-
-        .task-card {
-            background: #111722;
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 12px;
-        }
-
-        .task-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
-
-        .task-description {
-            color: #aeb5c1;
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        .task-reward {
-            color: #ffd166;
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .task-button {
-            width: 100%;
-            border: none;
-            background: #2d7dff;
-            color: white;
-            border-radius: 11px;
-            padding: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .task-button:disabled {
-            background: #303744;
-            color: #8f98a8;
-        }
-
-        .no-tasks {
-            text-align: center;
-            color: #8f98a8;
-            padding: 25px 10px;
-            line-height: 1.7;
-        }
-
-        /* BOTTOM NAV */
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            background: #151922;
-            border-top: 1px solid #252b36;
-            padding: 7px 4px;
-            z-index: 50;
-        }
-
-        .nav-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            gap: 3px;
+            padding: 12px;
         }
 
         .nav-button {
-            flex: 1;
-            width: 16.666%;
-            min-width: 0;
-            border: none;
-            background: transparent;
-            color: #8f98a8;
-            border-radius: 11px;
-            padding: 6px 1px;
-            cursor: pointer;
-            font-size: 9px;
-            line-height: 1.2;
-        }
-
-        .nav-button.active {
-            background: #252d3b;
-            color: white;
+            font-size: 8px;
         }
 
         .nav-icon {
-            display: block;
-            font-size: 20px;
-            line-height: 22px;
-            margin-bottom: 3px;
+            font-size: 18px;
         }
 
-        @media (max-width: 360px) {
-
-            .app {
-                padding: 12px;
-            }
-
-            .nav-button {
-                font-size: 8px;
-            }
-
-            .nav-icon {
-                font-size: 18px;
-            }
-
-            .logo {
-                font-size: 21px;
-            }
-
-            .coins {
-                font-size: 27px;
-            }
-
+        .logo {
+            font-size: 21px;
         }
 
-    </style>
+        .coins {
+            font-size: 27px;
+        }
 
-</head>
+    }
 
-<body>
+</style>
 
-<div class="app">
+</head><body><div class="app"><div class="top-bar">
 
-    <div class="top-bar">
+    <div class="logo">
+        EarnPool
+    </div>
 
-        <div class="logo">
-            EarnPool
-        </div>
+    <button
+        class="language-button"
+        id="languageButton"
+        onclick="toggleLanguageMenu()"
+    >
+        🌐 EN
+    </button>
 
-        <button
-            class="language-button"
-            id="languageButton"
-            onclick="toggleLanguageMenu()"
-        >
-            🌐 EN
-        </button>
+</div>
+
+<div
+    class="language-menu"
+    id="languageMenu"
+>
+
+    <button
+        class="language-option"
+        onclick="changeLanguage('en')"
+    >
+        🇬🇧 English
+    </button>
+
+    <button
+        class="language-option"
+        onclick="changeLanguage('fa')"
+    >
+        🇦🇫 فارسی
+    </button>
+
+    <button
+        class="language-option"
+        onclick="changeLanguage('ar')"
+    >
+        🇸🇦 العربية
+    </button>
+
+</div>
+
+<div class="balance-card">
+
+    <div
+        class="balance-title"
+        id="balanceTitle"
+    >
+        Your Balance
+    </div>
+
+    <div class="coins">
+
+        <span id="coins">0</span>
+
+        🪙
 
     </div>
 
     <div
-        class="language-menu"
-        id="languageMenu"
+        class="usd-value"
+        id="usdValue"
+    >
+        ≈ $0.000000
+    </div>
+
+</div>
+
+<div class="content-card">
+
+    <div
+        class="content-icon"
+        id="contentIcon"
+    >
+        🎁
+    </div>
+
+    <div
+        class="content-title"
+        id="contentTitle"
+    >
+        Daily Reward
+    </div>
+
+    <div
+        class="content-text"
+        id="contentText"
+    >
+        Claim your daily reward and earn coins every 12 hours.
+    </div>
+
+    <button
+        id="rewardButton"
+        class="reward-button"
+        onclick="claimDailyReward()"
+    >
+        🎁 Claim 1,000 Coins
+    </button>
+
+    <div
+        id="rewardStatus"
+        class="reward-status"
+    ></div>
+
+    <div
+        id="adsPanel"
+        class="ads-panel"
+        style="display:none;"
     >
 
-        <button
-            class="language-option"
-            onclick="changeLanguage('en')"
-        >
-            🇬🇧 English
-        </button>
+        <div class="ads-info">
 
-        <button
-            class="language-option"
-            onclick="changeLanguage('fa')"
-        >
-            🇦🇫 فارسی
-        </button>
+            <div class="ads-row">
+                <span id="adsWatchedLabel">
+                    Ads watched
+                </span>
 
-        <button
-            class="language-option"
-            onclick="changeLanguage('ar')"
-        >
-            🇸🇦 العربية
-        </button>
-
-    </div>
-
-    <div class="balance-card">
-
-        <div
-            class="balance-title"
-            id="balanceTitle"
-        >
-            Your Balance
-        </div>
-
-        <div class="coins">
-
-            <span id="coins">0</span>
-
-            🪙
-
-        </div>
-
-        <div
-            class="usd-value"
-            id="usdValue"
-        >
-            ≈ $0.000000
-        </div>
-
-    </div>
-
-    <div class="content-card">
-
-        <div
-            class="content-icon"
-            id="contentIcon"
-        >
-            🎁
-        </div>
-
-        <div
-            class="content-title"
-            id="contentTitle"
-        >
-            Daily Reward
-        </div>
-
-        <div
-            class="content-text"
-            id="contentText"
-        >
-            Claim your daily reward and earn coins every 12 hours.
-        </div>
-
-        <button
-            id="rewardButton"
-            class="reward-button"
-            onclick="claimDailyReward()"
-        >
-            🎁 Claim 1,000 Coins
-        </button>
-
-        <div
-            id="rewardStatus"
-            class="reward-status"
-        ></div>
-
-        <div
-            id="adsPanel"
-            class="ads-panel"
-            style="display:none;"
-        >
-
-            <div class="ads-info">
-
-                <div class="ads-row">
-                    <span id="adsWatchedLabel">
-                        Ads watched
-                    </span>
-
-                    <strong>
-                        <span id="adsWatched">0</span>
-                        /
-                        <span id="adsLimit">10</span>
-                    </strong>
-                </div>
-
-                <div class="ads-row">
-                    <span id="adsRemainingLabel">
-                        Ads remaining
-                    </span>
-
-                    <strong id="adsRemaining">
-                        10
-                    </strong>
-                </div>
-
-                <div class="ads-row">
-                    <span id="adsRewardLabel">
-                        Reward
-                    </span>
-
-                    <strong>
-                        2,000 🪙
-                    </strong>
-                </div>
-
+                <strong>
+                    <span id="adsWatched">0</span>
+                    /
+                    <span id="adsLimit">10</span>
+                </strong>
             </div>
 
-            <button
-                id="watchAdButton"
-                class="watch-ad-button"
-                onclick="watchAd()"
-            >
-                📺 Watch Ad +2,000
-            </button>
+            <div class="ads-row">
+                <span id="adsRemainingLabel">
+                    Ads remaining
+                </span>
 
-            <div
-                id="adsMessage"
-                class="ads-message"
-            ></div>
+                <strong id="adsRemaining">
+                    10
+                </strong>
+            </div>
+
+            <div class="ads-row">
+                <span id="adsRewardLabel">
+                    Reward
+                </span>
+
+                <strong>
+                    2,000 🪙
+                </strong>
+            </div>
 
         </div>
+
+        <button
+            id="watchAdButton"
+            class="watch-ad-button"
+            onclick="watchAd()"
+        >
+            📺 Watch Ad +2,000
+        </button>
 
         <div
-            id="tasksPanel"
-            class="tasks-panel"
-            style="display:none;"
-        >
+            id="adsMessage"
+            class="ads-message"
+        ></div>
 
-            <div id="tasksList"></div>
+    </div>
+
+    <div
+        id="tasksPanel"
+        class="tasks-panel"
+        style="display:none;"
+    >
+
+        <div id="tasksList"></div>
+
+        <div
+            id="taskMessage"
+            class="task-message"
+        ></div>
+
+    </div>
+
+    <!-- REFERRAL PANEL -->
+
+    <div
+        id="referralPanel"
+        class="referral-panel"
+        style="display:none;"
+    >
+
+        <div class="referral-box">
 
             <div
-                id="taskMessage"
-                class="task-message"
-            ></div>
+                class="referral-label"
+                data-key="referralLink"
+            >
+                Referral Link
+            </div>
+
+            <div
+                id="referralLink"
+                class="referral-value"
+            >
+                Loading...
+            </div>
+
+        </div>
+
+        <div class="referral-box">
+
+            <div
+                class="referral-label"
+                data-key="referralCount"
+            >
+                Referrals
+            </div>
+
+            <div
+                id="referralCount"
+                class="referral-value"
+            >
+                0
+            </div>
 
         </div>
 
@@ -542,69 +603,65 @@
 
 </div>
 
-<div class="bottom-nav">
+</div><div class="bottom-nav"><div class="nav-container">
 
-    <div class="nav-container">
+    <button
+        class="nav-button active"
+        data-section="daily"
+        onclick="showSection('daily', this)"
+    >
+        <span class="nav-icon">🎁</span>
+        <span data-key="daily">Daily</span>
+    </button>
 
-        <button
-            class="nav-button active"
-            data-section="daily"
-            onclick="showSection('daily', this)"
-        >
-            <span class="nav-icon">🎁</span>
-            <span data-key="daily">Daily</span>
-        </button>
+    <button
+        class="nav-button"
+        data-section="ads"
+        onclick="showSection('ads', this)"
+    >
+        <span class="nav-icon">📺</span>
+        <span data-key="ads">Ads</span>
+    </button>
 
-        <button
-            class="nav-button"
-            data-section="ads"
-            onclick="showSection('ads', this)"
-        >
-            <span class="nav-icon">📺</span>
-            <span data-key="ads">Ads</span>
-        </button>
+    <button
+        class="nav-button"
+        data-section="tasks"
+        onclick="showSection('tasks', this)"
+    >
+        <span class="nav-icon">🎯</span>
+        <span data-key="tasks">Tasks</span>
+    </button>
 
-        <button
-            class="nav-button"
-            data-section="tasks"
-            onclick="showSection('tasks', this)"
-        >
-            <span class="nav-icon">🎯</span>
-            <span data-key="tasks">Tasks</span>
-        </button>
+    <button
+        class="nav-button"
+        data-section="referral"
+        onclick="showSection('referral', this)"
+    >
+        <span class="nav-icon">👥</span>
+        <span data-key="referral">Referral</span>
+    </button>
 
-        <button
-            class="nav-button"
-            data-section="referral"
-            onclick="showSection('referral', this)"
-        >
-            <span class="nav-icon">👥</span>
-            <span data-key="referral">Referral</span>
-        </button>
+    <button
+        class="nav-button"
+        data-section="withdraw"
+        onclick="showSection('withdraw', this)"
+    >
+        <span class="nav-icon">💰</span>
+        <span data-key="withdraw">Withdraw</span>
+    </button>
 
-        <button
-            class="nav-button"
-            data-section="withdraw"
-            onclick="showSection('withdraw', this)"
-        >
-            <span class="nav-icon">💰</span>
-            <span data-key="withdraw">Withdraw</span>
-        </button>
-
-        <button
-            class="nav-button"
-            data-section="account"
-            onclick="showSection('account', this)"
-        >
-            <span class="nav-icon">👤</span>
-            <span data-key="account">Account</span>
-        </button>
-
-    </div>
+    <button
+        class="nav-button"
+        data-section="account"
+        onclick="showSection('account', this)"
+    >
+        <span class="nav-icon">👤</span>
+        <span data-key="account">Account</span>
+    </button>
 
 </div>
 
-<script>
+</div><script>
 
 const tg = window.Telegram.WebApp;
 
@@ -659,6 +716,12 @@ const translations = {
         referral: "Referral",
         withdraw: "Withdraw",
         account: "Account",
+
+        referralLink:
+            "Referral Link",
+
+        referralCount:
+            "Referrals",
 
         dailyTitle: "Daily Reward",
 
@@ -774,6 +837,12 @@ const translations = {
 
         account:
             "حساب",
+
+        referralLink:
+            "لینک رفرال",
+
+        referralCount:
+            "تعداد دعوت‌ها",
 
         dailyTitle:
             "پاداش روزانه",
@@ -895,6 +964,12 @@ const translations = {
 
         account:
             "الحساب",
+
+        referralLink:
+            "رابط الإحالة",
+
+        referralCount:
+            "عدد الإحالات",
 
         dailyTitle:
             "المكافأة اليومية",
