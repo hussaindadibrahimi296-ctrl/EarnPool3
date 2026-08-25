@@ -1438,7 +1438,9 @@ async function loadUserBalance() {
             );
 
         const data =
-            await response.json();
+    await response.json();
+
+console.log("TASK API RESPONSE:", data);
 
         if (
             data.success &&
