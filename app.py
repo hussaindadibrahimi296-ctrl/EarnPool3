@@ -2188,7 +2188,7 @@ def claim_task():
         # ADD REWARD
         # -------------------------------------------------
 
-        cur.execute("""
+            cur.execute("""
             UPDATE users
             SET
                 coins =
@@ -2203,7 +2203,7 @@ def claim_task():
 
         updated_user = cur.fetchone()
 
-                conn.commit()
+        conn.commit()
 
         return jsonify({
             "success": True,
