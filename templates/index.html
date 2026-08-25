@@ -1380,7 +1380,7 @@ const referralPanel =
     }
 
 
-    /* ==========================================
+        /* ==========================================
        TASKS
     ========================================== */
 
@@ -1398,30 +1398,35 @@ const referralPanel =
         tasksPanel.style.display =
             "block";
 
+        referralPanel.style.display =
+            "none";
+
         loadTasks();
 
-/* ==========================================
-   REFERRAL
-========================================== */
+    }
 
-else if (section === "referral") {
 
-    rewardButton.style.display =
-        "none";
+    /* ==========================================
+       REFERRAL
+    ========================================== */
 
-    rewardStatus.style.display =
-        "none";
+    else if (section === "referral") {
 
-    adsPanel.style.display =
-        "none";
+        rewardButton.style.display =
+            "none";
 
-    tasksPanel.style.display =
-        "none";
+        rewardStatus.style.display =
+            "none";
 
-    referralPanel.style.display =
-        "block";
+        adsPanel.style.display =
+            "none";
 
-}
+        tasksPanel.style.display =
+            "none";
+
+        referralPanel.style.display =
+            "block";
+
     }
 
 
