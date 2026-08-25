@@ -2400,3 +2400,70 @@ def process_referral(
         }
 
     # ---------------------------------------------------
+ 
+cur.execute("""
+        SELECT *
+        FROM users
+        WHERE telegram_id = %s
+        FOR UPDATE
+    """, (
+        referrer_telegram_id,
+    ))
+
+    referrer = cur.fetchone()
+
+    if not referrer:
+        return {
+            "success": False,
+            "reason": "referrer_not_found"
+        }
+
+    # ثبت Referral
+    cur.execute("""
+        INSERT INTO referrals (
+            referrer_telegram_id,
+            referred_telegram_id,
+            reward
+        )
+        VALUES (%s, %s, %s)
+    """, (
+        referrer_telegram_id,
+        referred_telegram_id,
+        REFERRAL_REWARD
+    ))
+
+    # پاداش دعوت‌کننده
+    cur.execute("""
+        UPDATE users
+        SET coins = COALESCE(coins, 0) + %s,
+            updated_at = NOW()
+        WHERE telegram_id = %s
+    """, (
+        REFERRAL_REWARD,
+        referrer_telegram_id
+    ))
+
+    # پاداش کاربر جدید
+    cur.execute("""
+        UPDATE users
+        SET coins = COALESCE(coins, 0) + %s,
+            updated_at = NOW()
+        WHERE telegram_id = %s
+    """, (
+        REFERRAL_REWARD,
+        referred_telegram_id
+    ))
+
+    return {
+        "success": True,
+        "referrer_reward": REFERRAL_REWARD,
+        "referred_reward": REFERRAL_REWARD
+    }
+
+
+# =========================================================
+# START APP
+# =========================================================
+
+init_db()
+set_telegram_webhook()
