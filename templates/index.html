@@ -535,7 +535,97 @@
                 id="taskMessage"
                 class="task-message"
             ></div>
+<!-- REFERRAL PANEL -->
 
+<div
+    id="referralPanel"
+    class="tasks-panel"
+    style="display:none;"
+>
+
+    <div class="ads-info">
+
+        <div class="ads-row">
+            <span id="referralInvitedLabel">
+                Friends Invited
+            </span>
+
+            <strong id="referralCount">
+                0
+            </strong>
+        </div>
+
+        <div class="ads-row">
+            <span id="referralRewardLabel">
+                Reward per Referral
+            </span>
+
+            <strong>
+                1,000 🪙
+            </strong>
+        </div>
+
+    </div>
+
+    <div
+        style="
+            background:#111722;
+            border-radius:14px;
+            padding:14px;
+            margin-top:15px;
+        "
+    >
+
+        <div
+            id="referralLinkLabel"
+            style="
+                color:#aeb5c1;
+                font-size:14px;
+                margin-bottom:8px;
+            "
+        >
+            Your Referral Link
+        </div>
+
+        <div
+            id="referralLink"
+            style="
+                background:#191e29;
+                border-radius:10px;
+                padding:12px;
+                font-size:13px;
+                word-break:break-all;
+                color:#ffffff;
+            "
+        >
+            Loading...
+        </div>
+
+        <button
+            id="copyReferralButton"
+            class="reward-button"
+            onclick="copyReferralLink()"
+        >
+            📋 Copy Link
+        </button>
+
+        <button
+            id="shareReferralButton"
+            class="reward-button"
+            onclick="shareReferralLink()"
+        >
+            📤 Share Link
+        </button>
+
+    </div>
+
+    <div
+        id="referralMessage"
+        class="task-message"
+    ></div>
+
+</div>
+            
         </div>
 
     </div>
