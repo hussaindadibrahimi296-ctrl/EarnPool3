@@ -1,4 +1,9 @@
-<!DOCTYPE html><html lang="en" dir="ltr"><head><meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+<meta charset="UTF-8">
 
 <meta
     name="viewport"
@@ -12,6 +17,7 @@
 
 <!-- AdsGram -->
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
 
 <style>
 
@@ -219,7 +225,10 @@
         color: white;
     }
 
-    /* TASKS */
+
+    /* =====================================================
+       TASKS
+    ===================================================== */
 
     .tasks-panel {
         margin-top: 20px;
@@ -275,10 +284,14 @@
         line-height: 1.7;
     }
 
-    /* REFERRAL */
+
+    /* =====================================================
+       REFERRAL
+    ===================================================== */
 
     .referral-panel {
         margin-top: 20px;
+        width: 100%;
     }
 
     .referral-box {
@@ -301,9 +314,61 @@
         word-break: break-all;
         font-size: 14px;
         color: white;
+        min-height: 18px;
     }
 
-    /* BOTTOM NAV */
+    .referral-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .referral-action-button {
+        flex: 1;
+        border: none;
+        background: #2d7dff;
+        color: white;
+        border-radius: 11px;
+        padding: 12px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .referral-action-button:active {
+        transform: scale(.98);
+    }
+
+    .referral-message {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .referral-success {
+        color: #58d68d;
+    }
+
+    .referral-error {
+        color: #ff7777;
+    }
+
+    .referral-reward-info {
+        background: #191e29;
+        border-radius: 10px;
+        padding: 11px;
+        margin-top: 12px;
+        text-align: center;
+        color: #ffd166;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+
+    /* =====================================================
+       BOTTOM NAV
+    ===================================================== */
 
     .bottom-nav {
         position: fixed;
@@ -377,225 +442,328 @@
 
 </style>
 
-</head><body><div class="app"><div class="top-bar">
+</head>
 
-    <div class="logo">
-        EarnPool
-    </div>
 
-    <button
-        class="language-button"
-        id="languageButton"
-        onclick="toggleLanguageMenu()"
-    >
-        🌐 EN
-    </button>
+<body>
 
-</div>
+<div class="app">
 
-<div
-    class="language-menu"
-    id="languageMenu"
->
 
-    <button
-        class="language-option"
-        onclick="changeLanguage('en')"
-    >
-        🇬🇧 English
-    </button>
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
 
-    <button
-        class="language-option"
-        onclick="changeLanguage('fa')"
-    >
-        🇦🇫 فارسی
-    </button>
+    <div class="top-bar">
 
-    <button
-        class="language-option"
-        onclick="changeLanguage('ar')"
-    >
-        🇸🇦 العربية
-    </button>
-
-</div>
-
-<div class="balance-card">
-
-    <div
-        class="balance-title"
-        id="balanceTitle"
-    >
-        Your Balance
-    </div>
-
-    <div class="coins">
-
-        <span id="coins">0</span>
-
-        🪙
-
-    </div>
-
-    <div
-        class="usd-value"
-        id="usdValue"
-    >
-        ≈ $0.000000
-    </div>
-
-</div>
-
-<div class="content-card">
-
-    <div
-        class="content-icon"
-        id="contentIcon"
-    >
-        🎁
-    </div>
-
-    <div
-        class="content-title"
-        id="contentTitle"
-    >
-        Daily Reward
-    </div>
-
-    <div
-        class="content-text"
-        id="contentText"
-    >
-        Claim your daily reward and earn coins every 12 hours.
-    </div>
-
-    <button
-        id="rewardButton"
-        class="reward-button"
-        onclick="claimDailyReward()"
-    >
-        🎁 Claim 1,000 Coins
-    </button>
-
-    <div
-        id="rewardStatus"
-        class="reward-status"
-    ></div>
-
-    <div
-        id="adsPanel"
-        class="ads-panel"
-        style="display:none;"
-    >
-
-        <div class="ads-info">
-
-            <div class="ads-row">
-                <span id="adsWatchedLabel">
-                    Ads watched
-                </span>
-
-                <strong>
-                    <span id="adsWatched">0</span>
-                    /
-                    <span id="adsLimit">10</span>
-                </strong>
-            </div>
-
-            <div class="ads-row">
-                <span id="adsRemainingLabel">
-                    Ads remaining
-                </span>
-
-                <strong id="adsRemaining">
-                    10
-                </strong>
-            </div>
-
-            <div class="ads-row">
-                <span id="adsRewardLabel">
-                    Reward
-                </span>
-
-                <strong>
-                    2,000 🪙
-                </strong>
-            </div>
-
+        <div class="logo">
+            EarnPool
         </div>
 
         <button
-            id="watchAdButton"
-            class="watch-ad-button"
-            onclick="watchAd()"
+            class="language-button"
+            id="languageButton"
+            onclick="toggleLanguageMenu()"
         >
-            📺 Watch Ad +2,000
+            🌐 EN
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         LANGUAGE MENU
+    ====================================================== -->
+
+    <div
+        class="language-menu"
+        id="languageMenu"
+    >
+
+        <button
+            class="language-option"
+            onclick="changeLanguage('en')"
+        >
+            🇬🇧 English
+        </button>
+
+        <button
+            class="language-option"
+            onclick="changeLanguage('fa')"
+        >
+            🇦🇫 فارسی
+        </button>
+
+        <button
+            class="language-option"
+            onclick="changeLanguage('ar')"
+        >
+            🇸🇦 العربية
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         BALANCE
+    ====================================================== -->
+
+    <div class="balance-card">
+
+        <div
+            class="balance-title"
+            id="balanceTitle"
+        >
+            Your Balance
+        </div>
+
+        <div class="coins">
+
+            <span id="coins">0</span>
+
+            🪙
+
+        </div>
+
+        <div
+            class="usd-value"
+            id="usdValue"
+        >
+            ≈ $0.000000
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="content-card">
+
+        <div
+            class="content-icon"
+            id="contentIcon"
+        >
+            🎁
+        </div>
+
+        <div
+            class="content-title"
+            id="contentTitle"
+        >
+            Daily Reward
+        </div>
+
+        <div
+            class="content-text"
+            id="contentText"
+        >
+            Claim your daily reward and earn coins every 12 hours.
+        </div>
+
+
+        <!-- =================================================
+             DAILY
+        ================================================== -->
+
+        <button
+            id="rewardButton"
+            class="reward-button"
+            onclick="claimDailyReward()"
+        >
+            🎁 Claim 1,000 Coins
         </button>
 
         <div
-            id="adsMessage"
-            class="ads-message"
+            id="rewardStatus"
+            class="reward-status"
         ></div>
 
-    </div>
 
-    <div
-        id="tasksPanel"
-        class="tasks-panel"
-        style="display:none;"
-    >
-
-        <div id="tasksList"></div>
+        <!-- =================================================
+             ADS
+        ================================================== -->
 
         <div
-            id="taskMessage"
-            class="task-message"
-        ></div>
+            id="adsPanel"
+            class="ads-panel"
+            style="display:none;"
+        >
 
-    </div>
+            <div class="ads-info">
 
-    <!-- REFERRAL PANEL -->
+                <div class="ads-row">
 
-    <div
-        id="referralPanel"
-        class="referral-panel"
-        style="display:none;"
-    >
+                    <span id="adsWatchedLabel">
+                        Ads watched
+                    </span>
 
-        <div class="referral-box">
+                    <strong>
 
-            <div
-                class="referral-label"
-                data-key="referralLink"
-            >
-                Referral Link
+                        <span id="adsWatched">0</span>
+
+                        /
+
+                        <span id="adsLimit">10</span>
+
+                    </strong>
+
+                </div>
+
+
+                <div class="ads-row">
+
+                    <span id="adsRemainingLabel">
+                        Ads remaining
+                    </span>
+
+                    <strong id="adsRemaining">
+                        10
+                    </strong>
+
+                </div>
+
+
+                <div class="ads-row">
+
+                    <span id="adsRewardLabel">
+                        Reward
+                    </span>
+
+                    <strong>
+                        2,000 🪙
+                    </strong>
+
+                </div>
+
             </div>
 
-            <div
-                id="referralLink"
-                class="referral-value"
+
+            <button
+                id="watchAdButton"
+                class="watch-ad-button"
+                onclick="watchAd()"
             >
-                Loading...
-            </div>
+                📺 Watch Ad +2,000
+            </button>
+
+
+            <div
+                id="adsMessage"
+                class="ads-message"
+            ></div>
 
         </div>
 
-        <div class="referral-box">
+
+        <!-- =================================================
+             TASKS
+        ================================================== -->
+
+        <div
+            id="tasksPanel"
+            class="tasks-panel"
+            style="display:none;"
+        >
+
+            <div id="tasksList"></div>
 
             <div
-                class="referral-label"
-                data-key="referralCount"
-            >
-                Referrals
+                id="taskMessage"
+                class="task-message"
+            ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             REFERRAL
+        ================================================== -->
+
+        <div
+            id="referralPanel"
+            class="referral-panel"
+            style="display:none;"
+        >
+
+            <!-- Referral Link -->
+
+            <div class="referral-box">
+
+                <div
+                    class="referral-label"
+                    data-key="referralLink"
+                >
+                    Referral Link
+                </div>
+
+                <div
+                    id="referralLink"
+                    class="referral-value"
+                >
+                    Loading...
+                </div>
+
+
+                <div class="referral-actions">
+
+                    <button
+                        id="copyReferralButton"
+                        class="referral-action-button"
+                        onclick="copyReferralLink()"
+                    >
+                        📋 Copy
+                    </button>
+
+                    <button
+                        id="shareReferralButton"
+                        class="referral-action-button"
+                        onclick="shareReferralLink()"
+                    >
+                        📤 Share
+                    </button>
+
+                </div>
+
             </div>
 
-            <div
-                id="referralCount"
-                class="referral-value"
-            >
-                0
+
+            <!-- Referral Count -->
+
+            <div class="referral-box">
+
+                <div
+                    class="referral-label"
+                    data-key="referralCount"
+                >
+                    Referrals
+                </div>
+
+                <div
+                    id="referralCount"
+                    class="referral-value"
+                >
+                    0
+                </div>
+
             </div>
+
+
+            <!-- Referral Reward -->
+
+            <div
+                class="referral-reward-info"
+                id="referralRewardInfo"
+            >
+                🎁 5,000 🪙 per referral
+            </div>
+
+
+            <div
+                id="referralMessage"
+                class="referral-message"
+            ></div>
 
         </div>
 
@@ -603,73 +771,132 @@
 
 </div>
 
-</div><div class="bottom-nav"><div class="nav-container">
 
-    <button
-        class="nav-button active"
-        data-section="daily"
-        onclick="showSection('daily', this)"
-    >
-        <span class="nav-icon">🎁</span>
-        <span data-key="daily">Daily</span>
-    </button>
+<!-- =========================================================
+     BOTTOM NAV
+========================================================== -->
 
-    <button
-        class="nav-button"
-        data-section="ads"
-        onclick="showSection('ads', this)"
-    >
-        <span class="nav-icon">📺</span>
-        <span data-key="ads">Ads</span>
-    </button>
+<div class="bottom-nav">
 
-    <button
-        class="nav-button"
-        data-section="tasks"
-        onclick="showSection('tasks', this)"
-    >
-        <span class="nav-icon">🎯</span>
-        <span data-key="tasks">Tasks</span>
-    </button>
+    <div class="nav-container">
 
-    <button
-        class="nav-button"
-        data-section="referral"
-        onclick="showSection('referral', this)"
-    >
-        <span class="nav-icon">👥</span>
-        <span data-key="referral">Referral</span>
-    </button>
 
-    <button
-        class="nav-button"
-        data-section="withdraw"
-        onclick="showSection('withdraw', this)"
-    >
-        <span class="nav-icon">💰</span>
-        <span data-key="withdraw">Withdraw</span>
-    </button>
+        <button
+            class="nav-button active"
+            data-section="daily"
+            onclick="showSection('daily', this)"
+        >
 
-    <button
-        class="nav-button"
-        data-section="account"
-        onclick="showSection('account', this)"
-    >
-        <span class="nav-icon">👤</span>
-        <span data-key="account">Account</span>
-    </button>
+            <span class="nav-icon">🎁</span>
+
+            <span data-key="daily">
+                Daily
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="ads"
+            onclick="showSection('ads', this)"
+        >
+
+            <span class="nav-icon">📺</span>
+
+            <span data-key="ads">
+                Ads
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="tasks"
+            onclick="showSection('tasks', this)"
+        >
+
+            <span class="nav-icon">🎯</span>
+
+            <span data-key="tasks">
+                Tasks
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="referral"
+            onclick="showSection('referral', this)"
+        >
+
+            <span class="nav-icon">👥</span>
+
+            <span data-key="referral">
+                Referral
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="withdraw"
+            onclick="showSection('withdraw', this)"
+        >
+
+            <span class="nav-icon">💰</span>
+
+            <span data-key="withdraw">
+                Withdraw
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="account"
+            onclick="showSection('account', this)"
+        >
+
+            <span class="nav-icon">👤</span>
+
+            <span data-key="account">
+                Account
+            </span>
+
+        </button>
+
+    </div>
 
 </div>
 
-</div><script>
 
-const tg = window.Telegram.WebApp;
+<script>
+
+
+/* =====================================================
+   TELEGRAM
+===================================================== */
+
+const tg =
+    window.Telegram.WebApp;
 
 tg.ready();
+
 tg.expand();
+
 
 const user =
     tg.initDataUnsafe?.user || null;
+
+
+/* =====================================================
+   ADSGRAM
+===================================================== */
 
 let AdController = null;
 
@@ -696,26 +923,51 @@ try {
 
 }
 
+
+/* =====================================================
+   GLOBAL VALUES
+===================================================== */
+
 let coins = 0;
 
 const DAILY_REWARD = 1000;
+
 const AD_REWARD = 2000;
+
 const TASK_REWARD = 1000;
 
 const AD_LIMIT = 10;
+
+
+/* =====================================================
+   TRANSLATIONS
+===================================================== */
 
 const translations = {
 
     en: {
 
-        balance: "Your Balance",
+        balance:
+            "Your Balance",
 
-        daily: "Daily",
-        ads: "Ads",
-        tasks: "Tasks",
-        referral: "Referral",
-        withdraw: "Withdraw",
-        account: "Account",
+        daily:
+            "Daily",
+
+        ads:
+            "Ads",
+
+        tasks:
+            "Tasks",
+
+        referral:
+            "Referral",
+
+        withdraw:
+            "Withdraw",
+
+        account:
+            "Account",
+
 
         referralLink:
             "Referral Link",
@@ -723,35 +975,69 @@ const translations = {
         referralCount:
             "Referrals",
 
-        dailyTitle: "Daily Reward",
+        referralCopy:
+            "📋 Copy",
+
+        referralShare:
+            "📤 Share",
+
+        referralReward:
+            "🎁 5,000 🪙 per referral",
+
+        referralCopied:
+            "✅ Referral link copied.",
+
+        referralShared:
+            "📤 Share the link with your friends.",
+
+        referralLoading:
+            "Loading...",
+
+        referralError:
+            "❌ Could not load referral information.",
+
+
+        dailyTitle:
+            "Daily Reward",
 
         dailyText:
             "Claim your daily reward and earn coins every 12 hours.",
 
-        adsTitle: "Watch Ads",
+
+        adsTitle:
+            "Watch Ads",
 
         adsText:
             "Watch advertisements and earn coins.",
 
-        tasksTitle: "Tasks",
+
+        tasksTitle:
+            "Tasks",
 
         tasksText:
             "Complete available tasks and earn rewards.",
 
-        referralTitle: "Referral",
+
+        referralTitle:
+            "Referral",
 
         referralText:
             "Invite friends and earn referral rewards.",
 
-        withdrawTitle: "Withdraw",
+
+        withdrawTitle:
+            "Withdraw",
 
         withdrawText:
             "Withdraw your available balance.",
 
-        accountTitle: "Account",
+
+        accountTitle:
+            "Account",
 
         accountText:
             "View your account information and statistics.",
+
 
         claim:
             "🎁 Claim 1,000 Coins",
@@ -764,6 +1050,7 @@ const translations = {
 
         waiting:
             "⏳ Next reward in",
+
 
         adsWatched:
             "Ads watched",
@@ -788,6 +1075,7 @@ const translations = {
 
         adsReset:
             "Next ads available in",
+
 
         taskReward:
             "Reward: 1,000 🪙",
@@ -815,6 +1103,7 @@ const translations = {
 
     },
 
+
     fa: {
 
         balance:
@@ -838,11 +1127,34 @@ const translations = {
         account:
             "حساب",
 
+
         referralLink:
             "لینک رفرال",
 
         referralCount:
             "تعداد دعوت‌ها",
+
+        referralCopy:
+            "📋 کپی",
+
+        referralShare:
+            "📤 اشتراک‌گذاری",
+
+        referralReward:
+            "🎁 برای هر دعوت ۵,۰۰۰ 🪙",
+
+        referralCopied:
+            "✅ لینک رفرال کپی شد.",
+
+        referralShared:
+            "📤 لینک را با دوستان خود به اشتراک بگذارید.",
+
+        referralLoading:
+            "در حال بارگذاری...",
+
+        referralError:
+            "❌ دریافت اطلاعات رفرال ممکن نشد.",
+
 
         dailyTitle:
             "پاداش روزانه",
@@ -850,11 +1162,13 @@ const translations = {
         dailyText:
             "هر ۱۲ ساعت پاداش خود را دریافت کنید.",
 
+
         adsTitle:
             "دیدن تبلیغات",
 
         adsText:
             "تبلیغات را تماشا کنید و سکه دریافت کنید.",
+
 
         tasksTitle:
             "تسک‌ها",
@@ -862,11 +1176,13 @@ const translations = {
         tasksText:
             "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
 
+
         referralTitle:
             "رفرال",
 
         referralText:
             "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
+
 
         withdrawTitle:
             "برداشت",
@@ -874,11 +1190,13 @@ const translations = {
         withdrawText:
             "موجودی قابل برداشت خود را برداشت کنید.",
 
+
         accountTitle:
             "حساب کاربری",
 
         accountText:
             "اطلاعات حساب و آمار خود را مشاهده کنید.",
+
 
         claim:
             "🎁 دریافت ۱,۰۰۰ سکه",
@@ -891,6 +1209,7 @@ const translations = {
 
         waiting:
             "⏳ پاداش بعدی تا",
+
 
         adsWatched:
             "تبلیغات دیده‌شده",
@@ -915,6 +1234,7 @@ const translations = {
 
         adsReset:
             "تبلیغات بعدی تا",
+
 
         taskReward:
             "پاداش: ۱,۰۰۰ 🪙",
@@ -942,6 +1262,7 @@ const translations = {
 
     },
 
+
     ar: {
 
         balance:
@@ -965,11 +1286,34 @@ const translations = {
         account:
             "الحساب",
 
+
         referralLink:
             "رابط الإحالة",
 
         referralCount:
             "عدد الإحالات",
+
+        referralCopy:
+            "📋 نسخ",
+
+        referralShare:
+            "📤 مشاركة",
+
+        referralReward:
+            "🎁 5,000 🪙 لكل إحالة",
+
+        referralCopied:
+            "✅ تم نسخ رابط الإحالة.",
+
+        referralShared:
+            "📤 شارك الرابط مع أصدقائك.",
+
+        referralLoading:
+            "جارٍ التحميل...",
+
+        referralError:
+            "❌ تعذر تحميل معلومات الإحالة.",
+
 
         dailyTitle:
             "المكافأة اليومية",
@@ -977,11 +1321,13 @@ const translations = {
         dailyText:
             "احصل على مكافأتك كل 12 ساعة.",
 
+
         adsTitle:
             "مشاهدة الإعلانات",
 
         adsText:
             "شاهد الإعلانات واربح العملات.",
+
 
         tasksTitle:
             "المهام",
@@ -989,11 +1335,13 @@ const translations = {
         tasksText:
             "أكمل المهام المتاحة واحصل على المكافآت.",
 
+
         referralTitle:
             "الإحالة",
 
         referralText:
             "ادعُ أصدقاءك واربح مكافآت الإحالة.",
+
 
         withdrawTitle:
             "السحب",
@@ -1001,11 +1349,13 @@ const translations = {
         withdrawText:
             "اسحب رصيدك المتاح.",
 
+
         accountTitle:
             "الحساب",
 
         accountText:
             "عرض معلومات حسابك وإحصائياتك.",
+
 
         claim:
             "🎁 احصل على 1,000 عملة",
@@ -1018,6 +1368,7 @@ const translations = {
 
         waiting:
             "⏳ المكافأة التالية خلال",
+
 
         adsWatched:
             "الإعلانات المشاهدة",
@@ -1042,6 +1393,7 @@ const translations = {
 
         adsReset:
             "الإعلانات التالية خلال",
+
 
         taskReward:
             "المكافأة: 1,000 🪙",
@@ -1071,18 +1423,34 @@ const translations = {
 
 };
 
+
+/* =====================================================
+   SECTION ICONS
+===================================================== */
+
 const sectionIcons = {
 
     daily: "🎁",
+
     ads: "📺",
+
     tasks: "🎯",
+
     referral: "👥",
+
     withdraw: "💰",
+
     account: "👤"
 
 };
 
+
 let currentSection = "daily";
+
+
+/* =====================================================
+   UPDATE BALANCE
+===================================================== */
 
 function updateBalance() {
 
@@ -1091,8 +1459,10 @@ function updateBalance() {
         .textContent =
         Number(coins).toLocaleString();
 
+
     const usd =
         Number(coins) / 1000000;
+
 
     document
         .getElementById("usdValue")
@@ -1101,17 +1471,26 @@ function updateBalance() {
 
 }
 
+
+/* =====================================================
+   DETECT LANGUAGE
+===================================================== */
+
 function detectLanguage() {
 
     if (!user) {
+
         return "en";
+
     }
+
 
     const code =
         (
             user.language_code ||
             ""
         ).toLowerCase();
+
 
     if (
         code === "fa" ||
@@ -1122,6 +1501,7 @@ function detectLanguage() {
 
     }
 
+
     if (
         code === "ar" ||
         code.startsWith("ar-")
@@ -1131,9 +1511,15 @@ function detectLanguage() {
 
     }
 
+
     return "en";
 
 }
+
+
+/* =====================================================
+   GET LANGUAGE
+===================================================== */
 
 function getLanguage() {
 
@@ -1143,69 +1529,127 @@ function getLanguage() {
     );
 
 }
-    function applyLanguage(lang) {
+
+
+/* =====================================================
+   APPLY LANGUAGE
+===================================================== */
+
+function applyLanguage(lang) {
 
     if (!translations[lang]) {
+
         lang = "en";
+
     }
 
-    const t = translations[lang];
 
-    document.documentElement.lang = lang;
+    const t =
+        translations[lang];
+
+
+    document.documentElement.lang =
+        lang;
+
 
     document.documentElement.dir =
-        lang === "en" ? "ltr" : "rtl";
+        lang === "en"
+            ? "ltr"
+            : "rtl";
+
 
     document.getElementById(
         "balanceTitle"
-    ).textContent = t.balance;
+    ).textContent =
+        t.balance;
+
 
     document
         .querySelectorAll("[data-key]")
         .forEach(function(element) {
 
             const key =
-                element.getAttribute("data-key");
+                element.getAttribute(
+                    "data-key"
+                );
+
 
             if (t[key]) {
-                element.textContent = t[key];
+
+                element.textContent =
+                    t[key];
+
             }
 
         });
+
 
     document.getElementById(
         "languageButton"
     ).textContent = {
 
         en: "🌐 EN",
+
         fa: "🌐 FA",
+
         ar: "🌐 AR"
 
     }[lang];
 
+
     document.getElementById(
         "rewardButton"
-    ).textContent = t.claim;
+    ).textContent =
+        t.claim;
+
 
     document.getElementById(
         "adsWatchedLabel"
-    ).textContent = t.adsWatched;
+    ).textContent =
+        t.adsWatched;
+
 
     document.getElementById(
         "adsRemainingLabel"
-    ).textContent = t.adsRemaining;
+    ).textContent =
+        t.adsRemaining;
+
 
     document.getElementById(
         "adsRewardLabel"
-    ).textContent = t.adsReward;
+    ).textContent =
+        t.adsReward;
+
 
     document.getElementById(
         "watchAdButton"
-    ).textContent = t.watchAd;
+    ).textContent =
+        t.watchAd;
+
+
+    document.getElementById(
+        "copyReferralButton"
+    ).textContent =
+        t.referralCopy;
+
+
+    document.getElementById(
+        "shareReferralButton"
+    ).textContent =
+        t.referralShare;
+
+
+    document.getElementById(
+        "referralRewardInfo"
+    ).textContent =
+        t.referralReward;
+
 
     showSection(
         currentSection,
-        document.querySelector(".nav-button.active")
+        document.querySelector(
+            ".nav-button.active"
+        )
     );
 
 }
@@ -1218,19 +1662,28 @@ function getLanguage() {
 function changeLanguage(lang) {
 
     if (!translations[lang]) {
+
         lang = "en";
+
     }
+
 
     localStorage.setItem(
         "language",
         lang
     );
 
+
     applyLanguage(lang);
 
+
     document
-        .getElementById("languageMenu")
-        .classList.remove("show");
+        .getElementById(
+            "languageMenu"
+        )
+        .classList.remove(
+            "show"
+        );
 
 }
 
@@ -1242,8 +1695,12 @@ function changeLanguage(lang) {
 function toggleLanguageMenu() {
 
     document
-        .getElementById("languageMenu")
-        .classList.toggle("show");
+        .getElementById(
+            "languageMenu"
+        )
+        .classList.toggle(
+            "show"
+        );
 
 }
 
@@ -1257,17 +1714,21 @@ document.addEventListener(
                 "languageMenu"
             );
 
+
         const button =
             document.getElementById(
                 "languageButton"
             );
+
 
         if (
             !menu.contains(event.target) &&
             !button.contains(event.target)
         ) {
 
-            menu.classList.remove("show");
+            menu.classList.remove(
+                "show"
+            );
 
         }
 
@@ -1277,6 +1738,9 @@ document.addEventListener(
 
 /* =====================================================
    SHOW SECTION
+   اصلاح مهم:
+   referralPanel در تمام بخش‌ها ابتدا مخفی می‌شود
+   و فقط در Referral نمایش داده می‌شود.
 ===================================================== */
 
 function showSection(
@@ -1284,23 +1748,39 @@ function showSection(
     button
 ) {
 
-    currentSection = section;
+    currentSection =
+        section;
+
 
     document
-        .querySelectorAll(".nav-button")
+        .querySelectorAll(
+            ".nav-button"
+        )
         .forEach(function(btn) {
 
-            btn.classList.remove("active");
+            btn.classList.remove(
+                "active"
+            );
 
         });
 
+
     if (button) {
-        button.classList.add("active");
+
+        button.classList.add(
+            "active"
+        );
+
     }
 
-    const lang = getLanguage();
 
-    const t = translations[lang];
+    const lang =
+        getLanguage();
+
+
+    const t =
+        translations[lang];
+
 
     const content = {
 
@@ -1314,6 +1794,7 @@ function showSection(
 
         },
 
+
         ads: {
 
             title:
@@ -1323,6 +1804,7 @@ function showSection(
                 t.adsText
 
         },
+
 
         tasks: {
 
@@ -1334,6 +1816,7 @@ function showSection(
 
         },
 
+
         referral: {
 
             title:
@@ -1344,6 +1827,7 @@ function showSection(
 
         },
 
+
         withdraw: {
 
             title:
@@ -1353,6 +1837,7 @@ function showSection(
                 t.withdrawText
 
         },
+
 
         account: {
 
@@ -1366,45 +1851,80 @@ function showSection(
 
     };
 
+
     document.getElementById(
         "contentIcon"
     ).textContent =
         sectionIcons[section];
+
 
     document.getElementById(
         "contentTitle"
     ).textContent =
         content[section].title;
 
+
     document.getElementById(
         "contentText"
     ).textContent =
         content[section].text;
+
 
     const rewardButton =
         document.getElementById(
             "rewardButton"
         );
 
+
     const rewardStatus =
         document.getElementById(
             "rewardStatus"
         );
+
 
     const adsPanel =
         document.getElementById(
             "adsPanel"
         );
 
+
     const tasksPanel =
         document.getElementById(
             "tasksPanel"
         );
 
-const referralPanel =
-    document.getElementById(
-        "referralPanel"
-    );
+
+    const referralPanel =
+        document.getElementById(
+            "referralPanel"
+        );
+
+
+    /*
+     مهم:
+     قبل از هر چیز تمام پنل‌های اختصاصی
+     را مخفی می‌کنیم.
+    */
+
+    rewardButton.style.display =
+        "none";
+
+
+    rewardStatus.style.display =
+        "none";
+
+
+    adsPanel.style.display =
+        "none";
+
+
+    tasksPanel.style.display =
+        "none";
+
+
+    referralPanel.style.display =
+        "none";
+
 
     /* ==========================================
        DAILY
@@ -1415,17 +1935,10 @@ const referralPanel =
         rewardButton.style.display =
             "block";
 
+
         rewardStatus.style.display =
             "block";
 
-        adsPanel.style.display =
-            "none";
-
-        tasksPanel.style.display =
-            "none";
-
-    referralPanel.style.display =
-        "none";
 
         checkDailyReward();
 
@@ -1438,43 +1951,24 @@ const referralPanel =
 
     else if (section === "ads") {
 
-        rewardButton.style.display =
-            "none";
-
-        rewardStatus.style.display =
-            "none";
-
         adsPanel.style.display =
             "block";
 
-        tasksPanel.style.display =
-            "none";
 
         loadAdsStatus();
 
     }
 
 
-        /* ==========================================
+    /* ==========================================
        TASKS
     ========================================== */
 
     else if (section === "tasks") {
 
-        rewardButton.style.display =
-            "none";
-
-        rewardStatus.style.display =
-            "none";
-
-        adsPanel.style.display =
-            "none";
-
         tasksPanel.style.display =
             "block";
 
-        referralPanel.style.display =
-            "none";
 
         loadTasks();
 
@@ -1487,41 +1981,217 @@ const referralPanel =
 
     else if (section === "referral") {
 
-        rewardButton.style.display =
-            "none";
-
-        rewardStatus.style.display =
-            "none";
-
-        adsPanel.style.display =
-            "none";
-
-        tasksPanel.style.display =
-            "none";
-
         referralPanel.style.display =
             "block";
+
+
+        /*
+         در قسمت دوم JavaScript
+         تابع loadReferral()
+         اضافه خواهد شد.
+        */
+
+        loadReferral();
 
     }
 
 
     /* ==========================================
-       OTHER SECTIONS
+       WITHDRAW
     ========================================== */
 
-    else {
+    else if (section === "withdraw") {
 
-        rewardButton.style.display =
-            "none";
+        /*
+         فعلاً فقط محتوای Withdraw
+         نمایش داده می‌شود.
+        */
 
-        rewardStatus.style.display =
-            "none";
+    }
 
-        adsPanel.style.display =
-            "none";
 
-        tasksPanel.style.display =
-            "none";
+    /* ==========================================
+       ACCOUNT
+    ========================================== */
+
+    else if (section === "account") {
+
+        /*
+         فعلاً فقط محتوای Account
+         نمایش داده می‌شود.
+        */
+
+    }
+
+}
+    /* =====================================================
+   SHOW SECTION
+===================================================== */
+
+function showSection(section, button) {
+
+    currentSection = section;
+
+    document
+        .querySelectorAll(".nav-button")
+        .forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+    if (button) {
+        button.classList.add("active");
+    }
+
+    const lang = getLanguage();
+    const t = translations[lang];
+
+    const content = {
+
+        daily: {
+            title: t.dailyTitle,
+            text: t.dailyText
+        },
+
+        ads: {
+            title: t.adsTitle,
+            text: t.adsText
+        },
+
+        tasks: {
+            title: t.tasksTitle,
+            text: t.tasksText
+        },
+
+        referral: {
+            title: t.referralTitle,
+            text: t.referralText
+        },
+
+        withdraw: {
+            title: t.withdrawTitle,
+            text: t.withdrawText
+        },
+
+        account: {
+            title: t.accountTitle,
+            text: t.accountText
+        }
+
+    };
+
+    document.getElementById("contentIcon").textContent =
+        sectionIcons[section];
+
+    document.getElementById("contentTitle").textContent =
+        content[section].title;
+
+    document.getElementById("contentText").textContent =
+        content[section].text;
+
+
+    const rewardButton =
+        document.getElementById("rewardButton");
+
+    const rewardStatus =
+        document.getElementById("rewardStatus");
+
+    const adsPanel =
+        document.getElementById("adsPanel");
+
+    const tasksPanel =
+        document.getElementById("tasksPanel");
+
+    const referralPanel =
+        document.getElementById("referralPanel");
+
+
+    /*
+     =====================================================
+     مهم:
+     ابتدا تمام پنل‌ها را مخفی می‌کنیم.
+     بنابراین Referral دیگر به اشتباه در
+     Ads / Tasks / Withdraw / Account نمایش داده نمی‌شود.
+     =====================================================
+    */
+
+    rewardButton.style.display = "none";
+    rewardStatus.style.display = "none";
+    adsPanel.style.display = "none";
+    tasksPanel.style.display = "none";
+    referralPanel.style.display = "none";
+
+
+    /* =====================================================
+       DAILY
+    ===================================================== */
+
+    if (section === "daily") {
+
+        rewardButton.style.display = "block";
+        rewardStatus.style.display = "block";
+
+        checkDailyReward();
+
+    }
+
+
+    /* =====================================================
+       ADS
+    ===================================================== */
+
+    else if (section === "ads") {
+
+        adsPanel.style.display = "block";
+
+        loadAdsStatus();
+
+    }
+
+
+    /* =====================================================
+       TASKS
+    ===================================================== */
+
+    else if (section === "tasks") {
+
+        tasksPanel.style.display = "block";
+
+        loadTasks();
+
+    }
+
+
+    /* =====================================================
+       REFERRAL
+    ===================================================== */
+
+    else if (section === "referral") {
+
+        referralPanel.style.display = "block";
+
+        loadReferralData();
+
+    }
+
+
+    /* =====================================================
+       WITHDRAW
+    ===================================================== */
+
+    else if (section === "withdraw") {
+
+        // فعلاً فقط محتوای Withdraw نمایش داده می‌شود.
+
+    }
+
+
+    /* =====================================================
+       ACCOUNT
+    ===================================================== */
+
+    else if (section === "account") {
+
+        // فعلاً فقط محتوای Account نمایش داده می‌شود.
 
     }
 
@@ -1649,6 +2319,331 @@ async function registerUser() {
 
 
 /* =====================================================
+   REFERRAL DATA
+===================================================== */
+
+async function loadReferralData() {
+
+    if (!user) {
+        return;
+    }
+
+    const linkElement =
+        document.getElementById(
+            "referralLink"
+        );
+
+    const countElement =
+        document.getElementById(
+            "referralCount"
+        );
+
+
+    /*
+     هنگام بارگذاری:
+     فقط داخل Referral نمایش داده می‌شود.
+    */
+
+    linkElement.textContent =
+        "Loading...";
+
+    countElement.textContent =
+        "0";
+
+
+    try {
+
+        /*
+         Backend بعداً این API را می‌سازد:
+
+         /api/referral/<telegram_id>
+
+         خروجی مورد انتظار:
+
+         {
+             success: true,
+             referral_link: "...",
+             referral_count: 5
+         }
+        */
+
+        const response =
+            await fetch(
+                "/api/referral/" +
+                encodeURIComponent(user.id)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            data.success
+        ) {
+
+            /*
+             لینک منحصر به فرد کاربر
+            */
+
+            linkElement.textContent =
+                data.referral_link ||
+                "";
+
+
+            /*
+             تعداد افراد دعوت‌شده
+            */
+
+            countElement.textContent =
+                Number(
+                    data.referral_count || 0
+                ).toLocaleString();
+
+        } else {
+
+            linkElement.textContent =
+                "Unable to load";
+
+            countElement.textContent =
+                "0";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Referral loading error:",
+            error
+        );
+
+        linkElement.textContent =
+            "Unable to load";
+
+        countElement.textContent =
+            "0";
+
+    }
+
+}
+
+
+/* =====================================================
+   COPY REFERRAL LINK
+===================================================== */
+
+async function copyReferralLink() {
+
+    const linkElement =
+        document.getElementById(
+            "referralLink"
+        );
+
+    const link =
+        linkElement.textContent.trim();
+
+
+    if (
+        !link ||
+        link === "Loading..." ||
+        link === "Unable to load"
+    ) {
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            link
+        );
+
+        showReferralMessage(
+            "✅ Copied!"
+        );
+
+    } catch (error) {
+
+        /*
+         روش جایگزین برای بعضی
+         دستگاه‌های قدیمی
+        */
+
+        try {
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
+
+            textarea.value = link;
+
+            document.body.appendChild(
+                textarea
+            );
+
+            textarea.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            textarea.remove();
+
+            showReferralMessage(
+                "✅ Copied!"
+            );
+
+        } catch (copyError) {
+
+            console.error(
+                "Copy error:",
+                copyError
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   SHARE REFERRAL LINK
+===================================================== */
+
+function shareReferralLink() {
+
+    const linkElement =
+        document.getElementById(
+            "referralLink"
+        );
+
+    const link =
+        linkElement.textContent.trim();
+
+
+    if (
+        !link ||
+        link === "Loading..." ||
+        link === "Unable to load"
+    ) {
+        return;
+    }
+
+
+    const lang =
+        getLanguage();
+
+
+    const shareTexts = {
+
+        en:
+            "Join EarnPool and earn coins with me! 🚀",
+
+        fa:
+            "به EarnPool بپیوند و با من سکه کسب کن! 🚀",
+
+        ar:
+            "انضم إلى EarnPool واربح العملات معي! 🚀"
+
+    };
+
+
+    const text =
+        shareTexts[lang] ||
+        shareTexts.en;
+
+
+    const telegramShareUrl =
+        "https://t.me/share/url?url=" +
+        encodeURIComponent(link) +
+        "&text=" +
+        encodeURIComponent(text);
+
+
+    /*
+     باز کردن Share تلگرام
+    */
+
+    if (
+        window.Telegram &&
+        window.Telegram.WebApp
+    ) {
+
+        window.Telegram.WebApp.openTelegramLink(
+            telegramShareUrl
+        );
+
+    } else {
+
+        window.open(
+            telegramShareUrl,
+            "_blank"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   REFERRAL MESSAGE
+===================================================== */
+
+function showReferralMessage(message) {
+
+    let element =
+        document.getElementById(
+            "referralMessage"
+        );
+
+
+    if (!element) {
+
+        element =
+            document.createElement(
+                "div"
+            );
+
+        element.id =
+            "referralMessage";
+
+        element.className =
+            "referral-message";
+
+
+        const panel =
+            document.getElementById(
+                "referralPanel"
+            );
+
+        panel.appendChild(
+            element
+        );
+
+    }
+
+
+    element.textContent =
+        message;
+
+
+    setTimeout(
+        function() {
+
+            if (element) {
+                element.textContent = "";
+            }
+
+        },
+        2000
+    );
+
+}
+
+
+/* =====================================================
    DAILY REWARD CHECK
 ===================================================== */
 
@@ -1673,13 +2668,13 @@ async function checkDailyReward() {
             !data.success ||
             !data.user
         ) {
-
             return;
-
         }
+
 
         const lastReward =
             data.user.last_daily_reward;
+
 
         const button =
             document.getElementById(
@@ -1710,17 +2705,23 @@ async function checkDailyReward() {
 
 
         const lastTime =
-            new Date(lastReward).getTime();
+            new Date(
+                lastReward
+            ).getTime();
+
 
         const nextTime =
             lastTime +
             (12 * 60 * 60 * 1000);
 
+
         const now =
             Date.now();
 
 
-        if (now >= nextTime) {
+        if (
+            now >= nextTime
+        ) {
 
             button.disabled = false;
 
@@ -1739,9 +2740,11 @@ async function checkDailyReward() {
         button.textContent =
             t.claimed;
 
+
         updateWaitingTime(
             nextTime
         );
+
 
     } catch (error) {
 
@@ -1769,13 +2772,17 @@ function updateWaitingTime(nextTime) {
     const t =
         translations[getLanguage()];
 
+
     function update() {
 
         const remaining =
             nextTime -
             Date.now();
 
-        if (remaining <= 0) {
+
+        if (
+            remaining <= 0
+        ) {
 
             checkDailyReward();
 
@@ -1783,21 +2790,26 @@ function updateWaitingTime(nextTime) {
 
         }
 
+
         const totalMinutes =
             Math.ceil(
                 remaining / 60000
             );
+
 
         const hours =
             Math.floor(
                 totalMinutes / 60
             );
 
+
         const minutes =
             totalMinutes % 60;
 
+
         status.className =
             "reward-status reward-waiting";
+
 
         status.textContent =
             t.waiting +
@@ -1809,13 +2821,13 @@ function updateWaitingTime(nextTime) {
 
     }
 
+
     update();
+
 
     setTimeout(
         function() {
-
             checkDailyReward();
-
         },
         60000
     );
@@ -1833,20 +2845,25 @@ async function claimDailyReward() {
         return;
     }
 
+
     const button =
         document.getElementById(
             "rewardButton"
         );
+
 
     const status =
         document.getElementById(
             "rewardStatus"
         );
 
+
     const t =
         translations[getLanguage()];
 
+
     button.disabled = true;
+
 
     try {
 
@@ -1873,6 +2890,7 @@ async function claimDailyReward() {
                 }
             );
 
+
         const data =
             await response.json();
 
@@ -1886,23 +2904,26 @@ async function claimDailyReward() {
 
             updateBalance();
 
+
             button.textContent =
                 t.claimed;
+
 
             status.className =
                 "reward-status reward-success";
 
+
             status.textContent =
                 t.congratulations;
 
+
             setTimeout(
                 function() {
-
                     checkDailyReward();
-
                 },
                 1500
             );
+
 
         } else {
 
@@ -1911,10 +2932,14 @@ async function claimDailyReward() {
             button.textContent =
                 t.claimed;
 
+
             status.className =
                 "reward-status reward-waiting";
 
-            if (data.next_reward) {
+
+            if (
+                data.next_reward
+            ) {
 
                 updateWaitingTime(
                     new Date(
@@ -1939,10 +2964,13 @@ async function claimDailyReward() {
             error
         );
 
+
         button.disabled = false;
+
 
         status.className =
             "reward-status reward-error";
+
 
         status.textContent =
             t.error;
@@ -1962,6 +2990,7 @@ async function loadAdsStatus() {
         return;
     }
 
+
     try {
 
         const response =
@@ -1970,37 +2999,45 @@ async function loadAdsStatus() {
                 encodeURIComponent(user.id)
             );
 
+
         const data =
             await response.json();
+
 
         if (!data.success) {
             return;
         }
+
 
         document.getElementById(
             "adsWatched"
         ).textContent =
             data.ads_watched;
 
+
         document.getElementById(
             "adsLimit"
         ).textContent =
             data.limit;
+
 
         document.getElementById(
             "adsRemaining"
         ).textContent =
             data.ads_remaining;
 
+
         const button =
             document.getElementById(
                 "watchAdButton"
             );
 
+
         const message =
             document.getElementById(
                 "adsMessage"
             );
+
 
         const t =
             translations[getLanguage()];
@@ -2012,8 +3049,10 @@ async function loadAdsStatus() {
 
             button.disabled = true;
 
+
             message.className =
                 "ads-message ads-waiting";
+
 
             message.textContent =
                 t.adLimit +
@@ -2031,6 +3070,7 @@ async function loadAdsStatus() {
                 ) +
                 "m";
 
+
         } else {
 
             button.disabled = false;
@@ -2038,6 +3078,7 @@ async function loadAdsStatus() {
             message.textContent = "";
 
         }
+
 
     } catch (error) {
 
@@ -2061,15 +3102,18 @@ async function watchAd() {
         return;
     }
 
+
     const button =
         document.getElementById(
             "watchAdButton"
         );
 
+
     const message =
         document.getElementById(
             "adsMessage"
         );
+
 
     const t =
         translations[getLanguage()];
@@ -2090,8 +3134,10 @@ async function watchAd() {
 
     button.disabled = true;
 
+
     message.className =
         "ads-message ads-waiting";
+
 
     message.textContent =
         "⏳ Loading advertisement...";
@@ -2111,8 +3157,10 @@ async function watchAd() {
             message.className =
                 "ads-message ads-error";
 
+
             message.textContent =
                 t.adError;
+
 
             await loadAdsStatus();
 
@@ -2160,6 +3208,7 @@ async function watchAd() {
                     data.user.coins
                 );
 
+
             updateBalance();
 
 
@@ -2178,6 +3227,7 @@ async function watchAd() {
             message.className =
                 "ads-message ads-success";
 
+
             message.textContent =
                 t.adSuccess;
 
@@ -2194,18 +3244,22 @@ async function watchAd() {
 
             }
 
+
         } else {
 
             message.className =
                 "ads-message ads-error";
 
+
             message.textContent =
                 data.message ||
                 t.adError;
 
+
             await loadAdsStatus();
 
         }
+
 
     } catch (error) {
 
@@ -2214,11 +3268,14 @@ async function watchAd() {
             error
         );
 
+
         message.className =
             "ads-message ads-error";
 
+
         message.textContent =
             t.adError;
+
 
         await loadAdsStatus();
 
@@ -2237,15 +3294,18 @@ async function loadTasks() {
         return;
     }
 
+
     const list =
         document.getElementById(
             "tasksList"
         );
 
+
     const message =
         document.getElementById(
             "taskMessage"
         );
+
 
     const t =
         translations[getLanguage()];
@@ -2253,8 +3313,10 @@ async function loadTasks() {
 
     list.innerHTML = "";
 
+
     message.className =
         "task-message";
+
 
     message.textContent =
         t.tasksLoading;
@@ -2268,6 +3330,7 @@ async function loadTasks() {
                 encodeURIComponent(user.id)
             );
 
+
         const data =
             await response.json();
 
@@ -2277,9 +3340,11 @@ async function loadTasks() {
             message.className =
                 "task-message task-error";
 
+
             message.textContent =
                 data.message ||
                 t.error;
+
 
             return;
 
@@ -2295,23 +3360,22 @@ async function loadTasks() {
         list.innerHTML = "";
 
 
-        if (tasks.length === 0) {
+        if (
+            tasks.length === 0
+        ) {
 
             message.className =
                 "task-message";
 
+
             message.textContent =
                 t.noTasks;
+
 
             return;
 
         }
 
-
-        /*
-         فقط تسک‌هایی که هنوز برای
-         کاربر کامل نشده‌اند نمایش داده می‌شوند.
-        */
 
         tasks.forEach(
             function(task) {
@@ -2332,8 +3396,10 @@ async function loadTasks() {
             error
         );
 
+
         message.className =
             "task-message task-error";
+
 
         message.textContent =
             t.error;
@@ -2354,6 +3420,7 @@ function createTaskCard(task) {
             "tasksList"
         );
 
+
     const t =
         translations[getLanguage()];
 
@@ -2362,6 +3429,7 @@ function createTaskCard(task) {
         document.createElement(
             "div"
         );
+
 
     card.className =
         "task-card";
@@ -2372,8 +3440,10 @@ function createTaskCard(task) {
             "div"
         );
 
+
     title.className =
         "task-title";
+
 
     title.textContent =
         task.title ||
@@ -2385,8 +3455,10 @@ function createTaskCard(task) {
             "div"
         );
 
+
     description.className =
         "task-description";
+
 
     description.textContent =
         task.description ||
@@ -2398,50 +3470,42 @@ function createTaskCard(task) {
             "div"
         );
 
+
     reward.className =
         "task-reward";
+
 
     reward.textContent =
         t.taskReward;
 
-
-    /*
-     AdsGram Task Web Component
-
-     مهم:
-     blockId باید از نوع Task باشد
-     و فرمت آن task-xxx است.
-    */
 
     const adsTask =
         document.createElement(
             "adsgram-task"
         );
 
+
     adsTask.setAttribute(
-    "data-block-id",
-    "task-44183"
-);
+        "data-block-id",
+        "task-44183"
+    );
+
 
     adsTask.setAttribute(
         "data-debug",
         "false"
     );
 
+
     adsTask.setAttribute(
         "data-debug-console",
         "false"
     );
 
+
     adsTask.className =
         "task";
 
-
-    /*
-     تا زمانی که event reward
-     از AdsGram دریافت نشده،
-     هیچ پاداشی به سرور ارسال نمی‌شود.
-    */
 
     let rewardSent = false;
 
@@ -2454,7 +3518,9 @@ function createTaskCard(task) {
                 return;
             }
 
+
             rewardSent = true;
+
 
             await claimAdsGramTask(
                 task,
@@ -2479,55 +3545,33 @@ function createTaskCard(task) {
     );
 
 
-    adsTask.addEventListener(
-        "onBannerNotFound",
-        function() {
-
-            const message =
-                document.getElementById(
-                    "taskMessage"
-                );
-
-            message.className =
-                "task-message task-error";
-
-            message.textContent =
-                t.noTasks;
-
-        }
-    );
-
-
-    adsTask.addEventListener(
-        "onTooLongSession",
-        function() {
-
-            const message =
-                document.getElementById(
-                    "taskMessage"
-                );
-
-            message.className =
-                "task-message task-error";
-
-            message.textContent =
-                t.error;
-
-        }
-    );
-
-
     card.appendChild(title);
 
-    if (task.description) {
-        card.appendChild(description);
+
+    if (
+        task.description
+    ) {
+
+        card.appendChild(
+            description
+        );
+
     }
 
-    card.appendChild(reward);
 
-    card.appendChild(adsTask);
+    card.appendChild(
+        reward
+    );
 
-    list.appendChild(card);
+
+    card.appendChild(
+        adsTask
+    );
+
+
+    list.appendChild(
+        card
+    );
 
 }
 
@@ -2547,8 +3591,13 @@ async function claimAdsGramTask(
     }
 
 
-    if (!task || !task.id) {
+    if (
+        !task ||
+        !task.id
+    ) {
+
         return;
+
     }
 
 
@@ -2557,12 +3606,14 @@ async function claimAdsGramTask(
             "taskMessage"
         );
 
+
     const t =
         translations[getLanguage()];
 
 
     message.className =
         "task-message";
+
 
     message.textContent =
         "⏳ Processing reward...";
@@ -2601,17 +3652,15 @@ async function claimAdsGramTask(
             await response.json();
 
 
-        if (data.success) {
-
-            /*
-             فقط بعد از event واقعی reward
-             موجودی کاربر به‌روزرسانی می‌شود.
-            */
+        if (
+            data.success
+        ) {
 
             coins =
                 Number(
                     data.user.coins
                 );
+
 
             updateBalance();
 
@@ -2619,14 +3668,10 @@ async function claimAdsGramTask(
             message.className =
                 "task-message task-success";
 
+
             message.textContent =
                 t.taskSuccess;
 
-
-            /*
-             تسک بعد از یک بار موفقیت
-             فوراً از صفحه حذف می‌شود.
-            */
 
             if (card) {
                 card.remove();
@@ -2651,10 +3696,6 @@ async function claimAdsGramTask(
 
         } else {
 
-            /*
-             اگر سرور بگوید قبلاً انجام شده،
-             تسک دیگر نمایش داده نمی‌شود.
-            */
 
             if (
                 data.already_completed
@@ -2664,16 +3705,20 @@ async function claimAdsGramTask(
                     card.remove();
                 }
 
+
                 message.className =
                     "task-message";
 
+
                 message.textContent =
                     t.taskAlready;
+
 
             } else {
 
                 message.className =
                     "task-message task-error";
+
 
                 message.textContent =
                     data.message ||
@@ -2683,6 +3728,7 @@ async function claimAdsGramTask(
 
         }
 
+
     } catch (error) {
 
         console.error(
@@ -2690,8 +3736,10 @@ async function claimAdsGramTask(
             error
         );
 
+
         message.className =
             "task-message task-error";
+
 
         message.textContent =
             t.error;
@@ -2750,5 +3798,4 @@ startUser();
 </script>
 
 </body>
-
 </html>
