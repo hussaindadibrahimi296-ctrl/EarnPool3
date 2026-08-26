@@ -29,6 +29,7 @@ DAILY_REWARD = 1000
 AD_REWARD = 2000
 TASK_REWARD = 1000
 
+
 # =========================================================
 # REFERRAL
 # =========================================================
@@ -36,8 +37,14 @@ TASK_REWARD = 1000
 REFERRAL_REWARD = 5000
 BOT_USERNAME = "EarnPooll_bot"
 
+
+# =========================================================
+# ADS
+# =========================================================
+
 AD_LIMIT = 10
 DAILY_HOURS = 12
+
 
 # AdsGram Task Block ID
 ADSGRAM_TASK_ID = "task-44183"
@@ -47,7 +54,10 @@ ADSGRAM_TASK_ID = "task-44183"
 # TELEGRAM SETTINGS
 # =========================================================
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "").strip()
+BOT_TOKEN = os.environ.get(
+    "BOT_TOKEN",
+    ""
+).strip()
 
 MINI_APP_URL = os.environ.get(
     "MINI_APP_URL",
@@ -195,6 +205,7 @@ def get_db():
     )
 
     if not database_url:
+
         raise RuntimeError(
             "DATABASE_URL is not configured."
         )
@@ -224,6 +235,7 @@ def normalize_datetime(value):
     if isinstance(value, datetime):
 
         if value.tzinfo is None:
+
             return value.replace(
                 tzinfo=timezone.utc
             )
@@ -247,9 +259,9 @@ def init_db():
 
         cur = conn.cursor()
 
-        # -------------------------------------------------
+        # =================================================
         # USERS
-        # -------------------------------------------------
+        # =================================================
 
         cur.execute("""
             CREATE TABLE IF NOT EXISTS users (
@@ -317,9 +329,9 @@ def init_db():
             TIMESTAMPTZ DEFAULT NOW()
         """)
 
-        # -------------------------------------------------
+        # =================================================
         # TASK COMPLETIONS
-        # -------------------------------------------------
+        # =================================================
 
         cur.execute("""
             CREATE TABLE IF NOT EXISTS task_completions (
@@ -369,6 +381,16 @@ def init_db():
             CREATE INDEX IF NOT EXISTS
             idx_referrals_referrer
             ON referrals (referrer_telegram_id)
+        """)
+
+        # -------------------------------------------------
+        # EXTRA UNIQUE PROTECTION
+        # -------------------------------------------------
+
+        cur.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS
+            idx_referrals_referred_unique
+            ON referrals (referred_telegram_id)
         """)
 
         conn.commit()
@@ -517,7 +539,10 @@ def reset_ads_if_needed(cur, user):
 # TELEGRAM API HELPERS
 # =========================================================
 
-def telegram_request(method, payload=None):
+def telegram_request(
+    method,
+    payload=None
+):
 
     if not BOT_TOKEN:
 
@@ -798,8 +823,6 @@ def send_promotional_message(
 
     if not keyboard:
 
-        # اگر MINI_APP_URL تنظیم نشده باشد،
-        # پیام تبلیغاتی بدون دکمه ارسال می‌شود.
         text += (
             "\n\n⚠️ <i>Mini App URL is not configured.</i>"
         )
@@ -884,7 +907,6 @@ def handle_start_message(message):
 
     else:
 
-        # Update Telegram profile information.
         try:
 
             conn = get_db()
@@ -1006,10 +1028,6 @@ def handle_callback_query(
                 "Language selected."
             )
 
-        # -------------------------------------------------
-        # SAVE LANGUAGE
-        # -------------------------------------------------
-
         try:
 
             save_user_language(
@@ -1033,10 +1051,6 @@ def handle_callback_query(
 
             return
 
-        # -------------------------------------------------
-        # PROMOTIONAL MESSAGE
-        # -------------------------------------------------
-
         text = PROMOTIONAL_MESSAGES.get(
             language,
             PROMOTIONAL_MESSAGES["en"]
@@ -1045,11 +1059,6 @@ def handle_callback_query(
         keyboard = open_app_keyboard(
             language
         )
-
-        # -------------------------------------------------
-        # REMOVE LANGUAGE MESSAGE
-        # AND SHOW PROMO MESSAGE
-        # -------------------------------------------------
 
         if chat_id and message_id:
 
@@ -1060,8 +1069,6 @@ def handle_callback_query(
                 reply_markup=keyboard
             )
 
-            # اگر ویرایش پیام موفق نبود،
-            # یک پیام جدید ارسال می‌کنیم.
             if not edited:
 
                 send_promotional_message(
@@ -1145,9 +1152,6 @@ def telegram_webhook():
             e
         )
 
-        # Telegram فقط پاسخ HTTP موفق
-        # می‌خواهد تا دوباره درخواست را
-        # بیش از حد تکرار نکند.
         return jsonify({
             "ok": False
         }), 200
@@ -1216,14 +1220,6 @@ def index():
 
     # -----------------------------------------------------
     # TELEGRAM MINI APP START PARAM
-    #
-    # Telegram passes:
-    #
-    # ?tgWebAppStartParam=123456789
-    #
-    # when opening:
-    #
-    # https://t.me/EarnPooll_bot?startapp=123456789
     # -----------------------------------------------------
 
     start_param = request.args.get(
@@ -1235,11 +1231,6 @@ def index():
         start_param = str(
             start_param
         ).strip()
-
-        # Store referral temporarily.
-        #
-        # It is only consumed when a NEW
-        # user registers.
 
         response.set_cookie(
             "earnpool_referral",
@@ -1315,6 +1306,15 @@ def register_user():
 
         if is_new_user:
 
+            language = data.get(
+                "language",
+                "en"
+            ) or "en"
+
+            if language not in SUPPORTED_LANGUAGES:
+
+                language = "en"
+
             cur.execute("""
                 INSERT INTO users (
                     telegram_id,
@@ -1337,24 +1337,40 @@ def register_user():
                 RETURNING *
             """, (
                 telegram_id,
+
                 data.get(
                     "first_name",
                     ""
                 ) or "",
+
                 data.get(
                     "username",
                     ""
                 ) or "",
-                data.get(
-                    "language",
-                    "en"
-                ) or "en",
+
+                language,
+
                 utc_now()
             ))
 
             user = cur.fetchone()
 
         else:
+
+            language = data.get(
+                "language",
+                existing_user.get(
+                    "language",
+                    "en"
+                )
+            ) or "en"
+
+            if language not in SUPPORTED_LANGUAGES:
+
+                language = existing_user.get(
+                    "language",
+                    "en"
+                )
 
             cur.execute("""
                 UPDATE users
@@ -1382,13 +1398,7 @@ def register_user():
                     )
                 ) or "",
 
-                data.get(
-                    "language",
-                    existing_user.get(
-                        "language",
-                        "en"
-                    )
-                ) or "en",
+                language,
 
                 telegram_id
             ))
@@ -1403,8 +1413,16 @@ def register_user():
 
         if is_new_user:
 
-            referrer_id = request.cookies.get(
-                "earnpool_referral"
+            referrer_id = (
+                request.cookies.get(
+                    "earnpool_referral"
+                )
+                or data.get(
+                    "referrer_id"
+                )
+                or data.get(
+                    "referral_id"
+                )
             )
 
             if referrer_id:
@@ -1457,20 +1475,10 @@ def register_user():
 
         return response
 
-    except psycopg2.errors.UniqueViolation:
-
-        if conn:
-            conn.rollback()
-
-        return jsonify({
-            "success": False,
-            "message":
-                "Referral already exists."
-        }), 409
-
     except Exception as e:
 
         if conn:
+
             conn.rollback()
 
         print(
@@ -1487,6 +1495,7 @@ def register_user():
     finally:
 
         if conn:
+
             conn.close()
 
 
@@ -2075,24 +2084,35 @@ def claim_task():
         )
 
         if not telegram_id:
+
             return jsonify({
                 "success": False,
-                "message": "telegram_id is required"
+                "message":
+                    "telegram_id is required"
             }), 400
 
         if not task_id:
+
             return jsonify({
                 "success": False,
-                "message": "task_id is required"
+                "message":
+                    "task_id is required"
             }), 400
 
-        telegram_id = int(telegram_id)
-        task_id = str(task_id)
+        telegram_id = int(
+            telegram_id
+        )
+
+        task_id = str(
+            task_id
+        )
 
         if task_id != ADSGRAM_TASK_ID:
+
             return jsonify({
                 "success": False,
-                "message": "Invalid task."
+                "message":
+                    "Invalid task."
             }), 400
 
         cur = conn.cursor()
@@ -2109,11 +2129,13 @@ def claim_task():
         user = cur.fetchone()
 
         if not user:
+
             conn.rollback()
 
             return jsonify({
                 "success": False,
-                "message": "User not found."
+                "message":
+                    "User not found."
             }), 404
 
         cur.execute("""
@@ -2131,6 +2153,7 @@ def claim_task():
         existing = cur.fetchone()
 
         if existing:
+
             conn.rollback()
 
             return jsonify({
@@ -2210,7 +2233,7 @@ def claim_task():
     finally:
 
         conn.close()
-  
+
 
 # =========================================================
 # TASK STATUS
@@ -2270,7 +2293,7 @@ def task_status(telegram_id):
 
 
 # =========================================================
-# REFERRAL HELPER
+# REFERRAL SYSTEM
 # =========================================================
 
 def process_referral(
@@ -2280,30 +2303,40 @@ def process_referral(
 ):
 
     """
-    ثبت Referral فقط یک بار.
+    ثبت Referral فقط برای کاربر جدید.
 
     دعوت‌کننده:
         +5000
 
     دعوت‌شده:
         +5000
+
+    قوانین:
+    - Self referral ممنوع
+    - هر کاربر فقط یک بار دعوت می‌شود
+    - پاداش فقط یک بار پرداخت می‌شود
+    - دعوت‌کننده باید قبلاً ثبت شده باشد
     """
 
     try:
-
-        referrer_telegram_id = int(
-            referrer_telegram_id
-        )
 
         referred_telegram_id = int(
             referred_telegram_id
         )
 
-    except Exception:
+        referrer_telegram_id = int(
+            referrer_telegram_id
+        )
+
+    except (
+        TypeError,
+        ValueError
+    ):
 
         return {
             "success": False,
-            "reason": "invalid_id"
+            "reason":
+                "invalid_id"
         }
 
     # -----------------------------------------------------
@@ -2317,30 +2350,60 @@ def process_referral(
 
         return {
             "success": False,
-            "reason": "self_referral"
+            "reason":
+                "self_referral"
         }
 
     cur = conn.cursor()
 
-    # =========================================================
-# REFERRAL HELPER
-# =========================================================
+    # -----------------------------------------------------
+    # REFERRER MUST EXIST
+    # -----------------------------------------------------
 
-def process_referral(
-    conn,
-    referred_telegram_id,
-    referrer_telegram_id
-):
-    # Referral فعلاً غیرفعال است
-    return {
-        "success": False,
-        "reason": "referral_disabled"
-    }
+    cur.execute("""
+        SELECT telegram_id
+        FROM users
+        WHERE telegram_id = %s
+        FOR UPDATE
+    """, (
+        referrer_telegram_id,
+    ))
 
+    referrer = cur.fetchone()
 
-# =========================================================
-# START APP
-# =========================================================
+    if not referrer:
 
-init_db()
-set_telegram_webhook()
+        return {
+            "success": False,
+            "reason":
+                "referrer_not_found"
+        }
+
+    # -----------------------------------------------------
+    # REFERRED USER CAN ONLY BE REFERRED ONCE
+    # -----------------------------------------------------
+
+    cur.execute("""
+        SELECT id
+        FROM referrals
+        WHERE referred_telegram_id = %s
+        LIMIT 1
+    """, (
+        referred_telegram_id,
+    ))
+
+    existing_referral = cur.fetchone()
+
+    if existing_referral:
+
+        return {
+            "success": False,
+            "reason":
+                "already_referred"
+        }
+
+    # -----------------------------------------------------
+    # INSERT REFERRAL
+    #
+    # ON CONFLICT prevents duplicate reward
+    # even
