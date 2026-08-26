@@ -2406,4 +2406,304 @@ def process_referral(
     # INSERT REFERRAL
     #
     # ON CONFLICT prevents duplicate reward
-    # even
+    # evenreward
+    # even if two requests arrive at the same time.
+    # -----------------------------------------------------
+
+    cur.execute("""
+        INSERT INTO referrals (
+            referrer_telegram_id,
+            referred_telegram_id,
+            reward
+        )
+        VALUES (
+            %s,
+            %s,
+            %s
+        )
+        ON CONFLICT (
+            referred_telegram_id
+        )
+        DO NOTHING
+        RETURNING *
+    """, (
+        referrer_telegram_id,
+        referred_telegram_id,
+        REFERRAL_REWARD
+    ))
+
+    referral = cur.fetchone()
+
+    if not referral:
+
+        return {
+            "success": False,
+            "reason":
+                "already_referred"
+        }
+
+    # -----------------------------------------------------
+    # REWARD REFERRER
+    # -----------------------------------------------------
+
+    cur.execute("""
+        UPDATE users
+        SET
+            coins =
+                COALESCE(coins, 0) + %s,
+            updated_at = NOW()
+        WHERE telegram_id = %s
+        RETURNING telegram_id, coins
+    """, (
+        REFERRAL_REWARD,
+        referrer_telegram_id
+    ))
+
+    referrer_after = cur.fetchone()
+
+    # -----------------------------------------------------
+    # REWARD REFERRED USER
+    # -----------------------------------------------------
+
+    cur.execute("""
+        UPDATE users
+        SET
+            coins =
+                COALESCE(coins, 0) + %s,
+            updated_at = NOW()
+        WHERE telegram_id = %s
+        RETURNING telegram_id, coins
+    """, (
+        REFERRAL_REWARD,
+        referred_telegram_id
+    ))
+
+    referred_after = cur.fetchone()
+
+    # -----------------------------------------------------
+    # FINAL RESULT
+    # -----------------------------------------------------
+
+    return {
+        "success": True,
+
+        "reward":
+            REFERRAL_REWARD,
+
+        "referrer_reward":
+            REFERRAL_REWARD,
+
+        "referred_reward":
+            REFERRAL_REWARD,
+
+        "referrer_telegram_id":
+            referrer_telegram_id,
+
+        "referred_telegram_id":
+            referred_telegram_id,
+
+        "referrer_coins":
+            (
+                referrer_after["coins"]
+                if referrer_after
+                else None
+            ),
+
+        "referred_coins":
+            (
+                referred_after["coins"]
+                if referred_after
+                else None
+            ),
+
+        "referral_id":
+            referral["id"]
+    }
+
+
+# =========================================================
+# REFERRAL INFORMATION
+# =========================================================
+
+@app.route(
+    "/api/referral/<int:telegram_id>",
+    methods=["GET"]
+)
+def referral_info(telegram_id):
+
+    conn = get_db()
+
+    try:
+
+        cur = conn.cursor()
+
+        # -------------------------------------------------
+        # CHECK USER
+        # -------------------------------------------------
+
+        cur.execute("""
+            SELECT telegram_id
+            FROM users
+            WHERE telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        user = cur.fetchone()
+
+        if not user:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "User not found."
+            }), 404
+
+        # -------------------------------------------------
+        # COUNT INVITED USERS
+        # -------------------------------------------------
+
+        cur.execute("""
+            SELECT COUNT(*) AS total
+            FROM referrals
+            WHERE referrer_telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        result = cur.fetchone()
+
+        invited_count = int(
+            result["total"] or 0
+        )
+
+        # -------------------------------------------------
+        # UNIQUE REFERRAL LINK
+        # -------------------------------------------------
+
+        referral_link = (
+            f"https://t.me/"
+            f"{BOT_USERNAME}"
+            f"?startapp={telegram_id}"
+        )
+
+        # -------------------------------------------------
+        # TOTAL EARNINGS
+        # -------------------------------------------------
+
+        total_earnings = (
+            invited_count *
+            REFERRAL_REWARD
+        )
+
+        return jsonify({
+
+            "success": True,
+
+            "telegram_id":
+                telegram_id,
+
+            "invited_count":
+                invited_count,
+
+            "referral_count":
+                invited_count,
+
+            "reward_per_referral":
+                REFERRAL_REWARD,
+
+            "total_earnings":
+                total_earnings,
+
+            "referral_link":
+                referral_link
+        })
+
+    except Exception as e:
+
+        print(
+            "REFERRAL INFO ERROR:",
+            e
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Server error"
+        }), 500
+
+    finally:
+
+        conn.close()
+
+
+# =========================================================
+# REFERRAL LIST
+# =========================================================
+
+@app.route(
+    "/api/referral/<int:telegram_id>/list",
+    methods=["GET"]
+)
+def referral_list(telegram_id):
+
+    conn = get_db()
+
+    try:
+
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT
+                r.referred_telegram_id,
+                r.reward,
+                r.created_at,
+                u.first_name,
+                u.username
+            FROM referrals r
+            LEFT JOIN users u
+                ON u.telegram_id =
+                   r.referred_telegram_id
+            WHERE
+                r.referrer_telegram_id = %s
+            ORDER BY
+                r.created_at DESC
+        """, (
+            telegram_id,
+        ))
+
+        referrals = cur.fetchall()
+
+        return jsonify({
+            "success": True,
+            "count":
+                len(referrals),
+            "referrals":
+                referrals
+        })
+
+    except Exception as e:
+
+        print(
+            "REFERRAL LIST ERROR:",
+            e
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Server error"
+        }), 500
+
+    finally:
+
+        conn.close()
+
+
+# =========================================================
+# START APP
+# =========================================================
+
+init_db()
+
+set_telegram_webhook()
