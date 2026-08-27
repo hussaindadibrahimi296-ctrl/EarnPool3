@@ -2406,8 +2406,119 @@ def process_referral(
     # INSERT REFERRAL
     #
     # ON CONFLICT prevents duplicate reward
-    # evenreward
-    # even if two requests arrive at the same time.
+    # even# =========================================================
+# REFERRAL SYSTEM
+# =========================================================
+
+def process_referral(
+    conn,
+    referred_telegram_id,
+    referrer_telegram_id
+):
+
+    """
+    ثبت Referral فقط برای کاربر جدید.
+
+    دعوت‌کننده:
+        +5000 coins
+
+    دعوت‌شده:
+        +5000 coins
+
+    قوانین:
+    - Self referral ممنوع
+    - هر کاربر فقط یک بار دعوت می‌شود
+    - پاداش فقط یک بار پرداخت می‌شود
+    - دعوت‌کننده باید قبلاً ثبت شده باشد
+    """
+
+    try:
+
+        referred_telegram_id = int(
+            referred_telegram_id
+        )
+
+        referrer_telegram_id = int(
+            referrer_telegram_id
+        )
+
+    except (
+        TypeError,
+        ValueError
+    ):
+
+        return {
+            "success": False,
+            "reason":
+                "invalid_id"
+        }
+
+    # -----------------------------------------------------
+    # SELF REFERRAL
+    # -----------------------------------------------------
+
+    if (
+        referrer_telegram_id ==
+        referred_telegram_id
+    ):
+
+        return {
+            "success": False,
+            "reason":
+                "self_referral"
+        }
+
+    cur = conn.cursor()
+
+    # -----------------------------------------------------
+    # REFERRER MUST EXIST
+    # -----------------------------------------------------
+
+    cur.execute("""
+        SELECT telegram_id
+        FROM users
+        WHERE telegram_id = %s
+        FOR UPDATE
+    """, (
+        referrer_telegram_id,
+    ))
+
+    referrer = cur.fetchone()
+
+    if not referrer:
+
+        return {
+            "success": False,
+            "reason":
+                "referrer_not_found"
+        }
+
+    # -----------------------------------------------------
+    # REFERRED USER CAN ONLY BE REFERRED ONCE
+    # -----------------------------------------------------
+
+    cur.execute("""
+        SELECT id
+        FROM referrals
+        WHERE referred_telegram_id = %s
+        LIMIT 1
+        FOR UPDATE
+    """, (
+        referred_telegram_id,
+    ))
+
+    existing_referral = cur.fetchone()
+
+    if existing_referral:
+
+        return {
+            "success": False,
+            "reason":
+                "already_referred"
+        }
+
+    # -----------------------------------------------------
+    # INSERT REFERRAL
     # -----------------------------------------------------
 
     cur.execute("""
@@ -2578,7 +2689,7 @@ def referral_info(telegram_id):
         )
 
         # -------------------------------------------------
-        # UNIQUE REFERRAL LINK
+        # REFERRAL LINK
         # -------------------------------------------------
 
         referral_link = (
@@ -2701,9 +2812,339 @@ def referral_list(telegram_id):
 
 
 # =========================================================
+# ACCOUNT INFORMATION
+# =========================================================
+
+@app.route(
+    "/api/account/<int:telegram_id>",
+    methods=["GET"]
+)
+def account_info(telegram_id):
+
+    conn = get_db()
+
+    try:
+
+        cur = conn.cursor()
+
+        # -------------------------------------------------
+        # GET USER
+        # -------------------------------------------------
+
+        cur.execute("""
+            SELECT
+                telegram_id,
+                first_name,
+                username,
+                language,
+                coins,
+                ads_watched,
+                created_at,
+                updated_at
+            FROM users
+            WHERE telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        user = cur.fetchone()
+
+        # -------------------------------------------------
+        # USER NOT FOUND
+        # -------------------------------------------------
+
+        if not user:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "User not found."
+            }), 404
+
+        # -------------------------------------------------
+        # REFERRAL COUNT
+        # -------------------------------------------------
+
+        cur.execute("""
+            SELECT COUNT(*) AS total
+            FROM referrals
+            WHERE referrer_telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        referral_result = cur.fetchone()
+
+        referral_count = int(
+            referral_result["total"] or 0
+        )
+
+        # -------------------------------------------------
+        # BUILD ACCOUNT RESPONSE
+        # -------------------------------------------------
+
+        account = {
+            "telegram_id":
+                user["telegram_id"],
+
+            "first_name":
+                user["first_name"] or "",
+
+            "username":
+                user["username"] or "",
+
+            "language":
+                user["language"] or "en",
+
+            "coins":
+                int(
+                    user["coins"] or 0
+                ),
+
+            "referral_count":
+                referral_count,
+
+            "ads_watched":
+                int(
+                    user["ads_watched"] or 0
+                ),
+
+            "created_at":
+                (
+                    user["created_at"].isoformat()
+                    if user["created_at"]
+                    else None
+                ),
+
+            "updated_at":
+                (
+                    user["updated_at"].isoformat()
+                    if user["updated_at"]
+                    else None
+                ),
+
+            "photo_url":
+                None
+        }
+
+        return jsonify({
+            "success": True,
+            "user": account
+        })
+
+    except Exception as e:
+
+        print(
+            "ACCOUNT INFO ERROR:",
+            e
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Server error"
+        }), 500
+
+    finally:
+
+        conn.close()
+
+
+# =========================================================
+# ACCOUNT BALANCE SUMMARY
+# =========================================================
+
+@app.route(
+    "/api/account/<int:telegram_id>/summary",
+    methods=["GET"]
+)
+def account_summary(telegram_id):
+
+    conn = get_db()
+
+    try:
+
+        cur = conn.cursor()
+
+        # -------------------------------------------------
+        # USER
+        # -------------------------------------------------
+
+        cur.execute("""
+            SELECT
+                telegram_id,
+                coins,
+                ads_watched
+            FROM users
+            WHERE telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        user = cur.fetchone()
+
+        if not user:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "User not found."
+            }), 404
+
+        # -------------------------------------------------
+        # REFERRALS
+        # -------------------------------------------------
+
+        cur.execute("""
+            SELECT COUNT(*) AS total
+            FROM referrals
+            WHERE referrer_telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        referral_result = cur.fetchone()
+
+        referral_count = int(
+            referral_result["total"] or 0
+        )
+
+        # -------------------------------------------------
+        # TASKS
+        # -------------------------------------------------
+
+        cur.execute("""
+            SELECT COUNT(*) AS total
+            FROM task_completions
+            WHERE telegram_id = %s
+        """, (
+            telegram_id,
+        ))
+
+        task_result = cur.fetchone()
+
+        tasks_completed = int(
+            task_result["total"] or 0
+        )
+
+        # -------------------------------------------------
+        # USD
+        # 1,000,000 coins = $1
+        # -------------------------------------------------
+
+        coins = int(
+            user["coins"] or 0
+        )
+
+        usd = (
+            coins / 1000000
+        )
+
+        return jsonify({
+
+            "success": True,
+
+            "telegram_id":
+                user["telegram_id"],
+
+            "coins":
+                coins,
+
+            "usd":
+                round(
+                    usd,
+                    6
+                ),
+
+            "referral_count":
+                referral_count,
+
+            "ads_watched":
+                int(
+                    user["ads_watched"] or 0
+                ),
+
+            "tasks_completed":
+                tasks_completed
+        })
+
+    except Exception as e:
+
+        print(
+            "ACCOUNT SUMMARY ERROR:",
+            e
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Server error"
+        }), 500
+
+    finally:
+
+        conn.close()
+
+
+# =========================================================
+# HEALTH CHECK
+# =========================================================
+
+@app.route(
+    "/api/status",
+    methods=["GET"]
+)
+def api_status():
+
+    return jsonify({
+        "success": True,
+        "status": "online",
+        "service": "EarnPool"
+    })
+
+
+# =========================================================
 # START APP
 # =========================================================
 
-init_db()
+try:
 
-set_telegram_webhook()
+    init_db()
+
+except Exception as e:
+
+    print(
+        "DATABASE INITIALIZATION ERROR:",
+        e
+    )
+
+
+try:
+
+    set_telegram_webhook()
+
+except Exception as e:
+
+    print(
+        "WEBHOOK INITIALIZATION ERROR:",
+        e
+    )
+
+
+# =========================================================
+# LOCAL DEVELOPMENT
+# =========================================================
+
+if __name__ == "__main__":
+
+    port = int(
+        os.environ.get(
+            "PORT",
+            5000
+        )
+    )
+
+    app.run(
+        host="0.0.0.0",
+        port=port
+)
