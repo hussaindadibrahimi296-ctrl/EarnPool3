@@ -18,467 +18,475 @@
 <!-- AdsGram -->
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-
 <style>
 
-    * {
-        box-sizing: border-box;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        min-height: 100%;
-        font-family: Arial, sans-serif;
-        background: #10131a;
-        color: white;
-    }
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+    background: #10131a;
+    color: white;
+}
 
-    body {
-        padding-bottom: 88px;
-    }
+body {
+    padding-bottom: 88px;
+}
 
-    button {
-        font-family: inherit;
-    }
+button {
+    font-family: inherit;
+}
+
+.app {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.language-button {
+    border: none;
+    background: #1c2330;
+    color: white;
+    border-radius: 10px;
+    padding: 8px 11px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.language-menu {
+    display: none;
+    position: absolute;
+    top: 58px;
+    right: 15px;
+    background: #1c2330;
+    border-radius: 12px;
+    padding: 6px;
+    z-index: 100;
+    box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
+
+.language-menu.show {
+    display: block;
+}
+
+.language-option {
+    display: block;
+    width: 125px;
+    border: none;
+    background: transparent;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.language-option:active {
+    background: #293242;
+}
+
+.balance-card {
+    background: #191e29;
+    border-radius: 20px;
+    padding: 22px;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.balance-title {
+    color: #9da5b4;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.coins {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.usd-value {
+    margin-top: 6px;
+    color: #8f98a8;
+    font-size: 15px;
+}
+
+.content-card {
+    background: #191e29;
+    border-radius: 20px;
+    padding: 22px;
+    min-height: 330px;
+}
+
+.content-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.content-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.content-text {
+    color: #aeb5c1;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.reward-button,
+.watch-ad-button {
+    width: 100%;
+    border: none;
+    background: #2d7dff;
+    color: white;
+    border-radius: 14px;
+    padding: 15px;
+    margin-top: 18px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.reward-button:disabled,
+.watch-ad-button:disabled {
+    background: #303744;
+    color: #8f98a8;
+    cursor: not-allowed;
+}
+
+.reward-status,
+.ads-message,
+.task-message {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.reward-success,
+.ads-success,
+.task-success {
+    color: #58d68d;
+}
+
+.reward-waiting,
+.ads-waiting {
+    color: #aeb5c1;
+}
+
+.reward-error,
+.ads-error,
+.task-error {
+    color: #ff7777;
+}
+
+.ads-panel {
+    margin-top: 20px;
+}
+
+.ads-info {
+    background: #111722;
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 15px;
+}
+
+.ads-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    color: #b5bdc9;
+    font-size: 14px;
+}
+
+.ads-row strong {
+    color: white;
+}
+
+
+/* =====================================================
+   TASKS
+===================================================== */
+
+.tasks-panel {
+    margin-top: 20px;
+}
+
+.task-card {
+    background: #111722;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 12px;
+}
+
+.task-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.task-description {
+    color: #aeb5c1;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.task-reward {
+    color: #ffd166;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.task-button {
+    width: 100%;
+    border: none;
+    background: #2d7dff;
+    color: white;
+    border-radius: 11px;
+    padding: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.task-button:disabled {
+    background: #303744;
+    color: #8f98a8;
+}
+
+.no-tasks {
+    text-align: center;
+    color: #8f98a8;
+    padding: 25px 10px;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   REFERRAL
+===================================================== */
+
+.referral-panel {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.referral-box {
+    background: #111722;
+    border-radius: 14px;
+    padding: 15px;
+    margin-top: 12px;
+}
+
+.referral-label {
+    color: #aeb5c1;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.referral-value {
+    background: #191e29;
+    border-radius: 10px;
+    padding: 12px;
+    word-break: break-all;
+    font-size: 14px;
+    color: white;
+    min-height: 18px;
+}
+
+.referral-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.referral-action-button {
+    flex: 1;
+    border: none;
+    background: #2d7dff;
+    color: white;
+    border-radius: 11px;
+    padding: 12px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.referral-action-button:active {
+    transform: scale(.98);
+}
+
+.referral-message {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.referral-success {
+    color: #58d68d;
+}
+
+.referral-error {
+    color: #ff7777;
+}
+
+.referral-reward-info {
+    background: #191e29;
+    border-radius: 10px;
+    padding: 11px;
+    margin-top: 12px;
+    text-align: center;
+    color: #ffd166;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   ACCOUNT
+===================================================== */
+
+.account-panel {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.account-box {
+    background: #111722;
+    border-radius: 14px;
+    padding: 15px;
+    margin-top: 12px;
+}
+
+.account-label {
+    color: #aeb5c1;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.account-value {
+    background: #191e29;
+    border-radius: 10px;
+    padding: 12px;
+    word-break: break-word;
+    font-size: 14px;
+    color: white;
+    min-height: 18px;
+}
+
+.account-message {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.account-photo {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: none;
+    margin: 0 auto 15px;
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+===================================================== */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: #151922;
+    border-top: 1px solid #252b36;
+    padding: 7px 4px;
+    z-index: 50;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 3px;
+}
+
+.nav-button {
+    flex: 1;
+    width: 16.666%;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: #8f98a8;
+    border-radius: 11px;
+    padding: 6px 1px;
+    cursor: pointer;
+    font-size: 9px;
+    line-height: 1.2;
+}
+
+.nav-button.active {
+    background: #252d3b;
+    color: white;
+}
+
+.nav-icon {
+    display: block;
+    font-size: 20px;
+    line-height: 22px;
+    margin-bottom: 3px;
+}
+
+@media (max-width: 360px) {
 
     .app {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 15px;
-    }
-
-    .top-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 18px;
-    }
-
-    .logo {
-        font-size: 23px;
-        font-weight: bold;
-    }
-
-    .language-button {
-        border: none;
-        background: #1c2330;
-        color: white;
-        border-radius: 10px;
-        padding: 8px 11px;
-        font-size: 13px;
-        cursor: pointer;
-    }
-
-    .language-menu {
-        display: none;
-        position: absolute;
-        top: 58px;
-        right: 15px;
-        background: #1c2330;
-        border-radius: 12px;
-        padding: 6px;
-        z-index: 100;
-        box-shadow: 0 8px 25px rgba(0,0,0,.35);
-    }
-
-    .language-menu.show {
-        display: block;
-    }
-
-    .language-option {
-        display: block;
-        width: 125px;
-        border: none;
-        background: transparent;
-        color: white;
-        padding: 10px;
-        text-align: center;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    .language-option:active {
-        background: #293242;
-    }
-
-    .balance-card {
-        background: #191e29;
-        border-radius: 20px;
-        padding: 22px;
-        text-align: center;
-        margin-bottom: 18px;
-    }
-
-    .balance-title {
-        color: #9da5b4;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    .coins {
-        font-size: 30px;
-        font-weight: bold;
-    }
-
-    .usd-value {
-        margin-top: 6px;
-        color: #8f98a8;
-        font-size: 15px;
-    }
-
-    .content-card {
-        background: #191e29;
-        border-radius: 20px;
-        padding: 22px;
-        min-height: 330px;
-    }
-
-    .content-icon {
-        font-size: 42px;
-        margin-bottom: 12px;
-    }
-
-    .content-title {
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 12px;
-    }
-
-    .content-text {
-        color: #aeb5c1;
-        line-height: 1.8;
-        font-size: 15px;
-    }
-
-    .reward-button,
-    .watch-ad-button {
-        width: 100%;
-        border: none;
-        background: #2d7dff;
-        color: white;
-        border-radius: 14px;
-        padding: 15px;
-        margin-top: 18px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .reward-button:disabled,
-    .watch-ad-button:disabled {
-        background: #303744;
-        color: #8f98a8;
-        cursor: not-allowed;
-    }
-
-    .reward-status,
-    .ads-message,
-    .task-message {
-        text-align: center;
-        margin-top: 14px;
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
-    .reward-success,
-    .ads-success,
-    .task-success {
-        color: #58d68d;
-    }
-
-    .reward-waiting,
-    .ads-waiting {
-        color: #aeb5c1;
-    }
-
-    .reward-error,
-    .ads-error,
-    .task-error {
-        color: #ff7777;
-    }
-
-    .ads-panel {
-        margin-top: 20px;
-    }
-
-    .ads-info {
-        background: #111722;
-        border-radius: 14px;
-        padding: 14px;
-        margin-top: 15px;
-    }
-
-    .ads-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 7px 0;
-        color: #b5bdc9;
-        font-size: 14px;
-    }
-
-    .ads-row strong {
-        color: white;
-    }
-
-
-    /* =====================================================
-       TASKS
-    ===================================================== */
-
-    .tasks-panel {
-        margin-top: 20px;
-    }
-
-    .task-card {
-        background: #111722;
-        border-radius: 15px;
-        padding: 15px;
-        margin-top: 12px;
-    }
-
-    .task-title {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 7px;
-    }
-
-    .task-description {
-        color: #aeb5c1;
-        font-size: 13px;
-        line-height: 1.6;
-        margin-bottom: 10px;
-    }
-
-    .task-reward {
-        color: #ffd166;
-        font-weight: bold;
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-
-    .task-button {
-        width: 100%;
-        border: none;
-        background: #2d7dff;
-        color: white;
-        border-radius: 11px;
-        padding: 11px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .task-button:disabled {
-        background: #303744;
-        color: #8f98a8;
-    }
-
-    .no-tasks {
-        text-align: center;
-        color: #8f98a8;
-        padding: 25px 10px;
-        line-height: 1.7;
-    }
-
-
-    /* =====================================================
-       REFERRAL
-    ===================================================== */
-
-    .referral-panel {
-        margin-top: 20px;
-        width: 100%;
-    }
-
-    .referral-box {
-        background: #111722;
-        border-radius: 14px;
-        padding: 15px;
-        margin-top: 12px;
-    }
-
-    .referral-label {
-        color: #aeb5c1;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    .referral-value {
-        background: #191e29;
-        border-radius: 10px;
         padding: 12px;
-        word-break: break-all;
-        font-size: 14px;
-        color: white;
-        min-height: 18px;
-    }
-
-    .referral-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 12px;
-    }
-
-    .referral-action-button {
-        flex: 1;
-        border: none;
-        background: #2d7dff;
-        color: white;
-        border-radius: 11px;
-        padding: 12px 10px;
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .referral-action-button:active {
-        transform: scale(.98);
-    }
-
-    .referral-message {
-        text-align: center;
-        margin-top: 12px;
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    .referral-success {
-        color: #58d68d;
-    }
-
-    .referral-error {
-        color: #ff7777;
-    }
-
-    .referral-reward-info {
-        background: #191e29;
-        border-radius: 10px;
-        padding: 11px;
-        margin-top: 12px;
-        text-align: center;
-        color: #ffd166;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-
-    /* =====================================================
-       ACCOUNT
-    ===================================================== */
-
-    .account-panel {
-        margin-top: 20px;
-        width: 100%;
-    }
-
-    .account-box {
-        background: #111722;
-        border-radius: 14px;
-        padding: 15px;
-        margin-top: 12px;
-    }
-
-    .account-label {
-        color: #aeb5c1;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    .account-value {
-        background: #191e29;
-        border-radius: 10px;
-        padding: 12px;
-        word-break: break-word;
-        font-size: 14px;
-        color: white;
-        min-height: 18px;
-    }
-
-    .account-message {
-        text-align: center;
-        margin-top: 12px;
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-
-    /* =====================================================
-       BOTTOM NAV
-    ===================================================== */
-
-    .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        background: #151922;
-        border-top: 1px solid #252b36;
-        padding: 7px 4px;
-        z-index: 50;
-    }
-
-    .nav-container {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        display: flex;
-        gap: 3px;
     }
 
     .nav-button {
-        flex: 1;
-        width: 16.666%;
-        min-width: 0;
-        border: none;
-        background: transparent;
-        color: #8f98a8;
-        border-radius: 11px;
-        padding: 6px 1px;
-        cursor: pointer;
-        font-size: 9px;
-        line-height: 1.2;
-    }
-
-    .nav-button.active {
-        background: #252d3b;
-        color: white;
+        font-size: 8px;
     }
 
     .nav-icon {
-        display: block;
-        font-size: 20px;
-        line-height: 22px;
-        margin-bottom: 3px;
+        font-size: 18px;
     }
 
-    @media (max-width: 360px) {
-
-        .app {
-            padding: 12px;
-        }
-
-        .nav-button {
-            font-size: 8px;
-        }
-
-        .nav-icon {
-            font-size: 18px;
-        }
-
-        .logo {
-            font-size: 21px;
-        }
-
-        .coins {
-            font-size: 27px;
-        }
-
+    .logo {
+        font-size: 21px;
     }
+
+    .coins {
+        font-size: 27px;
+    }
+
+}
 
 </style>
 
@@ -501,6 +509,7 @@
         </div>
 
         <button
+            type="button"
             class="language-button"
             id="languageButton"
             onclick="toggleLanguageMenu()"
@@ -521,6 +530,7 @@
     >
 
         <button
+            type="button"
             class="language-option"
             onclick="changeLanguage('en')"
         >
@@ -528,6 +538,7 @@
         </button>
 
         <button
+            type="button"
             class="language-option"
             onclick="changeLanguage('fa')"
         >
@@ -535,6 +546,7 @@
         </button>
 
         <button
+            type="button"
             class="language-option"
             onclick="changeLanguage('ar')"
         >
@@ -608,6 +620,7 @@
         ================================================== -->
 
         <button
+            type="button"
             id="rewardButton"
             class="reward-button"
             onclick="claimDailyReward()"
@@ -681,6 +694,7 @@
 
 
             <button
+                type="button"
                 id="watchAdButton"
                 class="watch-ad-button"
                 onclick="watchAd()"
@@ -747,6 +761,7 @@
                 <div class="referral-actions">
 
                     <button
+                        type="button"
                         id="copyReferralButton"
                         class="referral-action-button"
                         onclick="copyReferralLink()"
@@ -755,6 +770,7 @@
                     </button>
 
                     <button
+                        type="button"
                         id="shareReferralButton"
                         class="referral-action-button"
                         onclick="shareReferralLink()"
@@ -811,6 +827,13 @@
             class="account-panel"
             style="display:none;"
         >
+
+            <img
+                id="accountPhoto"
+                class="account-photo"
+                alt="Profile"
+            >
+
 
             <div class="account-box">
 
@@ -926,6 +949,44 @@
             </div>
 
 
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountAdsWatched"
+                >
+                    Ads Watched
+                </div>
+
+                <div
+                    id="accountAdsWatched"
+                    class="account-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountLanguage"
+                >
+                    Language
+                </div>
+
+                <div
+                    id="accountLanguage"
+                    class="account-value"
+                >
+                    en
+                </div>
+
+            </div>
+
+
             <div
                 id="accountMessage"
                 class="account-message"
@@ -948,6 +1009,7 @@
 
 
         <button
+            type="button"
             class="nav-button active"
             data-section="daily"
             onclick="showSection('daily', this)"
@@ -963,6 +1025,7 @@
 
 
         <button
+            type="button"
             class="nav-button"
             data-section="ads"
             onclick="showSection('ads', this)"
@@ -978,6 +1041,7 @@
 
 
         <button
+            type="button"
             class="nav-button"
             data-section="tasks"
             onclick="showSection('tasks', this)"
@@ -993,6 +1057,7 @@
 
 
         <button
+            type="button"
             class="nav-button"
             data-section="referral"
             onclick="showSection('referral', this)"
@@ -1008,6 +1073,7 @@
 
 
         <button
+            type="button"
             class="nav-button"
             data-section="withdraw"
             onclick="showSection('withdraw', this)"
@@ -1023,6 +1089,7 @@
 
 
         <button
+            type="button"
             class="nav-button"
             data-section="account"
             onclick="showSection('account', this)"
@@ -1049,15 +1116,22 @@
 ===================================================== */
 
 const tg =
-    window.Telegram.WebApp;
+    window.Telegram &&
+    window.Telegram.WebApp
+        ? window.Telegram.WebApp
+        : null;
 
-tg.ready();
 
-tg.expand();
+if (tg) {
+    tg.ready();
+    tg.expand();
+}
 
 
 const user =
-    tg.initDataUnsafe?.user || null;
+    tg && tg.initDataUnsafe && tg.initDataUnsafe.user
+        ? tg.initDataUnsafe.user
+        : null;
 
 
 /* =====================================================
@@ -1113,51 +1187,41 @@ const translations = {
 
     en: {
 
-        balance:
-            "Your Balance",
+        balance: "Your Balance",
 
-        daily:
-            "Daily",
+        daily: "Daily",
 
-        ads:
-            "Ads",
+        ads: "Ads",
 
-        tasks:
-            "Tasks",
+        tasks: "Tasks",
 
-        referral:
-            "Referral",
+        referral: "Referral",
 
-        withdraw:
-            "Withdraw",
+        withdraw: "Withdraw",
 
-        account:
-            "Account",
+        account: "Account",
 
-        accountName:
-            "Name",
+        accountName: "Name",
 
-        accountUsername:
-            "Username",
+        accountUsername: "Username",
 
-        accountTelegramId:
-            "Telegram ID",
+        accountTelegramId: "Telegram ID",
 
-        accountBalance:
-            "Balance",
+        accountBalance: "Balance",
 
-        accountUsd:
-            "USD Value",
+        accountUsd: "USD Value",
 
-        accountReferrals:
-            "Referrals",
+        accountReferrals: "Referrals",
+
+        accountAdsWatched: "Ads Watched",
+
+        accountLanguage: "Language",
 
         accountLoading:
             "⏳ Loading account...",
 
         accountError:
             "❌ Could not load account information.",
-
 
         referralLink:
             "Referral Link",
@@ -1186,13 +1250,11 @@ const translations = {
         referralError:
             "❌ Could not load referral information.",
 
-
         dailyTitle:
             "Daily Reward",
 
         dailyText:
             "Claim your daily reward and earn coins every 12 hours.",
-
 
         adsTitle:
             "Watch Ads",
@@ -1200,13 +1262,11 @@ const translations = {
         adsText:
             "Watch advertisements and earn coins.",
 
-
         tasksTitle:
             "Tasks",
 
         tasksText:
             "Complete available tasks and earn rewards.",
-
 
         referralTitle:
             "Referral",
@@ -1214,20 +1274,17 @@ const translations = {
         referralText:
             "Invite friends and earn referral rewards.",
 
-
         withdrawTitle:
             "Withdraw",
 
         withdrawText:
             "Withdraw your available balance.",
 
-
         accountTitle:
             "Account",
 
         accountText:
             "View your account information and statistics.",
-
 
         claim:
             "🎁 Claim 1,000 Coins",
@@ -1240,7 +1297,6 @@ const translations = {
 
         waiting:
             "⏳ Next reward in",
-
 
         adsWatched:
             "Ads watched",
@@ -1265,7 +1321,6 @@ const translations = {
 
         adsReset:
             "Next ads available in",
-
 
         taskReward:
             "Reward: 1,000 🪙",
@@ -1335,12 +1390,17 @@ const translations = {
         accountReferrals:
             "تعداد دعوت‌ها",
 
+        accountAdsWatched:
+            "تبلیغات دیده‌شده",
+
+        accountLanguage:
+            "زبان",
+
         accountLoading:
             "⏳ در حال دریافت اطلاعات حساب...",
 
         accountError:
             "❌ دریافت اطلاعات حساب ممکن نشد.",
-
 
         referralLink:
             "لینک رفرال",
@@ -1369,13 +1429,11 @@ const translations = {
         referralError:
             "❌ دریافت اطلاعات رفرال ممکن نشد.",
 
-
         dailyTitle:
             "پاداش روزانه",
 
         dailyText:
             "هر ۱۲ ساعت پاداش خود را دریافت کنید.",
-
 
         adsTitle:
             "دیدن تبلیغات",
@@ -1383,13 +1441,11 @@ const translations = {
         adsText:
             "تبلیغات را تماشا کنید و سکه دریافت کنید.",
 
-
         tasksTitle:
             "تسک‌ها",
 
         tasksText:
             "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
-
 
         referralTitle:
             "رفرال",
@@ -1397,20 +1453,17 @@ const translations = {
         referralText:
             "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
 
-
         withdrawTitle:
             "برداشت",
 
         withdrawText:
             "موجودی قابل برداشت خود را برداشت کنید.",
 
-
         accountTitle:
             "حساب کاربری",
 
         accountText:
             "اطلاعات حساب و آمار خود را مشاهده کنید.",
-
 
         claim:
             "🎁 دریافت ۱,۰۰۰ سکه",
@@ -1423,7 +1476,6 @@ const translations = {
 
         waiting:
             "⏳ پاداش بعدی تا",
-
 
         adsWatched:
             "تبلیغات دیده‌شده",
@@ -1448,7 +1500,6 @@ const translations = {
 
         adsReset:
             "تبلیغات بعدی تا",
-
 
         taskReward:
             "پاداش: ۱,۰۰۰ 🪙",
@@ -1518,12 +1569,17 @@ const translations = {
         accountReferrals:
             "الإحالات",
 
+        accountAdsWatched:
+            "الإعلانات المشاهدة",
+
+        accountLanguage:
+            "اللغة",
+
         accountLoading:
             "⏳ جارٍ تحميل معلومات الحساب...",
 
         accountError:
             "❌ تعذر تحميل معلومات الحساب.",
-
 
         referralLink:
             "رابط الإحالة",
@@ -1552,13 +1608,11 @@ const translations = {
         referralError:
             "❌ تعذر تحميل معلومات الإحالة.",
 
-
         dailyTitle:
             "المكافأة اليومية",
 
         dailyText:
             "احصل على مكافأتك كل 12 ساعة.",
-
 
         adsTitle:
             "مشاهدة الإعلانات",
@@ -1566,13 +1620,11 @@ const translations = {
         adsText:
             "شاهد الإعلانات واربح العملات.",
 
-
         tasksTitle:
             "المهام",
 
         tasksText:
             "أكمل المهام المتاحة واحصل على المكافآت.",
-
 
         referralTitle:
             "الإحالة",
@@ -1580,20 +1632,17 @@ const translations = {
         referralText:
             "ادعُ أصدقاءك واربح مكافآت الإحالة.",
 
-
         withdrawTitle:
             "السحب",
 
         withdrawText:
             "اسحب رصيدك المتاح.",
 
-
         accountTitle:
             "الحساب",
 
         accountText:
             "عرض معلومات حسابك وإحصائياتك.",
-
 
         claim:
             "🎁 احصل على 1,000 عملة",
@@ -1606,7 +1655,6 @@ const translations = {
 
         waiting:
             "⏳ المكافأة التالية خلال",
-
 
         adsWatched:
             "الإعلانات المشاهدة",
@@ -1631,7 +1679,6 @@ const translations = {
 
         adsReset:
             "الإعلانات التالية خلال",
-
 
         taskReward:
             "المكافأة: 1,000 🪙",
@@ -1692,20 +1739,31 @@ let currentSection = "daily";
 
 function updateBalance() {
 
-    document
-        .getElementById("coins")
-        .textContent =
-        Number(coins).toLocaleString();
+    const coinsElement =
+        document.getElementById("coins");
+
+    const usdElement =
+        document.getElementById("usdValue");
+
+
+    if (coinsElement) {
+
+        coinsElement.textContent =
+            Number(coins || 0).toLocaleString();
+
+    }
 
 
     const usd =
-        Number(coins) / 1000000;
+        Number(coins || 0) / 1000000;
 
 
-    document
-        .getElementById("usdValue")
-        .textContent =
-        "≈ $" + usd.toFixed(6);
+    if (usdElement) {
+
+        usdElement.textContent =
+            "≈ $" + usd.toFixed(6);
+
+    }
 
 }
 
@@ -1717,9 +1775,7 @@ function updateBalance() {
 function detectLanguage() {
 
     if (!user) {
-
         return "en";
-
     }
 
 
@@ -1761,10 +1817,21 @@ function detectLanguage() {
 
 function getLanguage() {
 
-    return (
-        localStorage.getItem("language") ||
-        detectLanguage()
-    );
+    const saved =
+        localStorage.getItem("language");
+
+
+    if (
+        saved &&
+        translations[saved]
+    ) {
+
+        return saved;
+
+    }
+
+
+    return detectLanguage();
 
 }
 
@@ -1776,9 +1843,7 @@ function getLanguage() {
 function applyLanguage(lang) {
 
     if (!translations[lang]) {
-
         lang = "en";
-
     }
 
 
@@ -1796,10 +1861,15 @@ function applyLanguage(lang) {
             : "rtl";
 
 
-    document.getElementById(
-        "balanceTitle"
-    ).textContent =
-        t.balance;
+    const balanceTitle =
+        document.getElementById(
+            "balanceTitle"
+        );
+
+    if (balanceTitle) {
+        balanceTitle.textContent =
+            t.balance;
+    }
 
 
     document
@@ -1807,9 +1877,7 @@ function applyLanguage(lang) {
         .forEach(function(element) {
 
             const key =
-                element.getAttribute(
-                    "data-key"
-                );
+                element.getAttribute("data-key");
 
 
             if (t[key]) {
@@ -1822,66 +1890,140 @@ function applyLanguage(lang) {
         });
 
 
-    document.getElementById(
-        "languageButton"
-    ).textContent = {
-
-        en: "🌐 EN",
-
-        fa: "🌐 FA",
-
-        ar: "🌐 AR"
-
-    }[lang];
+    const languageButton =
+        document.getElementById(
+            "languageButton"
+        );
 
 
-    document.getElementById(
-        "rewardButton"
-    ).textContent =
-        t.claim;
+    if (languageButton) {
+
+        languageButton.textContent = {
+
+            en: "🌐 EN",
+
+            fa: "🌐 FA",
+
+            ar: "🌐 AR"
+
+        }[lang];
+
+    }
 
 
-    document.getElementById(
-        "adsWatchedLabel"
-    ).textContent =
-        t.adsWatched;
+    const rewardButton =
+        document.getElementById(
+            "rewardButton"
+        );
 
 
-    document.getElementById(
-        "adsRemainingLabel"
-    ).textContent =
-        t.adsRemaining;
+    if (rewardButton) {
+
+        if (!rewardButton.disabled) {
+
+            rewardButton.textContent =
+                t.claim;
+
+        }
+
+    }
 
 
-    document.getElementById(
-        "adsRewardLabel"
-    ).textContent =
-        t.adsReward;
+    const adsWatchedLabel =
+        document.getElementById(
+            "adsWatchedLabel"
+        );
+
+    if (adsWatchedLabel) {
+
+        adsWatchedLabel.textContent =
+            t.adsWatched;
+
+    }
 
 
-    document.getElementById(
-        "watchAdButton"
-    ).textContent =
-        t.watchAd;
+    const adsRemainingLabel =
+        document.getElementById(
+            "adsRemainingLabel"
+        );
+
+    if (adsRemainingLabel) {
+
+        adsRemainingLabel.textContent =
+            t.adsRemaining;
+
+    }
 
 
-    document.getElementById(
-        "copyReferralButton"
-    ).textContent =
-        t.referralCopy;
+    const adsRewardLabel =
+        document.getElementById(
+            "adsRewardLabel"
+        );
+
+    if (adsRewardLabel) {
+
+        adsRewardLabel.textContent =
+            t.adsReward;
+
+    }
 
 
-    document.getElementById(
-        "shareReferralButton"
-    ).textContent =
-        t.referralShare;
+    const watchAdButton =
+        document.getElementById(
+            "watchAdButton"
+        );
+
+    if (watchAdButton) {
+
+        watchAdButton.textContent =
+            t.watchAd;
+
+    }
 
 
-    document.getElementById(
-        "referralRewardInfo"
-    ).textContent =
-        t.referralReward;
+    const copyReferralButton =
+        document.getElementById(
+            "copyReferralButton"
+        );
 
+    if (copyReferralButton) {
+
+        copyReferralButton.textContent =
+            t.referralCopy;
+
+    }
+
+
+    const shareReferralButton =
+        document.getElementById(
+            "shareReferralButton"
+        );
+
+    if (shareReferralButton) {
+
+        shareReferralButton.textContent =
+            t.referralShare;
+
+    }
+
+
+    const referralRewardInfo =
+        document.getElementById(
+            "referralRewardInfo"
+        );
+
+    if (referralRewardInfo) {
+
+        referralRewardInfo.textContent =
+            t.referralReward;
+
+    }
+
+
+    /*
+     فقط متن بخش فعلی را به‌روزرسانی می‌کنیم.
+     این قسمت نباید باعث از کار افتادن دکمه‌ها شود.
+    */
 
     showSection(
         currentSection,
@@ -1900,9 +2042,7 @@ function applyLanguage(lang) {
 function changeLanguage(lang) {
 
     if (!translations[lang]) {
-
         lang = "en";
-
     }
 
 
@@ -1915,13 +2055,19 @@ function changeLanguage(lang) {
     applyLanguage(lang);
 
 
-    document
-        .getElementById(
+    const menu =
+        document.getElementById(
             "languageMenu"
-        )
-        .classList.remove(
+        );
+
+
+    if (menu) {
+
+        menu.classList.remove(
             "show"
         );
+
+    }
 
 }
 
@@ -1932,13 +2078,20 @@ function changeLanguage(lang) {
 
 function toggleLanguageMenu() {
 
-    document
-        .getElementById(
+    const menu =
+        document.getElementById(
             "languageMenu"
-        )
-        .classList.toggle(
-            "show"
         );
+
+
+    if (!menu) {
+        return;
+    }
+
+
+    menu.classList.toggle(
+        "show"
+    );
 
 }
 
@@ -1960,6 +2113,8 @@ document.addEventListener(
 
 
         if (
+            menu &&
+            button &&
             !menu.contains(event.target) &&
             !button.contains(event.target)
         ) {
@@ -1976,21 +2131,28 @@ document.addEventListener(
 
 /* =====================================================
    SHOW SECTION
+   نسخه امن — بدون خراب کردن دکمه‌های ربات
 ===================================================== */
 
-function showSection(
-    section,
-    button
-) {
+function showSection(section, button) {
+
+    if (
+        !section ||
+        !sectionIcons[section] ||
+        !translations[getLanguage()]
+    ) {
+
+        section = "daily";
+
+    }
+
 
     currentSection =
         section;
 
 
     document
-        .querySelectorAll(
-            ".nav-button"
-        )
+        .querySelectorAll(".nav-button")
         .forEach(function(btn) {
 
             btn.classList.remove(
@@ -2006,6 +2168,24 @@ function showSection(
             "active"
         );
 
+    } else {
+
+        const activeButton =
+            document.querySelector(
+                '.nav-button[data-section="' +
+                section +
+                '"]'
+            );
+
+
+        if (activeButton) {
+
+            activeButton.classList.add(
+                "active"
+            );
+
+        }
+
     }
 
 
@@ -2014,74 +2194,380 @@ function showSection(
 
 
     const t =
-        translations[lang];
+        translations[lang] ||
+        translations.en;
 
 
     const content = {
 
         daily: {
-
-            title:
-                t.dailyTitle,
-
-            text:
-                t.dailyText
-
+            title: t.dailyTitle,
+            text: t.dailyText
         },
-
 
         ads: {
-
-            title:
-                t.adsTitle,
-
-            text:
-                t.adsText
-
+            title: t.adsTitle,
+            text: t.adsText
         },
-
 
         tasks: {
-
-            title:
-                t.tasksTitle,
-
-            text:
-                t.tasksText
-
+            title: t.tasksTitle,
+            text: t.tasksText
         },
-
 
         referral: {
-
-            title:
-                t.referralTitle,
-
-            text:
-                t.referralText
-
+            title: t.referralTitle,
+            text: t.referralText
         },
-
 
         withdraw: {
-
-            title:
-                t.withdrawTitle,
-
-            text:
-                t.withdrawText
-
+            title: t.withdrawTitle,
+            text: t.withdrawText
         },
 
+        account: {
+            title: t.accountTitle,
+            text: t.accountText
+        }
+
+    };
+
+
+    const iconElement =
+        document.getElementById(
+            "contentIcon"
+        );
+
+    const titleElement =
+        document.getElementById(
+            "contentTitle"
+        );
+
+    const textElement =
+        document.getElementById(
+            "contentText"
+        );
+
+
+    if (
+        iconElement &&
+        sectionIcons[section]
+    ) {
+
+        iconElement.textContent =
+            sectionIcons[section];
+
+    }
+
+
+    if (
+        titleElement &&
+        content[section]
+    ) {
+
+        titleElement.textContent =
+            content[section].title;
+
+    }
+
+
+    if (
+        textElement &&
+        content[section]
+    ) {
+
+        textElement.textContent =
+            content[section].text;
+
+    }
+
+
+    const rewardButton =
+        document.getElementById(
+            "rewardButton"
+        );
+
+    const rewardStatus =
+        document.getElementById(
+            "rewardStatus"
+        );
+
+    const adsPanel =
+        document.getElementById(
+            "adsPanel"
+        );
+
+    const tasksPanel =
+        document.getElementById(
+            "tasksPanel"
+        );
+
+    const referralPanel =
+        document.getElementById(
+            "referralPanel"
+        );
+
+    const accountPanel =
+        document.getElementById(
+            "accountPanel"
+        );
+
+
+    /* =====================================================
+       HIDE ALL PANELS
+    ===================================================== */
+
+    if (rewardButton) {
+        rewardButton.style.display = "none";
+    }
+
+    if (rewardStatus) {
+        rewardStatus.style.display = "none";
+    }
+
+    if (adsPanel) {
+        adsPanel.style.display = "none";
+    }
+
+    if (tasksPanel) {
+        tasksPanel.style.display = "none";
+    }
+
+    if (referralPanel) {
+        referralPanel.style.display = "none";
+    }
+
+    if (accountPanel) {
+        accountPanel.style.display = "none";
+    }
+
+
+    /* =====================================================
+       DAILY
+    ===================================================== */
+
+    if (section === "daily") {
+
+        if (rewardButton) {
+            rewardButton.style.display = "block";
+        }
+
+        if (rewardStatus) {
+            rewardStatus.style.display = "block";
+        }
+
+        /*
+         فقط در صورتی که تابع در قسمت دوم وجود داشته باشد
+         اجرا می‌شود.
+        */
+
+        if (
+            typeof checkDailyReward === "function"
+        ) {
+
+            checkDailyReward();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ADS
+    ===================================================== */
+
+    else if (section === "ads") {
+
+        if (adsPanel) {
+            adsPanel.style.display = "block";
+        }
+
+        if (
+            typeof loadAdsStatus === "function"
+        ) {
+
+            loadAdsStatus();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       TASKS
+    ===================================================== */
+
+    else if (section === "tasks") {
+
+        if (tasksPanel) {
+            tasksPanel.style.display = "block";
+        }
+
+        if (
+            typeof loadTasks === "function"
+        ) {
+
+            loadTasks();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       REFERRAL
+    ===================================================== */
+
+    else if (section === "referral") {
+
+        if (referralPanel) {
+            referralPanel.style.display = "block";
+        }
+
+        if (
+            typeof loadReferralData === "function"
+        ) {
+
+            loadReferralData();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       WITHDRAW
+    ===================================================== */
+
+    else if (section === "withdraw") {
+
+        /*
+         فعلاً فقط محتوای Withdraw نمایش داده می‌شود.
+         قابلیت Withdraw بعداً به Backend وصل می‌شود.
+        */
+
+    }
+
+
+    /* =====================================================
+       ACCOUNT
+    ===================================================== */
+
+    else if (section === "account") {
+
+        if (accountPanel) {
+
+            accountPanel.style.display =
+                "block";
+
+        }
+
+        if (
+            typeof loadAccountData === "function"
+        ) {
+
+            loadAccountData();
+
+        }
+
+    }
+
+}
+    <script>
+
+/* =====================================================
+   SHOW SECTION
+===================================================== */
+
+function showSection(section, button) {
+
+    if (!section || !sectionIcons[section]) {
+        section = "daily";
+    }
+
+    currentSection = section;
+
+
+    /* =====================================================
+       ACTIVE NAV BUTTON
+    ===================================================== */
+
+    document
+        .querySelectorAll(".nav-button")
+        .forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    if (button) {
+
+        button.classList.add("active");
+
+    } else {
+
+        const activeButton =
+            document.querySelector(
+                '.nav-button[data-section="' +
+                section +
+                '"]'
+            );
+
+        if (activeButton) {
+
+            activeButton.classList.add("active");
+
+        }
+
+    }
+
+
+    /* =====================================================
+       LANGUAGE
+    ===================================================== */
+
+    const lang = getLanguage();
+
+    const t =
+        translations[lang] ||
+        translations.en;
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    const content = {
+
+        daily: {
+            title: t.dailyTitle,
+            text: t.dailyText
+        },
+
+        ads: {
+            title: t.adsTitle,
+            text: t.adsText
+        },
+
+        tasks: {
+            title: t.tasksTitle,
+            text: t.tasksText
+        },
+
+        referral: {
+            title: t.referralTitle,
+            text: t.referralText
+        },
+
+        withdraw: {
+            title: t.withdrawTitle,
+            text: t.withdrawText
+        },
 
         account: {
-
-            title:
-                t.accountTitle,
-
-            text:
-                t.accountText
-
+            title: t.accountTitle,
+            text: t.accountText
         }
 
     };
@@ -2104,6 +2590,10 @@ function showSection(
     ).textContent =
         content[section].text;
 
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
     const rewardButton =
         document.getElementById(
@@ -2141,237 +2631,33 @@ function showSection(
         );
 
 
-    /*
-     ابتدا تمام پنل‌ها را مخفی می‌کنیم.
-    */
-
-    rewardButton.style.display =
-        "none";
-
-
-    rewardStatus.style.display =
-        "none";
-
-
-    adsPanel.style.display =
-        "none";
-
-
-    tasksPanel.style.display =
-        "none";
-
-
-    referralPanel.style.display =
-        "none";
-
-
-    accountPanel.style.display =
-        "none";
-
-
-    /* ==========================================
-       DAILY
-    ========================================== */
-
-    if (section === "daily") {
-
-        rewardButton.style.display =
-            "block";
-
-
-        rewardStatus.style.display =
-            "block";
-
-
-        checkDailyReward();
-
-    }
-
-
-    /* ==========================================
-       ADS
-    ========================================== */
-
-    else if (section === "ads") {
-
-        adsPanel.style.display =
-            "block";
-
-
-        loadAdsStatus();
-
-    }
-
-
-    /* ==========================================
-       TASKS
-    ========================================== */
-
-    else if (section === "tasks") {
-
-        tasksPanel.style.display =
-            "block";
-
-
-        loadTasks();
-
-    }
-
-
-    /* ==========================================
-       REFERRAL
-    ========================================== */
-
-    else if (section === "referral") {
-
-        referralPanel.style.display =
-            "block";
-
-
-        loadReferralData();
-
-    }
-
-
-    /* ==========================================
-       WITHDRAW
-    ========================================== */
-
-    else if (section === "withdraw") {
-
-        // فعلاً فقط محتوای Withdraw نمایش داده می‌شود.
-
-    }
-
-
-    /* ==========================================
-       ACCOUNT
-    ========================================== */
-
-    else if (section === "account") {
-
-        accountPanel.style.display =
-            "block";
-
-    }
-
-}
-    <script>
-
-/* =====================================================
-   SHOW SECTION
-===================================================== */
-
-function showSection(section, button) {
-
-    currentSection = section;
-
-    document
-        .querySelectorAll(".nav-button")
-        .forEach(function(btn) {
-            btn.classList.remove("active");
-        });
-
-    if (button) {
-        button.classList.add("active");
-    }
-
-    const lang = getLanguage();
-    const t = translations[lang];
-
-    const content = {
-
-        daily: {
-            title: t.dailyTitle,
-            text: t.dailyText
-        },
-
-        ads: {
-            title: t.adsTitle,
-            text: t.adsText
-        },
-
-        tasks: {
-            title: t.tasksTitle,
-            text: t.tasksText
-        },
-
-        referral: {
-            title: t.referralTitle,
-            text: t.referralText
-        },
-
-        withdraw: {
-            title: t.withdrawTitle,
-            text: t.withdrawText
-        },
-
-        account: {
-            title: t.accountTitle,
-            text: t.accountText
-        }
-
-    };
-
-    document.getElementById("contentIcon").textContent =
-        sectionIcons[section];
-
-    document.getElementById("contentTitle").textContent =
-        content[section].title;
-
-    document.getElementById("contentText").textContent =
-        content[section].text;
-
-
-    const rewardButton =
-        document.getElementById("rewardButton");
-
-    const rewardStatus =
-        document.getElementById("rewardStatus");
-
-    const adsPanel =
-        document.getElementById("adsPanel");
-
-    const tasksPanel =
-        document.getElementById("tasksPanel");
-
-    const referralPanel =
-        document.getElementById("referralPanel");
-
-
-    /* =====================================================
-       ACCOUNT PANEL
-    ===================================================== */
-
-    let accountPanel =
-        document.getElementById("accountPanel");
-
-
-    /*
-     اگر Account Panel در HTML قسمت اول
-     وجود داشته باشد، آن را مدیریت می‌کنیم.
-    */
-
-    if (accountPanel) {
-
-        accountPanel.style.display = "none";
-
-    }
-
-
     /* =====================================================
        HIDE ALL PANELS
     ===================================================== */
 
-    rewardButton.style.display = "none";
+    if (rewardButton) {
+        rewardButton.style.display = "none";
+    }
 
-    rewardStatus.style.display = "none";
+    if (rewardStatus) {
+        rewardStatus.style.display = "none";
+    }
 
-    adsPanel.style.display = "none";
+    if (adsPanel) {
+        adsPanel.style.display = "none";
+    }
 
-    tasksPanel.style.display = "none";
+    if (tasksPanel) {
+        tasksPanel.style.display = "none";
+    }
 
-    referralPanel.style.display = "none";
+    if (referralPanel) {
+        referralPanel.style.display = "none";
+    }
+
+    if (accountPanel) {
+        accountPanel.style.display = "none";
+    }
 
 
     /* =====================================================
@@ -2380,9 +2666,13 @@ function showSection(section, button) {
 
     if (section === "daily") {
 
-        rewardButton.style.display = "block";
+        if (rewardButton) {
+            rewardButton.style.display = "block";
+        }
 
-        rewardStatus.style.display = "block";
+        if (rewardStatus) {
+            rewardStatus.style.display = "block";
+        }
 
         checkDailyReward();
 
@@ -2395,7 +2685,9 @@ function showSection(section, button) {
 
     else if (section === "ads") {
 
-        adsPanel.style.display = "block";
+        if (adsPanel) {
+            adsPanel.style.display = "block";
+        }
 
         loadAdsStatus();
 
@@ -2408,7 +2700,9 @@ function showSection(section, button) {
 
     else if (section === "tasks") {
 
-        tasksPanel.style.display = "block";
+        if (tasksPanel) {
+            tasksPanel.style.display = "block";
+        }
 
         loadTasks();
 
@@ -2421,7 +2715,9 @@ function showSection(section, button) {
 
     else if (section === "referral") {
 
-        referralPanel.style.display = "block";
+        if (referralPanel) {
+            referralPanel.style.display = "block";
+        }
 
         loadReferralData();
 
@@ -2435,8 +2731,8 @@ function showSection(section, button) {
     else if (section === "withdraw") {
 
         /*
-         فعلاً فقط محتوای Withdraw
-         نمایش داده می‌شود.
+         فعلاً فقط محتوای Withdraw نمایش داده می‌شود.
+         قابلیت برداشت را بعداً به Backend وصل می‌کنیم.
         */
 
     }
@@ -2450,7 +2746,8 @@ function showSection(section, button) {
 
         if (accountPanel) {
 
-            accountPanel.style.display = "block";
+            accountPanel.style.display =
+                "block";
 
             loadAccountData();
 
@@ -2479,8 +2776,17 @@ async function loadUserBalance() {
                 encodeURIComponent(user.id)
             );
 
+
+        if (!response.ok) {
+            throw new Error(
+                "HTTP " + response.status
+            );
+        }
+
+
         const data =
             await response.json();
+
 
         if (
             data.success &&
@@ -2518,8 +2824,10 @@ async function registerUser() {
         return;
     }
 
+
     const language =
         getLanguage();
+
 
     try {
 
@@ -2557,14 +2865,22 @@ async function registerUser() {
                 }
             );
 
+
+        if (!response.ok) {
+            throw new Error(
+                "HTTP " + response.status
+            );
+        }
+
+
         const data =
             await response.json();
+
 
         if (data.success) {
 
             console.log(
-                "EarnPool user registered:",
-                data.user
+                "EarnPool user registered"
             );
 
         }
@@ -2592,14 +2908,31 @@ async function loadAccountData() {
     }
 
 
-    /*
-     این تابع فعلاً اطلاعات را از Backend
-     دریافت می‌کند.
+    const t =
+        translations[getLanguage()] ||
+        translations.en;
 
-     در مرحله app.py این API را می‌سازیم:
 
-     /api/account/<telegram_id>
-    */
+    /* =====================================================
+       LOADING MESSAGE
+    ===================================================== */
+
+    const message =
+        document.getElementById(
+            "accountMessage"
+        );
+
+
+    if (message) {
+
+        message.className =
+            "account-message";
+
+
+        message.textContent =
+            t.accountLoading;
+
+    }
 
 
     try {
@@ -2611,6 +2944,16 @@ async function loadAccountData() {
             );
 
 
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
 
@@ -2620,11 +2963,9 @@ async function loadAccountData() {
             !data.user
         ) {
 
-            console.error(
-                "Account data unavailable"
+            throw new Error(
+                "Invalid account response"
             );
-
-            return;
 
         }
 
@@ -2633,14 +2974,15 @@ async function loadAccountData() {
             data.user;
 
 
-        /*
-         نام کاربر
-        */
+        /* =================================================
+           NAME
+        ================================================= */
 
         const nameElement =
             document.getElementById(
                 "accountName"
             );
+
 
         if (nameElement) {
 
@@ -2651,14 +2993,15 @@ async function loadAccountData() {
         }
 
 
-        /*
-         Username
-        */
+        /* =================================================
+           USERNAME
+        ================================================= */
 
         const usernameElement =
             document.getElementById(
                 "accountUsername"
             );
+
 
         if (usernameElement) {
 
@@ -2670,14 +3013,15 @@ async function loadAccountData() {
         }
 
 
-        /*
-         Telegram ID
-        */
+        /* =================================================
+           TELEGRAM ID
+        ================================================= */
 
         const idElement =
             document.getElementById(
                 "accountTelegramId"
             );
+
 
         if (idElement) {
 
@@ -2688,41 +3032,46 @@ async function loadAccountData() {
         }
 
 
-        /*
-         Balance
-        */
+        /* =================================================
+           BALANCE
+        ================================================= */
+
+        const balance =
+            Number(
+                account.coins || 0
+            );
+
 
         const balanceElement =
             document.getElementById(
                 "accountBalance"
             );
 
+
         if (balanceElement) {
 
             balanceElement.textContent =
-                Number(
-                    account.coins || 0
-                ).toLocaleString() +
+                balance.toLocaleString() +
                 " 🪙";
 
         }
 
 
-        /*
-         USD
-        */
+        /* =================================================
+           USD
+        ================================================= */
+
+        const usd =
+            balance / 1000000;
+
 
         const usdElement =
             document.getElementById(
                 "accountUsd"
             );
 
-        if (usdElement) {
 
-            const usd =
-                Number(
-                    account.coins || 0
-                ) / 1000000;
+        if (usdElement) {
 
             usdElement.textContent =
                 "≈ $" +
@@ -2731,33 +3080,39 @@ async function loadAccountData() {
         }
 
 
-        /*
-         Referral Count
-        */
+        /* =================================================
+           REFERRALS
+        ================================================= */
+
+        const referralCount =
+            Number(
+                account.referral_count || 0
+            );
+
 
         const referralsElement =
             document.getElementById(
                 "accountReferrals"
             );
 
+
         if (referralsElement) {
 
             referralsElement.textContent =
-                Number(
-                    account.referral_count || 0
-                ).toLocaleString();
+                referralCount.toLocaleString();
 
         }
 
 
-        /*
-         Ads Watched
-        */
+        /* =================================================
+           OPTIONAL ADS WATCHED
+        ================================================= */
 
         const adsElement =
             document.getElementById(
                 "accountAdsWatched"
             );
+
 
         if (adsElement) {
 
@@ -2769,14 +3124,15 @@ async function loadAccountData() {
         }
 
 
-        /*
-         Account language
-        */
+        /* =================================================
+           OPTIONAL LANGUAGE
+        ================================================= */
 
         const languageElement =
             document.getElementById(
                 "accountLanguage"
             );
+
 
         if (languageElement) {
 
@@ -2787,10 +3143,9 @@ async function loadAccountData() {
         }
 
 
-        /*
-         Telegram profile photo
-         اگر Backend آن را برگرداند.
-        */
+        /* =================================================
+           OPTIONAL PROFILE PHOTO
+        ================================================= */
 
         const photoElement =
             document.getElementById(
@@ -2812,12 +3167,46 @@ async function loadAccountData() {
         }
 
 
+        /* =================================================
+           UPDATE MAIN BALANCE TOO
+        ================================================= */
+
+        coins =
+            balance;
+
+
+        updateBalance();
+
+
+        /* =================================================
+           CLEAR MESSAGE
+        ================================================= */
+
+        if (message) {
+
+            message.textContent = "";
+
+        }
+
+
     } catch (error) {
 
         console.error(
             "Account loading error:",
             error
         );
+
+
+        if (message) {
+
+            message.className =
+                "account-message reward-error";
+
+
+            message.textContent =
+                t.accountError;
+
+        }
 
     }
 
@@ -2834,10 +3223,12 @@ async function loadReferralData() {
         return;
     }
 
+
     const linkElement =
         document.getElementById(
             "referralLink"
         );
+
 
     const countElement =
         document.getElementById(
@@ -2845,11 +3236,28 @@ async function loadReferralData() {
         );
 
 
-    linkElement.textContent =
-        "Loading...";
+    const messageElement =
+        document.getElementById(
+            "referralMessage"
+        );
 
-    countElement.textContent =
-        "0";
+
+    if (linkElement) {
+        linkElement.textContent =
+            "Loading...";
+    }
+
+
+    if (countElement) {
+        countElement.textContent =
+            "0";
+    }
+
+
+    if (messageElement) {
+        messageElement.textContent =
+            "";
+    }
 
 
     try {
@@ -2861,33 +3269,48 @@ async function loadReferralData() {
             );
 
 
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
 
 
-        if (
-            data.success
-        ) {
+        if (!data.success) {
+
+            throw new Error(
+                data.message ||
+                "Referral data unavailable"
+            );
+
+        }
+
+
+        if (linkElement) {
 
             linkElement.textContent =
                 data.referral_link ||
                 "";
 
+        }
+
+
+        if (countElement) {
 
             countElement.textContent =
                 Number(
                     data.referral_count || 0
                 ).toLocaleString();
 
-        } else {
-
-            linkElement.textContent =
-                "Unable to load";
-
-            countElement.textContent =
-                "0";
-
         }
+
 
     } catch (error) {
 
@@ -2896,11 +3319,21 @@ async function loadReferralData() {
             error
         );
 
-        linkElement.textContent =
-            "Unable to load";
 
-        countElement.textContent =
-            "0";
+        if (linkElement) {
+
+            linkElement.textContent =
+                "Unable to load";
+
+        }
+
+
+        if (countElement) {
+
+            countElement.textContent =
+                "0";
+
+        }
 
     }
 
@@ -2918,6 +3351,12 @@ async function copyReferralLink() {
             "referralLink"
         );
 
+
+    if (!linkElement) {
+        return;
+    }
+
+
     const link =
         linkElement.textContent.trim();
 
@@ -2927,55 +3366,76 @@ async function copyReferralLink() {
         link === "Loading..." ||
         link === "Unable to load"
     ) {
+
         return;
+
     }
 
 
     try {
 
-        await navigator.clipboard.writeText(
-            link
-        );
+        if (
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+        ) {
 
-        showReferralMessage(
-            "✅ Copied!"
-        );
+            await navigator.clipboard.writeText(
+                link
+            );
 
-    } catch (error) {
-
-        try {
+        } else {
 
             const textarea =
                 document.createElement(
                     "textarea"
                 );
 
-            textarea.value = link;
+
+            textarea.value =
+                link;
+
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.opacity =
+                "0";
+
 
             document.body.appendChild(
                 textarea
             );
 
+
             textarea.select();
+
 
             document.execCommand(
                 "copy"
             );
 
+
             textarea.remove();
 
-            showReferralMessage(
-                "✅ Copied!"
-            );
-
-        } catch (copyError) {
-
-            console.error(
-                "Copy error:",
-                copyError
-            );
-
         }
+
+
+        const t =
+            translations[getLanguage()] ||
+            translations.en;
+
+
+        showReferralMessage(
+            t.referralCopied
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Copy referral error:",
+            error
+        );
 
     }
 
@@ -2993,6 +3453,12 @@ function shareReferralLink() {
             "referralLink"
         );
 
+
+    if (!linkElement) {
+        return;
+    }
+
+
     const link =
         linkElement.textContent.trim();
 
@@ -3002,7 +3468,9 @@ function shareReferralLink() {
         link === "Loading..." ||
         link === "Unable to load"
     ) {
+
         return;
+
     }
 
 
@@ -3038,7 +3506,10 @@ function shareReferralLink() {
 
     if (
         window.Telegram &&
-        window.Telegram.WebApp
+        window.Telegram.WebApp &&
+        typeof
+        window.Telegram.WebApp.openTelegramLink ===
+        "function"
     ) {
 
         window.Telegram.WebApp.openTelegramLink(
@@ -3063,36 +3534,19 @@ function shareReferralLink() {
 
 function showReferralMessage(message) {
 
-    let element =
+    const element =
         document.getElementById(
             "referralMessage"
         );
 
 
     if (!element) {
-
-        element =
-            document.createElement(
-                "div"
-            );
-
-        element.id =
-            "referralMessage";
-
-        element.className =
-            "referral-message";
-
-
-        const panel =
-            document.getElementById(
-                "referralPanel"
-            );
-
-        panel.appendChild(
-            element
-        );
-
+        return;
     }
+
+
+    element.className =
+        "referral-message referral-success";
 
 
     element.textContent =
@@ -3102,12 +3556,11 @@ function showReferralMessage(message) {
     setTimeout(
         function() {
 
-            if (element) {
-                element.textContent = "";
-            }
+            element.textContent =
+                "";
 
         },
-        2000
+        2500
     );
 
 }
@@ -3123,6 +3576,7 @@ async function checkDailyReward() {
         return;
     }
 
+
     try {
 
         const response =
@@ -3131,15 +3585,42 @@ async function checkDailyReward() {
                 encodeURIComponent(user.id)
             );
 
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
+
 
         if (
             !data.success ||
             !data.user
         ) {
+
             return;
+
         }
+
+
+        /* =================================================
+           SYNC BALANCE
+        ================================================= */
+
+        coins =
+            Number(
+                data.user.coins || 0
+            );
+
+
+        updateBalance();
 
 
         const lastReward =
@@ -3151,23 +3632,40 @@ async function checkDailyReward() {
                 "rewardButton"
             );
 
+
         const status =
             document.getElementById(
                 "rewardStatus"
             );
 
-        const t =
-            translations[getLanguage()];
 
+        const t =
+            translations[getLanguage()] ||
+            translations.en;
+
+
+        if (!button || !status) {
+            return;
+        }
+
+
+        /* =================================================
+           NEVER CLAIMED
+        ================================================= */
 
         if (!lastReward) {
 
-            button.disabled = false;
+            button.disabled =
+                false;
+
 
             button.textContent =
                 t.claim;
 
-            status.textContent = "";
+
+            status.textContent =
+                "";
+
 
             return;
 
@@ -3182,30 +3680,48 @@ async function checkDailyReward() {
 
         const nextTime =
             lastTime +
-            (12 * 60 * 60 * 1000);
+            (
+                12 *
+                60 *
+                60 *
+                1000
+            );
 
 
         const now =
             Date.now();
 
 
-        if (
-            now >= nextTime
-        ) {
+        /* =================================================
+           AVAILABLE
+        ================================================= */
 
-            button.disabled = false;
+        if (now >= nextTime) {
+
+            button.disabled =
+                false;
+
 
             button.textContent =
                 t.claim;
 
-            status.textContent = "";
+
+            status.textContent =
+                "";
+
 
             return;
 
         }
 
 
-        button.disabled = true;
+        /* =================================================
+           WAITING
+        ================================================= */
+
+        button.disabled =
+            true;
+
 
         button.textContent =
             t.claimed;
@@ -3239,8 +3755,15 @@ function updateWaitingTime(nextTime) {
             "rewardStatus"
         );
 
+
+    if (!status) {
+        return;
+    }
+
+
     const t =
-        translations[getLanguage()];
+        translations[getLanguage()] ||
+        translations.en;
 
 
     function update() {
@@ -3250,9 +3773,7 @@ function updateWaitingTime(nextTime) {
             Date.now();
 
 
-        if (
-            remaining <= 0
-        ) {
+        if (remaining <= 0) {
 
             checkDailyReward();
 
@@ -3296,9 +3817,7 @@ function updateWaitingTime(nextTime) {
 
 
     setTimeout(
-        function() {
-            checkDailyReward();
-        },
+        update,
         60000
     );
 
@@ -3329,10 +3848,17 @@ async function claimDailyReward() {
 
 
     const t =
-        translations[getLanguage()];
+        translations[getLanguage()] ||
+        translations.en;
 
 
-    button.disabled = true;
+    if (!button || !status) {
+        return;
+    }
+
+
+    button.disabled =
+        true;
 
 
     try {
@@ -3372,6 +3898,7 @@ async function claimDailyReward() {
                     data.user.coins
                 );
 
+
             updateBalance();
 
 
@@ -3389,7 +3916,9 @@ async function claimDailyReward() {
 
             setTimeout(
                 function() {
+
                     checkDailyReward();
+
                 },
                 1500
             );
@@ -3397,7 +3926,9 @@ async function claimDailyReward() {
 
         } else {
 
-            button.disabled = true;
+            button.disabled =
+                true;
+
 
             button.textContent =
                 t.claimed;
@@ -3407,9 +3938,7 @@ async function claimDailyReward() {
                 "reward-status reward-waiting";
 
 
-            if (
-                data.next_reward
-            ) {
+            if (data.next_reward) {
 
                 updateWaitingTime(
                     new Date(
@@ -3427,6 +3956,7 @@ async function claimDailyReward() {
 
         }
 
+
     } catch (error) {
 
         console.error(
@@ -3435,7 +3965,8 @@ async function claimDailyReward() {
         );
 
 
-        button.disabled = false;
+        button.disabled =
+            false;
 
 
         status.className =
@@ -3470,6 +4001,16 @@ async function loadAdsStatus() {
             );
 
 
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
         const data =
             await response.json();
 
@@ -3482,19 +4023,25 @@ async function loadAdsStatus() {
         document.getElementById(
             "adsWatched"
         ).textContent =
-            data.ads_watched;
+            Number(
+                data.ads_watched || 0
+            );
 
 
         document.getElementById(
             "adsLimit"
         ).textContent =
-            data.limit;
+            Number(
+                data.limit || AD_LIMIT
+            );
 
 
         document.getElementById(
             "adsRemaining"
         ).textContent =
-            data.ads_remaining;
+            Number(
+                data.ads_remaining || 0
+            );
 
 
         const button =
@@ -3510,14 +4057,23 @@ async function loadAdsStatus() {
 
 
         const t =
-            translations[getLanguage()];
+            translations[getLanguage()] ||
+            translations.en;
+
+
+        if (!button || !message) {
+            return;
+        }
 
 
         if (
-            data.ads_remaining <= 0
+            Number(
+                data.ads_remaining
+            ) <= 0
         ) {
 
-            button.disabled = true;
+            button.disabled =
+                true;
 
 
             message.className =
@@ -3540,12 +4096,14 @@ async function loadAdsStatus() {
                 ) +
                 "m";
 
-
         } else {
 
-            button.disabled = false;
+            button.disabled =
+                false;
 
-            message.textContent = "";
+
+            message.textContent =
+                "";
 
         }
 
@@ -3586,7 +4144,13 @@ async function watchAd() {
 
 
     const t =
-        translations[getLanguage()];
+        translations[getLanguage()] ||
+        translations.en;
+
+
+    if (!button || !message) {
+        return;
+    }
 
 
     if (!AdController) {
@@ -3594,15 +4158,18 @@ async function watchAd() {
         message.className =
             "ads-message ads-error";
 
+
         message.textContent =
             t.adError;
+
 
         return;
 
     }
 
 
-    button.disabled = true;
+    button.disabled =
+        true;
 
 
     message.className =
@@ -3633,6 +4200,7 @@ async function watchAd() {
 
 
             await loadAdsStatus();
+
 
             return;
 
@@ -3702,17 +4270,10 @@ async function watchAd() {
                 t.adSuccess;
 
 
-            if (
-                data.ads_remaining <= 0
-            ) {
-
-                button.disabled = true;
-
-            } else {
-
-                button.disabled = false;
-
-            }
+            button.disabled =
+                Number(
+                    data.ads_remaining
+                ) <= 0;
 
 
         } else {
@@ -3778,10 +4339,17 @@ async function loadTasks() {
 
 
     const t =
-        translations[getLanguage()];
+        translations[getLanguage()] ||
+        translations.en;
 
 
-    list.innerHTML = "";
+    if (!list || !message) {
+        return;
+    }
+
+
+    list.innerHTML =
+        "";
 
 
     message.className =
@@ -3799,6 +4367,16 @@ async function loadTasks() {
                 "/api/tasks/available/" +
                 encodeURIComponent(user.id)
             );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
 
 
         const data =
@@ -3827,7 +4405,8 @@ async function loadTasks() {
                 : [];
 
 
-        list.innerHTML = "";
+        list.innerHTML =
+            "";
 
 
         if (
@@ -3856,7 +4435,8 @@ async function loadTasks() {
         );
 
 
-        message.textContent = "";
+        message.textContent =
+            "";
 
 
     } catch (error) {
@@ -3891,8 +4471,14 @@ function createTaskCard(task) {
         );
 
 
+    if (!list || !task) {
+        return;
+    }
+
+
     const t =
-        translations[getLanguage()];
+        translations[getLanguage()] ||
+        translations.en;
 
 
     const card =
@@ -3977,7 +4563,8 @@ function createTaskCard(task) {
         "task";
 
 
-    let rewardSent = false;
+    let rewardSent =
+        false;
 
 
     adsTask.addEventListener(
@@ -3989,7 +4576,8 @@ function createTaskCard(task) {
             }
 
 
-            rewardSent = true;
+            rewardSent =
+                true;
 
 
             await claimAdsGramTask(
@@ -4015,12 +4603,12 @@ function createTaskCard(task) {
     );
 
 
-    card.appendChild(title);
+    card.appendChild(
+        title
+    );
 
 
-    if (
-        task.description
-    ) {
+    if (task.description) {
 
         card.appendChild(
             description
@@ -4078,7 +4666,13 @@ async function claimAdsGramTask(
 
 
     const t =
-        translations[getLanguage()];
+        translations[getLanguage()] ||
+        translations.en;
+
+
+    if (!message) {
+        return;
+    }
 
 
     message.className =
@@ -4122,9 +4716,7 @@ async function claimAdsGramTask(
             await response.json();
 
 
-        if (
-            data.success
-        ) {
+        if (data.success) {
 
             coins =
                 Number(
@@ -4155,6 +4747,7 @@ async function claimAdsGramTask(
 
 
             if (
+                list &&
                 !list.children.length
             ) {
 
@@ -4165,7 +4758,6 @@ async function claimAdsGramTask(
 
 
         } else {
-
 
             if (
                 data.already_completed
@@ -4225,6 +4817,22 @@ async function claimAdsGramTask(
 
 async function startUser() {
 
+    if (!user) {
+
+        console.warn(
+            "Telegram user information unavailable."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     اول کاربر ثبت/به‌روزرسانی می‌شود،
+     سپس موجودی از Backend گرفته می‌شود.
+    */
+
     await registerUser();
 
     await loadUserBalance();
@@ -4260,9 +4868,29 @@ applyLanguage(
 );
 
 
+/* =====================================================
+   INITIAL BALANCE
+===================================================== */
+
 updateBalance();
 
 
+/* =====================================================
+   START APPLICATION
+===================================================== */
+
 startUser();
+
+
+/* =====================================================
+   DEFAULT SECTION
+===================================================== */
+
+showSection(
+    "daily",
+    document.querySelector(
+        '.nav-button[data-section="daily"]'
+    )
+);
 
 </script>
