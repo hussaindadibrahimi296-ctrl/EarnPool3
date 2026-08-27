@@ -367,6 +367,46 @@
 
 
     /* =====================================================
+       ACCOUNT
+    ===================================================== */
+
+    .account-panel {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .account-box {
+        background: #111722;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 12px;
+    }
+
+    .account-label {
+        color: #aeb5c1;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .account-value {
+        background: #191e29;
+        border-radius: 10px;
+        padding: 12px;
+        word-break: break-word;
+        font-size: 14px;
+        color: white;
+        min-height: 18px;
+    }
+
+    .account-message {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
        BOTTOM NAV
     ===================================================== */
 
@@ -687,8 +727,6 @@
             style="display:none;"
         >
 
-            <!-- Referral Link -->
-
             <div class="referral-box">
 
                 <div
@@ -729,8 +767,6 @@
             </div>
 
 
-            <!-- Referral Count -->
-
             <div class="referral-box">
 
                 <div
@@ -750,8 +786,6 @@
             </div>
 
 
-            <!-- Referral Reward -->
-
             <div
                 class="referral-reward-info"
                 id="referralRewardInfo"
@@ -763,6 +797,138 @@
             <div
                 id="referralMessage"
                 class="referral-message"
+            ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             ACCOUNT
+        ================================================== -->
+
+        <div
+            id="accountPanel"
+            class="account-panel"
+            style="display:none;"
+        >
+
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountName"
+                >
+                    Name
+                </div>
+
+                <div
+                    id="accountName"
+                    class="account-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountUsername"
+                >
+                    Username
+                </div>
+
+                <div
+                    id="accountUsername"
+                    class="account-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountTelegramId"
+                >
+                    Telegram ID
+                </div>
+
+                <div
+                    id="accountTelegramId"
+                    class="account-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountBalance"
+                >
+                    Balance
+                </div>
+
+                <div
+                    id="accountBalance"
+                    class="account-value"
+                >
+                    0 🪙
+                </div>
+
+            </div>
+
+
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountUsd"
+                >
+                    USD Value
+                </div>
+
+                <div
+                    id="accountUsd"
+                    class="account-value"
+                >
+                    $0.000000
+                </div>
+
+            </div>
+
+
+            <div class="account-box">
+
+                <div
+                    class="account-label"
+                    data-key="accountReferrals"
+                >
+                    Referrals
+                </div>
+
+                <div
+                    id="accountReferrals"
+                    class="account-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div
+                id="accountMessage"
+                class="account-message"
             ></div>
 
         </div>
@@ -968,6 +1134,30 @@ const translations = {
         account:
             "Account",
 
+        accountName:
+            "Name",
+
+        accountUsername:
+            "Username",
+
+        accountTelegramId:
+            "Telegram ID",
+
+        accountBalance:
+            "Balance",
+
+        accountUsd:
+            "USD Value",
+
+        accountReferrals:
+            "Referrals",
+
+        accountLoading:
+            "⏳ Loading account...",
+
+        accountError:
+            "❌ Could not load account information.",
+
 
         referralLink:
             "Referral Link",
@@ -1127,6 +1317,30 @@ const translations = {
         account:
             "حساب",
 
+        accountName:
+            "نام",
+
+        accountUsername:
+            "نام کاربری",
+
+        accountTelegramId:
+            "آیدی تلگرام",
+
+        accountBalance:
+            "موجودی",
+
+        accountUsd:
+            "ارزش دلاری",
+
+        accountReferrals:
+            "تعداد دعوت‌ها",
+
+        accountLoading:
+            "⏳ در حال دریافت اطلاعات حساب...",
+
+        accountError:
+            "❌ دریافت اطلاعات حساب ممکن نشد.",
+
 
         referralLink:
             "لینک رفرال",
@@ -1285,6 +1499,30 @@ const translations = {
 
         account:
             "الحساب",
+
+        accountName:
+            "الاسم",
+
+        accountUsername:
+            "اسم المستخدم",
+
+        accountTelegramId:
+            "معرف Telegram",
+
+        accountBalance:
+            "الرصيد",
+
+        accountUsd:
+            "القيمة بالدولار",
+
+        accountReferrals:
+            "الإحالات",
+
+        accountLoading:
+            "⏳ جارٍ تحميل معلومات الحساب...",
+
+        accountError:
+            "❌ تعذر تحميل معلومات الحساب.",
 
 
         referralLink:
@@ -1738,9 +1976,6 @@ document.addEventListener(
 
 /* =====================================================
    SHOW SECTION
-   اصلاح مهم:
-   referralPanel در تمام بخش‌ها ابتدا مخفی می‌شود
-   و فقط در Referral نمایش داده می‌شود.
 ===================================================== */
 
 function showSection(
@@ -1900,10 +2135,14 @@ function showSection(
         );
 
 
+    const accountPanel =
+        document.getElementById(
+            "accountPanel"
+        );
+
+
     /*
-     مهم:
-     قبل از هر چیز تمام پنل‌های اختصاصی
-     را مخفی می‌کنیم.
+     ابتدا تمام پنل‌ها را مخفی می‌کنیم.
     */
 
     rewardButton.style.display =
@@ -1923,6 +2162,10 @@ function showSection(
 
 
     referralPanel.style.display =
+        "none";
+
+
+    accountPanel.style.display =
         "none";
 
 
@@ -1985,13 +2228,7 @@ function showSection(
             "block";
 
 
-        /*
-         در قسمت دوم JavaScript
-         تابع loadReferral()
-         اضافه خواهد شد.
-        */
-
-        loadReferral();
+        loadReferralData();
 
     }
 
@@ -2002,10 +2239,7 @@ function showSection(
 
     else if (section === "withdraw") {
 
-        /*
-         فعلاً فقط محتوای Withdraw
-         نمایش داده می‌شود.
-        */
+        // فعلاً فقط محتوای Withdraw نمایش داده می‌شود.
 
     }
 
@@ -2016,15 +2250,15 @@ function showSection(
 
     else if (section === "account") {
 
-        /*
-         فعلاً فقط محتوای Account
-         نمایش داده می‌شود.
-        */
+        accountPanel.style.display =
+            "block";
 
     }
 
 }
-    /* =====================================================
+    <script>
+
+/* =====================================================
    SHOW SECTION
 ===================================================== */
 
@@ -2105,19 +2339,38 @@ function showSection(section, button) {
         document.getElementById("referralPanel");
 
 
+    /* =====================================================
+       ACCOUNT PANEL
+    ===================================================== */
+
+    let accountPanel =
+        document.getElementById("accountPanel");
+
+
     /*
-     =====================================================
-     مهم:
-     ابتدا تمام پنل‌ها را مخفی می‌کنیم.
-     بنابراین Referral دیگر به اشتباه در
-     Ads / Tasks / Withdraw / Account نمایش داده نمی‌شود.
-     =====================================================
+     اگر Account Panel در HTML قسمت اول
+     وجود داشته باشد، آن را مدیریت می‌کنیم.
     */
 
+    if (accountPanel) {
+
+        accountPanel.style.display = "none";
+
+    }
+
+
+    /* =====================================================
+       HIDE ALL PANELS
+    ===================================================== */
+
     rewardButton.style.display = "none";
+
     rewardStatus.style.display = "none";
+
     adsPanel.style.display = "none";
+
     tasksPanel.style.display = "none";
+
     referralPanel.style.display = "none";
 
 
@@ -2128,6 +2381,7 @@ function showSection(section, button) {
     if (section === "daily") {
 
         rewardButton.style.display = "block";
+
         rewardStatus.style.display = "block";
 
         checkDailyReward();
@@ -2180,7 +2434,10 @@ function showSection(section, button) {
 
     else if (section === "withdraw") {
 
-        // فعلاً فقط محتوای Withdraw نمایش داده می‌شود.
+        /*
+         فعلاً فقط محتوای Withdraw
+         نمایش داده می‌شود.
+        */
 
     }
 
@@ -2191,7 +2448,13 @@ function showSection(section, button) {
 
     else if (section === "account") {
 
-        // فعلاً فقط محتوای Account نمایش داده می‌شود.
+        if (accountPanel) {
+
+            accountPanel.style.display = "block";
+
+            loadAccountData();
+
+        }
 
     }
 
@@ -2319,6 +2582,249 @@ async function registerUser() {
 
 
 /* =====================================================
+   ACCOUNT DATA
+===================================================== */
+
+async function loadAccountData() {
+
+    if (!user) {
+        return;
+    }
+
+
+    /*
+     این تابع فعلاً اطلاعات را از Backend
+     دریافت می‌کند.
+
+     در مرحله app.py این API را می‌سازیم:
+
+     /api/account/<telegram_id>
+    */
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/account/" +
+                encodeURIComponent(user.id)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data.success ||
+            !data.user
+        ) {
+
+            console.error(
+                "Account data unavailable"
+            );
+
+            return;
+
+        }
+
+
+        const account =
+            data.user;
+
+
+        /*
+         نام کاربر
+        */
+
+        const nameElement =
+            document.getElementById(
+                "accountName"
+            );
+
+        if (nameElement) {
+
+            nameElement.textContent =
+                account.first_name ||
+                "User";
+
+        }
+
+
+        /*
+         Username
+        */
+
+        const usernameElement =
+            document.getElementById(
+                "accountUsername"
+            );
+
+        if (usernameElement) {
+
+            usernameElement.textContent =
+                account.username
+                    ? "@" + account.username
+                    : "@";
+
+        }
+
+
+        /*
+         Telegram ID
+        */
+
+        const idElement =
+            document.getElementById(
+                "accountTelegramId"
+            );
+
+        if (idElement) {
+
+            idElement.textContent =
+                account.telegram_id ||
+                user.id;
+
+        }
+
+
+        /*
+         Balance
+        */
+
+        const balanceElement =
+            document.getElementById(
+                "accountBalance"
+            );
+
+        if (balanceElement) {
+
+            balanceElement.textContent =
+                Number(
+                    account.coins || 0
+                ).toLocaleString() +
+                " 🪙";
+
+        }
+
+
+        /*
+         USD
+        */
+
+        const usdElement =
+            document.getElementById(
+                "accountUsd"
+            );
+
+        if (usdElement) {
+
+            const usd =
+                Number(
+                    account.coins || 0
+                ) / 1000000;
+
+            usdElement.textContent =
+                "≈ $" +
+                usd.toFixed(6);
+
+        }
+
+
+        /*
+         Referral Count
+        */
+
+        const referralsElement =
+            document.getElementById(
+                "accountReferrals"
+            );
+
+        if (referralsElement) {
+
+            referralsElement.textContent =
+                Number(
+                    account.referral_count || 0
+                ).toLocaleString();
+
+        }
+
+
+        /*
+         Ads Watched
+        */
+
+        const adsElement =
+            document.getElementById(
+                "accountAdsWatched"
+            );
+
+        if (adsElement) {
+
+            adsElement.textContent =
+                Number(
+                    account.ads_watched || 0
+                ).toLocaleString();
+
+        }
+
+
+        /*
+         Account language
+        */
+
+        const languageElement =
+            document.getElementById(
+                "accountLanguage"
+            );
+
+        if (languageElement) {
+
+            languageElement.textContent =
+                account.language ||
+                getLanguage();
+
+        }
+
+
+        /*
+         Telegram profile photo
+         اگر Backend آن را برگرداند.
+        */
+
+        const photoElement =
+            document.getElementById(
+                "accountPhoto"
+            );
+
+
+        if (
+            photoElement &&
+            account.photo_url
+        ) {
+
+            photoElement.src =
+                account.photo_url;
+
+            photoElement.style.display =
+                "block";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Account loading error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
    REFERRAL DATA
 ===================================================== */
 
@@ -2339,11 +2845,6 @@ async function loadReferralData() {
         );
 
 
-    /*
-     هنگام بارگذاری:
-     فقط داخل Referral نمایش داده می‌شود.
-    */
-
     linkElement.textContent =
         "Loading...";
 
@@ -2352,20 +2853,6 @@ async function loadReferralData() {
 
 
     try {
-
-        /*
-         Backend بعداً این API را می‌سازد:
-
-         /api/referral/<telegram_id>
-
-         خروجی مورد انتظار:
-
-         {
-             success: true,
-             referral_link: "...",
-             referral_count: 5
-         }
-        */
 
         const response =
             await fetch(
@@ -2382,18 +2869,10 @@ async function loadReferralData() {
             data.success
         ) {
 
-            /*
-             لینک منحصر به فرد کاربر
-            */
-
             linkElement.textContent =
                 data.referral_link ||
                 "";
 
-
-            /*
-             تعداد افراد دعوت‌شده
-            */
 
             countElement.textContent =
                 Number(
@@ -2463,11 +2942,6 @@ async function copyReferralLink() {
         );
 
     } catch (error) {
-
-        /*
-         روش جایگزین برای بعضی
-         دستگاه‌های قدیمی
-        */
 
         try {
 
@@ -2561,10 +3035,6 @@ function shareReferralLink() {
         "&text=" +
         encodeURIComponent(text);
 
-
-    /*
-     باز کردن Share تلگرام
-    */
 
     if (
         window.Telegram &&
@@ -3796,6 +4266,3 @@ updateBalance();
 startUser();
 
 </script>
-
-</body>
-</html>
