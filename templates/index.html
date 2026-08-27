@@ -12,10 +12,8 @@
 
 <title>EarnPool</title>
 
-<!-- Telegram Mini App -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<!-- AdsGram -->
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
 <style>
@@ -224,11 +222,6 @@ button {
     color: white;
 }
 
-
-/* =====================================================
-   TASKS
-===================================================== */
-
 .tasks-panel {
     margin-top: 20px;
 }
@@ -282,11 +275,6 @@ button {
     padding: 25px 10px;
     line-height: 1.7;
 }
-
-
-/* =====================================================
-   REFERRAL
-===================================================== */
 
 .referral-panel {
     margin-top: 20px;
@@ -364,11 +352,6 @@ button {
     font-weight: bold;
 }
 
-
-/* =====================================================
-   ACCOUNT
-===================================================== */
-
 .account-panel {
     margin-top: 20px;
     width: 100%;
@@ -413,11 +396,6 @@ button {
     margin: 0 auto 15px;
 }
 
-
-/* =====================================================
-   BOTTOM NAV
-===================================================== */
-
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -427,7 +405,7 @@ button {
     background: #151922;
     border-top: 1px solid #252b36;
     padding: 7px 4px;
-    z-index: 50;
+    z-index: 9999;
 }
 
 .nav-container {
@@ -450,6 +428,7 @@ button {
     cursor: pointer;
     font-size: 9px;
     line-height: 1.2;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .nav-button.active {
@@ -492,15 +471,9 @@ button {
 
 </head>
 
-
 <body>
 
 <div class="app">
-
-
-    <!-- =====================================================
-         TOP BAR
-    ====================================================== -->
 
     <div class="top-bar">
 
@@ -512,17 +485,12 @@ button {
             type="button"
             class="language-button"
             id="languageButton"
-            onclick="toggleLanguageMenu()"
         >
             🌐 EN
         </button>
 
     </div>
 
-
-    <!-- =====================================================
-         LANGUAGE MENU
-    ====================================================== -->
 
     <div
         class="language-menu"
@@ -532,7 +500,7 @@ button {
         <button
             type="button"
             class="language-option"
-            onclick="changeLanguage('en')"
+            data-language="en"
         >
             🇬🇧 English
         </button>
@@ -540,7 +508,7 @@ button {
         <button
             type="button"
             class="language-option"
-            onclick="changeLanguage('fa')"
+            data-language="fa"
         >
             🇦🇫 فارسی
         </button>
@@ -548,17 +516,13 @@ button {
         <button
             type="button"
             class="language-option"
-            onclick="changeLanguage('ar')"
+            data-language="ar"
         >
             🇸🇦 العربية
         </button>
 
     </div>
 
-
-    <!-- =====================================================
-         BALANCE
-    ====================================================== -->
 
     <div class="balance-card">
 
@@ -571,9 +535,7 @@ button {
 
         <div class="coins">
 
-            <span id="coins">0</span>
-
-            🪙
+            <span id="coins">0</span> 🪙
 
         </div>
 
@@ -586,10 +548,6 @@ button {
 
     </div>
 
-
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
 
     <div class="content-card">
 
@@ -615,15 +573,10 @@ button {
         </div>
 
 
-        <!-- =================================================
-             DAILY
-        ================================================== -->
-
         <button
             type="button"
             id="rewardButton"
             class="reward-button"
-            onclick="claimDailyReward()"
         >
             🎁 Claim 1,000 Coins
         </button>
@@ -633,10 +586,6 @@ button {
             class="reward-status"
         ></div>
 
-
-        <!-- =================================================
-             ADS
-        ================================================== -->
 
         <div
             id="adsPanel"
@@ -655,15 +604,12 @@ button {
                     <strong>
 
                         <span id="adsWatched">0</span>
-
                         /
-
                         <span id="adsLimit">10</span>
 
                     </strong>
 
                 </div>
-
 
                 <div class="ads-row">
 
@@ -676,7 +622,6 @@ button {
                     </strong>
 
                 </div>
-
 
                 <div class="ads-row">
 
@@ -697,11 +642,9 @@ button {
                 type="button"
                 id="watchAdButton"
                 class="watch-ad-button"
-                onclick="watchAd()"
             >
                 📺 Watch Ad +2,000
             </button>
-
 
             <div
                 id="adsMessage"
@@ -710,10 +653,6 @@ button {
 
         </div>
 
-
-        <!-- =================================================
-             TASKS
-        ================================================== -->
 
         <div
             id="tasksPanel"
@@ -730,10 +669,6 @@ button {
 
         </div>
 
-
-        <!-- =================================================
-             REFERRAL
-        ================================================== -->
 
         <div
             id="referralPanel"
@@ -757,14 +692,12 @@ button {
                     Loading...
                 </div>
 
-
                 <div class="referral-actions">
 
                     <button
                         type="button"
                         id="copyReferralButton"
                         class="referral-action-button"
-                        onclick="copyReferralLink()"
                     >
                         📋 Copy
                     </button>
@@ -773,7 +706,6 @@ button {
                         type="button"
                         id="shareReferralButton"
                         class="referral-action-button"
-                        onclick="shareReferralLink()"
                     >
                         📤 Share
                     </button>
@@ -818,10 +750,6 @@ button {
         </div>
 
 
-        <!-- =================================================
-             ACCOUNT
-        ================================================== -->
-
         <div
             id="accountPanel"
             class="account-panel"
@@ -833,7 +761,6 @@ button {
                 class="account-photo"
                 alt="Profile"
             >
-
 
             <div class="account-box">
 
@@ -853,7 +780,6 @@ button {
 
             </div>
 
-
             <div class="account-box">
 
                 <div
@@ -871,7 +797,6 @@ button {
                 </div>
 
             </div>
-
 
             <div class="account-box">
 
@@ -891,7 +816,6 @@ button {
 
             </div>
 
-
             <div class="account-box">
 
                 <div
@@ -909,7 +833,6 @@ button {
                 </div>
 
             </div>
-
 
             <div class="account-box">
 
@@ -929,7 +852,6 @@ button {
 
             </div>
 
-
             <div class="account-box">
 
                 <div
@@ -947,7 +869,6 @@ button {
                 </div>
 
             </div>
-
 
             <div class="account-box">
 
@@ -967,7 +888,6 @@ button {
 
             </div>
 
-
             <div class="account-box">
 
                 <div
@@ -986,7 +906,6 @@ button {
 
             </div>
 
-
             <div
                 id="accountMessage"
                 class="account-message"
@@ -999,28 +918,17 @@ button {
 </div>
 
 
-<!-- =========================================================
-     BOTTOM NAV
-========================================================== -->
-
 <div class="bottom-nav">
 
     <div class="nav-container">
-
 
         <button
             type="button"
             class="nav-button active"
             data-section="daily"
-            onclick="showSection('daily', this)"
         >
-
             <span class="nav-icon">🎁</span>
-
-            <span data-key="daily">
-                Daily
-            </span>
-
+            <span data-key="daily">Daily</span>
         </button>
 
 
@@ -1028,15 +936,9 @@ button {
             type="button"
             class="nav-button"
             data-section="ads"
-            onclick="showSection('ads', this)"
         >
-
             <span class="nav-icon">📺</span>
-
-            <span data-key="ads">
-                Ads
-            </span>
-
+            <span data-key="ads">Ads</span>
         </button>
 
 
@@ -1044,15 +946,9 @@ button {
             type="button"
             class="nav-button"
             data-section="tasks"
-            onclick="showSection('tasks', this)"
         >
-
             <span class="nav-icon">🎯</span>
-
-            <span data-key="tasks">
-                Tasks
-            </span>
-
+            <span data-key="tasks">Tasks</span>
         </button>
 
 
@@ -1060,15 +956,9 @@ button {
             type="button"
             class="nav-button"
             data-section="referral"
-            onclick="showSection('referral', this)"
         >
-
             <span class="nav-icon">👥</span>
-
-            <span data-key="referral">
-                Referral
-            </span>
-
+            <span data-key="referral">Referral</span>
         </button>
 
 
@@ -1076,15 +966,9 @@ button {
             type="button"
             class="nav-button"
             data-section="withdraw"
-            onclick="showSection('withdraw', this)"
         >
-
             <span class="nav-icon">💰</span>
-
-            <span data-key="withdraw">
-                Withdraw
-            </span>
-
+            <span data-key="withdraw">Withdraw</span>
         </button>
 
 
@@ -1092,15 +976,9 @@ button {
             type="button"
             class="nav-button"
             data-section="account"
-            onclick="showSection('account', this)"
         >
-
             <span class="nav-icon">👤</span>
-
-            <span data-key="account">
-                Account
-            </span>
-
+            <span data-key="account">Account</span>
         </button>
 
     </div>
@@ -1109,7 +987,6 @@ button {
 
 
 <script>
-
 
 /* =====================================================
    TELEGRAM
@@ -1121,15 +998,15 @@ const tg =
         ? window.Telegram.WebApp
         : null;
 
-
 if (tg) {
     tg.ready();
     tg.expand();
 }
 
-
 const user =
-    tg && tg.initDataUnsafe && tg.initDataUnsafe.user
+    tg &&
+    tg.initDataUnsafe &&
+    tg.initDataUnsafe.user
         ? tg.initDataUnsafe.user
         : null;
 
@@ -1165,17 +1042,14 @@ try {
 
 
 /* =====================================================
-   GLOBAL VALUES
+   GLOBAL
 ===================================================== */
 
 let coins = 0;
 
 const DAILY_REWARD = 1000;
-
 const AD_REWARD = 2000;
-
 const TASK_REWARD = 1000;
-
 const AD_LIMIT = 10;
 
 
@@ -1190,107 +1064,53 @@ const translations = {
         balance: "Your Balance",
 
         daily: "Daily",
-
         ads: "Ads",
-
         tasks: "Tasks",
-
         referral: "Referral",
-
         withdraw: "Withdraw",
-
         account: "Account",
 
         accountName: "Name",
-
         accountUsername: "Username",
-
         accountTelegramId: "Telegram ID",
-
         accountBalance: "Balance",
-
         accountUsd: "USD Value",
-
         accountReferrals: "Referrals",
-
         accountAdsWatched: "Ads Watched",
-
         accountLanguage: "Language",
 
-        accountLoading:
-            "⏳ Loading account...",
+        referralLink: "Referral Link",
+        referralCount: "Referrals",
+        referralCopy: "📋 Copy",
+        referralShare: "📤 Share",
+        referralReward: "🎁 5,000 🪙 per referral",
 
-        accountError:
-            "❌ Could not load account information.",
-
-        referralLink:
-            "Referral Link",
-
-        referralCount:
-            "Referrals",
-
-        referralCopy:
-            "📋 Copy",
-
-        referralShare:
-            "📤 Share",
-
-        referralReward:
-            "🎁 5,000 🪙 per referral",
-
-        referralCopied:
-            "✅ Referral link copied.",
-
-        referralShared:
-            "📤 Share the link with your friends.",
-
-        referralLoading:
-            "Loading...",
-
-        referralError:
-            "❌ Could not load referral information.",
-
-        dailyTitle:
-            "Daily Reward",
-
+        dailyTitle: "Daily Reward",
         dailyText:
             "Claim your daily reward and earn coins every 12 hours.",
 
-        adsTitle:
-            "Watch Ads",
-
+        adsTitle: "Watch Ads",
         adsText:
             "Watch advertisements and earn coins.",
 
-        tasksTitle:
-            "Tasks",
-
+        tasksTitle: "Tasks",
         tasksText:
             "Complete available tasks and earn rewards.",
 
-        referralTitle:
-            "Referral",
-
+        referralTitle: "Referral",
         referralText:
             "Invite friends and earn referral rewards.",
 
-        withdrawTitle:
-            "Withdraw",
-
+        withdrawTitle: "Withdraw",
         withdrawText:
             "Withdraw your available balance.",
 
-        accountTitle:
-            "Account",
-
+        accountTitle: "Account",
         accountText:
             "View your account information and statistics.",
 
-        claim:
-            "🎁 Claim 1,000 Coins",
-
-        claimed:
-            "✅ Reward Claimed",
+        claim: "🎁 Claim 1,000 Coins",
+        claimed: "✅ Reward Claimed",
 
         congratulations:
             "🎉 Congratulations! You received 1,000 coins.",
@@ -1298,14 +1118,9 @@ const translations = {
         waiting:
             "⏳ Next reward in",
 
-        adsWatched:
-            "Ads watched",
-
-        adsRemaining:
-            "Ads remaining",
-
-        adsReward:
-            "Reward",
+        adsWatched: "Ads watched",
+        adsRemaining: "Ads remaining",
+        adsReward: "Reward",
 
         watchAd:
             "📺 Watch Ad +2,000",
@@ -1324,12 +1139,6 @@ const translations = {
 
         taskReward:
             "Reward: 1,000 🪙",
-
-        completeTask:
-            "Complete Task",
-
-        claimTask:
-            "Claim 1,000 Coins",
 
         taskSuccess:
             "🎉 Task completed! You received 1,000 coins.",
@@ -1351,125 +1160,56 @@ const translations = {
 
     fa: {
 
-        balance:
-            "موجودی شما",
+        balance: "موجودی شما",
 
-        daily:
-            "روزانه",
+        daily: "روزانه",
+        ads: "تبلیغات",
+        tasks: "تسک‌ها",
+        referral: "رفرال",
+        withdraw: "برداشت",
+        account: "حساب",
 
-        ads:
-            "تبلیغات",
+        accountName: "نام",
+        accountUsername: "نام کاربری",
+        accountTelegramId: "آیدی تلگرام",
+        accountBalance: "موجودی",
+        accountUsd: "ارزش دلاری",
+        accountReferrals: "تعداد دعوت‌ها",
+        accountAdsWatched: "تبلیغات دیده‌شده",
+        accountLanguage: "زبان",
 
-        tasks:
-            "تسک‌ها",
+        referralLink: "لینک رفرال",
+        referralCount: "تعداد دعوت‌ها",
+        referralCopy: "📋 کپی",
+        referralShare: "📤 اشتراک‌گذاری",
+        referralReward: "🎁 برای هر دعوت ۵,۰۰۰ 🪙",
 
-        referral:
-            "رفرال",
-
-        withdraw:
-            "برداشت",
-
-        account:
-            "حساب",
-
-        accountName:
-            "نام",
-
-        accountUsername:
-            "نام کاربری",
-
-        accountTelegramId:
-            "آیدی تلگرام",
-
-        accountBalance:
-            "موجودی",
-
-        accountUsd:
-            "ارزش دلاری",
-
-        accountReferrals:
-            "تعداد دعوت‌ها",
-
-        accountAdsWatched:
-            "تبلیغات دیده‌شده",
-
-        accountLanguage:
-            "زبان",
-
-        accountLoading:
-            "⏳ در حال دریافت اطلاعات حساب...",
-
-        accountError:
-            "❌ دریافت اطلاعات حساب ممکن نشد.",
-
-        referralLink:
-            "لینک رفرال",
-
-        referralCount:
-            "تعداد دعوت‌ها",
-
-        referralCopy:
-            "📋 کپی",
-
-        referralShare:
-            "📤 اشتراک‌گذاری",
-
-        referralReward:
-            "🎁 برای هر دعوت ۵,۰۰۰ 🪙",
-
-        referralCopied:
-            "✅ لینک رفرال کپی شد.",
-
-        referralShared:
-            "📤 لینک را با دوستان خود به اشتراک بگذارید.",
-
-        referralLoading:
-            "در حال بارگذاری...",
-
-        referralError:
-            "❌ دریافت اطلاعات رفرال ممکن نشد.",
-
-        dailyTitle:
-            "پاداش روزانه",
-
+        dailyTitle: "پاداش روزانه",
         dailyText:
             "هر ۱۲ ساعت پاداش خود را دریافت کنید.",
 
-        adsTitle:
-            "دیدن تبلیغات",
-
+        adsTitle: "دیدن تبلیغات",
         adsText:
             "تبلیغات را تماشا کنید و سکه دریافت کنید.",
 
-        tasksTitle:
-            "تسک‌ها",
-
+        tasksTitle: "تسک‌ها",
         tasksText:
             "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",
 
-        referralTitle:
-            "رفرال",
-
+        referralTitle: "رفرال",
         referralText:
             "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",
 
-        withdrawTitle:
-            "برداشت",
-
+        withdrawTitle: "برداشت",
         withdrawText:
             "موجودی قابل برداشت خود را برداشت کنید.",
 
-        accountTitle:
-            "حساب کاربری",
-
+        accountTitle: "حساب کاربری",
         accountText:
             "اطلاعات حساب و آمار خود را مشاهده کنید.",
 
-        claim:
-            "🎁 دریافت ۱,۰۰۰ سکه",
-
-        claimed:
-            "✅ پاداش دریافت شد",
+        claim: "🎁 دریافت ۱,۰۰۰ سکه",
+        claimed: "✅ پاداش دریافت شد",
 
         congratulations:
             "🎉 تبریک! شما ۱,۰۰۰ سکه دریافت کردید.",
@@ -1477,14 +1217,9 @@ const translations = {
         waiting:
             "⏳ پاداش بعدی تا",
 
-        adsWatched:
-            "تبلیغات دیده‌شده",
-
-        adsRemaining:
-            "تبلیغات باقی‌مانده",
-
-        adsReward:
-            "پاداش",
+        adsWatched: "تبلیغات دیده‌شده",
+        adsRemaining: "تبلیغات باقی‌مانده",
+        adsReward: "پاداش",
 
         watchAd:
             "📺 دیدن تبلیغ +۲,۰۰۰",
@@ -1503,12 +1238,6 @@ const translations = {
 
         taskReward:
             "پاداش: ۱,۰۰۰ 🪙",
-
-        completeTask:
-            "انجام تسک",
-
-        claimTask:
-            "دریافت ۱,۰۰۰ سکه",
 
         taskSuccess:
             "🎉 تسک انجام شد! ۱,۰۰۰ سکه دریافت کردید.",
@@ -1530,125 +1259,56 @@ const translations = {
 
     ar: {
 
-        balance:
-            "رصيدك",
+        balance: "رصيدك",
 
-        daily:
-            "اليومي",
+        daily: "اليومي",
+        ads: "الإعلانات",
+        tasks: "المهام",
+        referral: "الإحالة",
+        withdraw: "السحب",
+        account: "الحساب",
 
-        ads:
-            "الإعلانات",
+        accountName: "الاسم",
+        accountUsername: "اسم المستخدم",
+        accountTelegramId: "معرف Telegram",
+        accountBalance: "الرصيد",
+        accountUsd: "القيمة بالدولار",
+        accountReferrals: "الإحالات",
+        accountAdsWatched: "الإعلانات المشاهدة",
+        accountLanguage: "اللغة",
 
-        tasks:
-            "المهام",
+        referralLink: "رابط الإحالة",
+        referralCount: "عدد الإحالات",
+        referralCopy: "📋 نسخ",
+        referralShare: "📤 مشاركة",
+        referralReward: "🎁 5,000 🪙 لكل إحالة",
 
-        referral:
-            "الإحالة",
-
-        withdraw:
-            "السحب",
-
-        account:
-            "الحساب",
-
-        accountName:
-            "الاسم",
-
-        accountUsername:
-            "اسم المستخدم",
-
-        accountTelegramId:
-            "معرف Telegram",
-
-        accountBalance:
-            "الرصيد",
-
-        accountUsd:
-            "القيمة بالدولار",
-
-        accountReferrals:
-            "الإحالات",
-
-        accountAdsWatched:
-            "الإعلانات المشاهدة",
-
-        accountLanguage:
-            "اللغة",
-
-        accountLoading:
-            "⏳ جارٍ تحميل معلومات الحساب...",
-
-        accountError:
-            "❌ تعذر تحميل معلومات الحساب.",
-
-        referralLink:
-            "رابط الإحالة",
-
-        referralCount:
-            "عدد الإحالات",
-
-        referralCopy:
-            "📋 نسخ",
-
-        referralShare:
-            "📤 مشاركة",
-
-        referralReward:
-            "🎁 5,000 🪙 لكل إحالة",
-
-        referralCopied:
-            "✅ تم نسخ رابط الإحالة.",
-
-        referralShared:
-            "📤 شارك الرابط مع أصدقائك.",
-
-        referralLoading:
-            "جارٍ التحميل...",
-
-        referralError:
-            "❌ تعذر تحميل معلومات الإحالة.",
-
-        dailyTitle:
-            "المكافأة اليومية",
-
+        dailyTitle: "المكافأة اليومية",
         dailyText:
             "احصل على مكافأتك كل 12 ساعة.",
 
-        adsTitle:
-            "مشاهدة الإعلانات",
-
+        adsTitle: "مشاهدة الإعلانات",
         adsText:
             "شاهد الإعلانات واربح العملات.",
 
-        tasksTitle:
-            "المهام",
-
+        tasksTitle: "المهام",
         tasksText:
             "أكمل المهام المتاحة واحصل على المكافآت.",
 
-        referralTitle:
-            "الإحالة",
-
+        referralTitle: "الإحالة",
         referralText:
             "ادعُ أصدقاءك واربح مكافآت الإحالة.",
 
-        withdrawTitle:
-            "السحب",
-
+        withdrawTitle: "السحب",
         withdrawText:
             "اسحب رصيدك المتاح.",
 
-        accountTitle:
-            "الحساب",
-
+        accountTitle: "الحساب",
         accountText:
             "عرض معلومات حسابك وإحصائياتك.",
 
-        claim:
-            "🎁 احصل على 1,000 عملة",
-
-        claimed:
-            "✅ تم استلام المكافأة",
+        claim: "🎁 احصل على 1,000 عملة",
+        claimed: "✅ تم استلام المكافأة",
 
         congratulations:
             "🎉 مبروك! حصلت على 1,000 عملة.",
@@ -1656,14 +1316,9 @@ const translations = {
         waiting:
             "⏳ المكافأة التالية خلال",
 
-        adsWatched:
-            "الإعلانات المشاهدة",
-
-        adsRemaining:
-            "الإعلانات المتبقية",
-
-        adsReward:
-            "المكافأة",
+        adsWatched: "الإعلانات المشاهدة",
+        adsRemaining: "الإعلانات المتبقية",
+        adsReward: "المكافأة",
 
         watchAd:
             "📺 شاهد الإعلان +2,000",
@@ -1682,12 +1337,6 @@ const translations = {
 
         taskReward:
             "المكافأة: 1,000 🪙",
-
-        completeTask:
-            "إكمال المهمة",
-
-        claimTask:
-            "احصل على 1,000 عملة",
 
         taskSuccess:
             "🎉 تم إكمال المهمة! حصلت على 1,000 عملة.",
@@ -1716,15 +1365,10 @@ const translations = {
 const sectionIcons = {
 
     daily: "🎁",
-
     ads: "📺",
-
     tasks: "🎯",
-
     referral: "👥",
-
     withdraw: "💰",
-
     account: "👤"
 
 };
@@ -1745,23 +1389,21 @@ function updateBalance() {
     const usdElement =
         document.getElementById("usdValue");
 
+    const amount =
+        Number(coins || 0);
 
     if (coinsElement) {
 
         coinsElement.textContent =
-            Number(coins || 0).toLocaleString();
+            amount.toLocaleString();
 
     }
-
-
-    const usd =
-        Number(coins || 0) / 1000000;
-
 
     if (usdElement) {
 
         usdElement.textContent =
-            "≈ $" + usd.toFixed(6);
+            "≈ $" +
+            (amount / 1000000).toFixed(6);
 
     }
 
@@ -1769,7 +1411,7 @@ function updateBalance() {
 
 
 /* =====================================================
-   DETECT LANGUAGE
+   LANGUAGE
 ===================================================== */
 
 function detectLanguage() {
@@ -1778,61 +1420,42 @@ function detectLanguage() {
         return "en";
     }
 
-
     const code =
-        (
-            user.language_code ||
-            ""
+        String(
+            user.language_code || ""
         ).toLowerCase();
-
 
     if (
         code === "fa" ||
         code.startsWith("fa-")
     ) {
-
         return "fa";
-
     }
-
 
     if (
         code === "ar" ||
         code.startsWith("ar-")
     ) {
-
         return "ar";
-
     }
 
-
     return "en";
-
 }
 
-
-/* =====================================================
-   GET LANGUAGE
-===================================================== */
 
 function getLanguage() {
 
     const saved =
         localStorage.getItem("language");
 
-
     if (
         saved &&
         translations[saved]
     ) {
-
         return saved;
-
     }
 
-
     return detectLanguage();
-
 }
 
 
@@ -1846,14 +1469,16 @@ function applyLanguage(lang) {
         lang = "en";
     }
 
+    localStorage.setItem(
+        "language",
+        lang
+    );
 
     const t =
         translations[lang];
 
-
     document.documentElement.lang =
         lang;
-
 
     document.documentElement.dir =
         lang === "en"
@@ -1877,10 +1502,16 @@ function applyLanguage(lang) {
         .forEach(function(element) {
 
             const key =
-                element.getAttribute("data-key");
+                element.getAttribute(
+                    "data-key"
+                );
 
-
-            if (t[key]) {
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    t,
+                    key
+                )
+            ) {
 
                 element.textContent =
                     t[key];
@@ -1895,15 +1526,12 @@ function applyLanguage(lang) {
             "languageButton"
         );
 
-
     if (languageButton) {
 
         languageButton.textContent = {
 
             en: "🌐 EN",
-
             fa: "🌐 FA",
-
             ar: "🌐 AR"
 
         }[lang];
@@ -1911,292 +1539,33 @@ function applyLanguage(lang) {
     }
 
 
-    const rewardButton =
-        document.getElementById(
-            "rewardButton"
-        );
-
-
-    if (rewardButton) {
-
-        if (!rewardButton.disabled) {
-
-            rewardButton.textContent =
-                t.claim;
-
-        }
-
-    }
-
-
-    const adsWatchedLabel =
-        document.getElementById(
-            "adsWatchedLabel"
-        );
-
-    if (adsWatchedLabel) {
-
-        adsWatchedLabel.textContent =
-            t.adsWatched;
-
-    }
-
-
-    const adsRemainingLabel =
-        document.getElementById(
-            "adsRemainingLabel"
-        );
-
-    if (adsRemainingLabel) {
-
-        adsRemainingLabel.textContent =
-            t.adsRemaining;
-
-    }
-
-
-    const adsRewardLabel =
-        document.getElementById(
-            "adsRewardLabel"
-        );
-
-    if (adsRewardLabel) {
-
-        adsRewardLabel.textContent =
-            t.adsReward;
-
-    }
-
-
-    const watchAdButton =
-        document.getElementById(
-            "watchAdButton"
-        );
-
-    if (watchAdButton) {
-
-        watchAdButton.textContent =
-            t.watchAd;
-
-    }
-
-
-    const copyReferralButton =
-        document.getElementById(
-            "copyReferralButton"
-        );
-
-    if (copyReferralButton) {
-
-        copyReferralButton.textContent =
-            t.referralCopy;
-
-    }
-
-
-    const shareReferralButton =
-        document.getElementById(
-            "shareReferralButton"
-        );
-
-    if (shareReferralButton) {
-
-        shareReferralButton.textContent =
-            t.referralShare;
-
-    }
-
-
-    const referralRewardInfo =
-        document.getElementById(
-            "referralRewardInfo"
-        );
-
-    if (referralRewardInfo) {
-
-        referralRewardInfo.textContent =
-            t.referralReward;
-
-    }
+    updateBalance();
 
 
     /*
-     فقط متن بخش فعلی را به‌روزرسانی می‌کنیم.
-     این قسمت نباید باعث از کار افتادن دکمه‌ها شود.
+     مهم:
+     اینجا دیگر showSection را اجرا نمی‌کنیم.
+     چون اجرای دوباره showSection باعث
+     تداخل با دکمه‌ها و API می‌شد.
     */
 
-    showSection(
-        currentSection,
-        document.querySelector(
-            ".nav-button.active"
-        )
-    );
+    updateCurrentSectionText();
 
 }
 
 
 /* =====================================================
-   CHANGE LANGUAGE
+   UPDATE CURRENT SECTION TEXT
 ===================================================== */
 
-function changeLanguage(lang) {
-
-    if (!translations[lang]) {
-        lang = "en";
-    }
-
-
-    localStorage.setItem(
-        "language",
-        lang
-    );
-
-
-    applyLanguage(lang);
-
-
-    const menu =
-        document.getElementById(
-            "languageMenu"
-        );
-
-
-    if (menu) {
-
-        menu.classList.remove(
-            "show"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   LANGUAGE MENU
-===================================================== */
-
-function toggleLanguageMenu() {
-
-    const menu =
-        document.getElementById(
-            "languageMenu"
-        );
-
-
-    if (!menu) {
-        return;
-    }
-
-
-    menu.classList.toggle(
-        "show"
-    );
-
-}
-
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const menu =
-            document.getElementById(
-                "languageMenu"
-            );
-
-
-        const button =
-            document.getElementById(
-                "languageButton"
-            );
-
-
-        if (
-            menu &&
-            button &&
-            !menu.contains(event.target) &&
-            !button.contains(event.target)
-        ) {
-
-            menu.classList.remove(
-                "show"
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   SHOW SECTION
-   نسخه امن — بدون خراب کردن دکمه‌های ربات
-===================================================== */
-
-function showSection(section, button) {
-
-    if (
-        !section ||
-        !sectionIcons[section] ||
-        !translations[getLanguage()]
-    ) {
-
-        section = "daily";
-
-    }
-
-
-    currentSection =
-        section;
-
-
-    document
-        .querySelectorAll(".nav-button")
-        .forEach(function(btn) {
-
-            btn.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    if (button) {
-
-        button.classList.add(
-            "active"
-        );
-
-    } else {
-
-        const activeButton =
-            document.querySelector(
-                '.nav-button[data-section="' +
-                section +
-                '"]'
-            );
-
-
-        if (activeButton) {
-
-            activeButton.classList.add(
-                "active"
-            );
-
-        }
-
-    }
-
+function updateCurrentSectionText() {
 
     const lang =
         getLanguage();
 
-
     const t =
         translations[lang] ||
         translations.en;
-
 
     const content = {
 
@@ -2232,55 +1601,175 @@ function showSection(section, button) {
 
     };
 
+    const item =
+        content[currentSection] ||
+        content.daily;
 
-    const iconElement =
+
+    const icon =
         document.getElementById(
             "contentIcon"
         );
 
-    const titleElement =
+    const title =
         document.getElementById(
             "contentTitle"
         );
 
-    const textElement =
+    const text =
         document.getElementById(
             "contentText"
         );
 
 
+    if (icon) {
+
+        icon.textContent =
+            sectionIcons[currentSection] ||
+            sectionIcons.daily;
+
+    }
+
+    if (title) {
+
+        title.textContent =
+            item.title;
+
+    }
+
+    if (text) {
+
+        text.textContent =
+            item.text;
+
+    }
+
+}
+
+
+/* =====================================================
+   CHANGE LANGUAGE
+===================================================== */
+
+function changeLanguage(lang) {
+
+    if (!translations[lang]) {
+        lang = "en";
+    }
+
+    localStorage.setItem(
+        "language",
+        lang
+    );
+
+    applyLanguage(lang);
+
+    const menu =
+        document.getElementById(
+            "languageMenu"
+        );
+
+    if (menu) {
+
+        menu.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LANGUAGE MENU
+===================================================== */
+
+function toggleLanguageMenu() {
+
+    const menu =
+        document.getElementById(
+            "languageMenu"
+        );
+
+    if (!menu) {
+        return;
+    }
+
+    menu.classList.toggle(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   SHOW SECTION
+   فقط یک نسخه در کل index.html
+===================================================== */
+
+function showSection(section, button) {
+
     if (
-        iconElement &&
-        sectionIcons[section]
+        !sectionIcons[section] ||
+        !translations[getLanguage()]
     ) {
 
-        iconElement.textContent =
-            sectionIcons[section];
+        section = "daily";
 
     }
 
 
-    if (
-        titleElement &&
-        content[section]
-    ) {
+    currentSection =
+        section;
 
-        titleElement.textContent =
-            content[section].title;
+
+    /*
+     Active button
+    */
+
+    document
+        .querySelectorAll(".nav-button")
+        .forEach(function(btn) {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    } else {
+
+        const active =
+            document.querySelector(
+                '.nav-button[data-section="' +
+                section +
+                '"]'
+            );
+
+        if (active) {
+
+            active.classList.add(
+                "active"
+            );
+
+        }
 
     }
 
 
-    if (
-        textElement &&
-        content[section]
-    ) {
+    updateCurrentSectionText();
 
-        textElement.textContent =
-            content[section].text;
 
-    }
-
+    /*
+     Get panels
+    */
 
     const rewardButton =
         document.getElementById(
@@ -2313,166 +1802,432 @@ function showSection(section, button) {
         );
 
 
-    /* =====================================================
-       HIDE ALL PANELS
-    ===================================================== */
+    /*
+     Hide all
+    */
 
-    if (rewardButton) {
+    if (rewardButton)
         rewardButton.style.display = "none";
-    }
 
-    if (rewardStatus) {
+    if (rewardStatus)
         rewardStatus.style.display = "none";
-    }
 
-    if (adsPanel) {
+    if (adsPanel)
         adsPanel.style.display = "none";
-    }
 
-    if (tasksPanel) {
+    if (tasksPanel)
         tasksPanel.style.display = "none";
-    }
 
-    if (referralPanel) {
+    if (referralPanel)
         referralPanel.style.display = "none";
-    }
 
-    if (accountPanel) {
+    if (accountPanel)
         accountPanel.style.display = "none";
-    }
 
 
-    /* =====================================================
-       DAILY
-    ===================================================== */
+    /*
+     DAILY
+    */
 
     if (section === "daily") {
 
-        if (rewardButton) {
+        if (rewardButton)
             rewardButton.style.display = "block";
-        }
 
-        if (rewardStatus) {
+        if (rewardStatus)
             rewardStatus.style.display = "block";
-        }
-
-        /*
-         فقط در صورتی که تابع در قسمت دوم وجود داشته باشد
-         اجرا می‌شود.
-        */
 
         if (
-            typeof checkDailyReward === "function"
+            typeof checkDailyReward ===
+            "function"
         ) {
 
             checkDailyReward();
 
         }
 
+        return;
     }
 
 
-    /* =====================================================
-       ADS
-    ===================================================== */
+    /*
+     ADS
+    */
 
-    else if (section === "ads") {
+    if (section === "ads") {
 
-        if (adsPanel) {
+        if (adsPanel)
             adsPanel.style.display = "block";
-        }
 
         if (
-            typeof loadAdsStatus === "function"
+            typeof loadAdsStatus ===
+            "function"
         ) {
 
             loadAdsStatus();
 
         }
 
+        return;
     }
 
 
-    /* =====================================================
-       TASKS
-    ===================================================== */
+    /*
+     TASKS
+    */
 
-    else if (section === "tasks") {
+    if (section === "tasks") {
 
-        if (tasksPanel) {
+        if (tasksPanel)
             tasksPanel.style.display = "block";
-        }
 
         if (
-            typeof loadTasks === "function"
+            typeof loadTasks ===
+            "function"
         ) {
 
             loadTasks();
 
         }
 
+        return;
     }
 
 
-    /* =====================================================
-       REFERRAL
-    ===================================================== */
+    /*
+     REFERRAL
+    */
 
-    else if (section === "referral") {
+    if (section === "referral") {
 
-        if (referralPanel) {
+        if (referralPanel)
             referralPanel.style.display = "block";
-        }
 
         if (
-            typeof loadReferralData === "function"
+            typeof loadReferralData ===
+            "function"
         ) {
 
             loadReferralData();
 
         }
 
+        return;
     }
 
 
-    /* =====================================================
-       WITHDRAW
-    ===================================================== */
+    /*
+     WITHDRAW
+    */
 
-    else if (section === "withdraw") {
+    if (section === "withdraw") {
 
-        /*
-         فعلاً فقط محتوای Withdraw نمایش داده می‌شود.
-         قابلیت Withdraw بعداً به Backend وصل می‌شود.
-        */
-
+        return;
     }
 
 
-    /* =====================================================
-       ACCOUNT
-    ===================================================== */
+    /*
+     ACCOUNT
+    */
 
-    else if (section === "account") {
+    if (section === "account") {
 
-        if (accountPanel) {
-
-            accountPanel.style.display =
-                "block";
-
-        }
+        if (accountPanel)
+            accountPanel.style.display = "block";
 
         if (
-            typeof loadAccountData === "function"
+            typeof loadAccountData ===
+            "function"
         ) {
 
             loadAccountData();
 
         }
 
+        return;
     }
 
 }
+
+
+/* =====================================================
+   EVENT LISTENERS
+   این بخش باعث می‌شود دکمه‌ها حتی بدون onclick
+   هم کاملاً کار کنند.
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        /*
+         Bottom navigation
+        */
+
+        document
+            .querySelectorAll(".nav-button")
+            .forEach(function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        showSection(
+                            button.dataset.section,
+                            button
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /*
+         Language button
+        */
+
+        const languageButton =
+            document.getElementById(
+                "languageButton"
+            );
+
+        if (languageButton) {
+
+            languageButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    toggleLanguageMenu();
+
+                }
+            );
+
+        }
+
+
+        /*
+         Language options
+        */
+
+        document
+            .querySelectorAll(
+                ".language-option"
+            )
+            .forEach(function(option) {
+
+                option.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        changeLanguage(
+                            option.dataset.language
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /*
+         Daily button
+        */
+
+        const rewardButton =
+            document.getElementById(
+                "rewardButton"
+            );
+
+        if (rewardButton) {
+
+            rewardButton.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        typeof claimDailyReward ===
+                        "function"
+                    ) {
+
+                        claimDailyReward();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+         Ads button
+        */
+
+        const watchAdButton =
+            document.getElementById(
+                "watchAdButton"
+            );
+
+        if (watchAdButton) {
+
+            watchAdButton.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        typeof watchAd ===
+                        "function"
+                    ) {
+
+                        watchAd();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+         Referral buttons
+        */
+
+        const copyButton =
+            document.getElementById(
+                "copyReferralButton"
+            );
+
+        if (copyButton) {
+
+            copyButton.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        typeof copyReferralLink ===
+                        "function"
+                    ) {
+
+                        copyReferralLink();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        const shareButton =
+            document.getElementById(
+                "shareReferralButton"
+            );
+
+        if (shareButton) {
+
+            shareButton.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        typeof shareReferralLink ===
+                        "function"
+                    ) {
+
+                        shareReferralLink();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+         Close language menu
+        */
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const menu =
+                    document.getElementById(
+                        "languageMenu"
+                    );
+
+                const button =
+                    document.getElementById(
+                        "languageButton"
+                    );
+
+                if (
+                    menu &&
+                    button &&
+                    !menu.contains(event.target) &&
+                    !button.contains(event.target)
+                ) {
+
+                    menu.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /*
+         Initial language
+        */
+
+        let language =
+            localStorage.getItem(
+                "language"
+            );
+
+        if (
+            !language ||
+            !translations[language]
+        ) {
+
+            language =
+                detectLanguage();
+
+        }
+
+        applyLanguage(language);
+
+
+        /*
+         Initial section
+        */
+
+        showSection(
+            "daily",
+            document.querySelector(
+                '.nav-button[data-section="daily"]'
+            )
+        );
+
+    }
+
+);
+
+    </script>
     <script>
 
 /* =====================================================
@@ -4893,4 +4648,4 @@ showSection(
     )
 );
 
-</script>
+    </script>
