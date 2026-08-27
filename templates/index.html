@@ -1,3480 +1,4623 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
-
-<title>EarnPool</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-    font-family: Arial, sans-serif;
-    background: #10131a;
-    color: white;
-}
-
-body {
-    padding-bottom: 88px;
-}
-
-button {
-    font-family: inherit;
-}
-
-.app {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 15px;
-}
-
-.top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-}
-
-.logo {
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.top-bar-actions {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-.language-button,
-.admin-button {
-    border: none;
-    background: #1c2330;
-    color: white;
-    border-radius: 10px;
-    padding: 8px 11px;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.admin-button {
-    display: none;
-    background: #252d3b;
-}
-
-.admin-button:active,
-.language-button:active {
-    transform: scale(.97);
-}
-
-.language-menu {
-    display: none;
-    position: absolute;
-    top: 58px;
-    right: 15px;
-    background: #1c2330;
-    border-radius: 12px;
-    padding: 6px;
-    z-index: 100;
-    box-shadow: 0 8px 25px rgba(0,0,0,.35);
-}
-
-.language-menu.show {
-    display: block;
-}
-
-.language-option {
-    display: block;
-    width: 125px;
-    border: none;
-    background: transparent;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.language-option:active {
-    background: #293242;
-}
-
-
-/* =====================================================
-   ADMIN PANEL
-===================================================== */
-
-.admin-panel {
-    display: none;
-    background: #191e29;
-    border-radius: 20px;
-    padding: 18px;
-    margin-bottom: 18px;
-}
-
-.admin-panel.show {
-    display: block;
-}
-
-.admin-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.admin-title {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.admin-close-button {
-    border: none;
-    background: #303744;
-    color: white;
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    font-size: 17px;
-    cursor: pointer;
-}
-
-.admin-subtitle {
-    color: #8f98a8;
-    font-size: 13px;
-    margin-bottom: 15px;
-    line-height: 1.6;
-}
-
-
-/* =====================================================
-   ADMIN MENU
-===================================================== */
-
-.admin-menu {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
-
-.admin-menu-button {
-    border: none;
-    background: #111722;
-    color: white;
-    border-radius: 14px;
-    padding: 15px 10px;
-    min-height: 82px;
-    cursor: pointer;
-    text-align: center;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.admin-menu-button:active {
-    transform: scale(.98);
-    background: #202936;
-}
-
-.admin-menu-icon {
-    display: block;
-    font-size: 25px;
-    margin-bottom: 6px;
-}
-
-.admin-menu-text {
-    display: block;
-    font-weight: bold;
-}
-
-
-/* =====================================================
-   ADMIN SECTIONS
-===================================================== */
-
-.admin-section {
-    display: none;
-    margin-top: 15px;
-}
-
-.admin-section.show {
-    display: block;
-}
-
-.admin-section-title {
-    font-size: 17px;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.admin-back-button {
-    width: 100%;
-    border: none;
-    background: #303744;
-    color: white;
-    border-radius: 11px;
-    padding: 11px;
-    margin-top: 12px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-
-/* =====================================================
-   ADMIN FORM
-===================================================== */
-
-.admin-form-box {
-    background: #111722;
-    border-radius: 14px;
-    padding: 14px;
-    margin-top: 10px;
-}
-
-.admin-label {
-    display: block;
-    color: #aeb5c1;
-    font-size: 13px;
-    margin-bottom: 7px;
-}
-
-.admin-input,
-.admin-select,
-.admin-textarea {
-    width: 100%;
-    border: 1px solid #303744;
-    outline: none;
-    background: #191e29;
-    color: white;
-    border-radius: 10px;
-    padding: 12px;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-.admin-textarea {
-    min-height: 110px;
-    resize: vertical;
-}
-
-.admin-input:focus,
-.admin-select:focus,
-.admin-textarea:focus {
-    border-color: #2d7dff;
-}
-
-.admin-save-button {
-    width: 100%;
-    border: none;
-    background: #2d7dff;
-    color: white;
-    border-radius: 11px;
-    padding: 13px;
-    margin-top: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-
-/* =====================================================
-   ADMIN STATS
-===================================================== */
-
-.admin-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
-}
-
-.admin-stat-card {
-    background: #111722;
-    border-radius: 13px;
-    padding: 13px;
-}
-
-.admin-stat-title {
-    color: #8f98a8;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.admin-stat-value {
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 5px;
-    word-break: break-word;
-}
-
-
-/* =====================================================
-   ADMIN MESSAGE
-===================================================== */
-
-.admin-message-box {
-    background: #111722;
-    border-radius: 14px;
-    padding: 14px;
-}
-
-.admin-message-target {
-    margin-bottom: 12px;
-}
-
-.admin-action-message {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.admin-success {
-    color: #58d68d;
-}
-
-.admin-error {
-    color: #ff7777;
-}
-
-
-/* =====================================================
-   ADMIN TASKS
-===================================================== */
-
-.admin-task-type-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
-    margin-bottom: 12px;
-}
-
-.admin-task-type-button {
-    border: none;
-    background: #191e29;
-    color: #aeb5c1;
-    border-radius: 10px;
-    padding: 10px 5px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.admin-task-type-button.active {
-    background: #2d7dff;
-    color: white;
-}
-
-
-/* =====================================================
-   ADMIN WITHDRAWALS
-===================================================== */
-
-.admin-withdrawal-card {
-    background: #111722;
-    border-radius: 14px;
-    padding: 14px;
-    margin-top: 10px;
-}
-
-.admin-withdrawal-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 6px 0;
-    font-size: 13px;
-}
-
-.admin-withdrawal-label {
-    color: #8f98a8;
-}
-
-.admin-withdrawal-value {
-    color: white;
-    text-align: right;
-    word-break: break-word;
-}
-
-.admin-withdrawal-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.admin-approve-button,
-.admin-reject-button {
-    flex: 1;
-    border: none;
-    border-radius: 10px;
-    padding: 11px;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.admin-approve-button {
-    background: #287a50;
-}
-
-.admin-reject-button {
-    background: #8a3434;
-}
-
-
-/* =====================================================
-   ADMIN ADMINS
-===================================================== */
-
-.admin-list-card {
-    background: #111722;
-    border-radius: 14px;
-    padding: 14px;
-    margin-top: 10px;
-}
-
-.admin-list-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.admin-list-info {
-    min-width: 0;
-}
-
-.admin-list-name {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.admin-list-id {
-    color: #8f98a8;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-.admin-delete-button {
-    border: none;
-    background: #8a3434;
-    color: white;
-    border-radius: 9px;
-    padding: 9px 11px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-
-/* =====================================================
-   NORMAL USER UI
-===================================================== */
-
-.balance-card {
-    background: #191e29;
-    border-radius: 20px;
-    padding: 22px;
-    text-align: center;
-    margin-bottom: 18px;
-}
-
-.balance-title {
-    color: #9da5b4;
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.coins {
-    font-size: 30px;
-    font-weight: bold;
-}
-
-.usd-value {
-    margin-top: 6px;
-    color: #8f98a8;
-    font-size: 15px;
-}
-
-.content-card {
-    background: #191e29;
-    border-radius: 20px;
-    padding: 22px;
-    min-height: 330px;
-}
-
-.content-icon {
-    font-size: 42px;
-    margin-bottom: 12px;
-}
-
-.content-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.content-text {
-    color: #aeb5c1;
-    line-height: 1.8;
-    font-size: 15px;
-}
-
-.reward-button,
-.watch-ad-button {
-    width: 100%;
-    border: none;
-    background: #2d7dff;
-    color: white;
-    border-radius: 14px;
-    padding: 15px;
-    margin-top: 18px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.reward-button:disabled,
-.watch-ad-button:disabled {
-    background: #303744;
-    color: #8f98a8;
-    cursor: not-allowed;
-}
-
-.reward-status,
-.ads-message,
-.task-message {
-    text-align: center;
-    margin-top: 14px;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.reward-success,
-.ads-success,
-.task-success {
-    color: #58d68d;
-}
-
-.reward-waiting,
-.ads-waiting {
-    color: #aeb5c1;
-}
-
-.reward-error,
-.ads-error,
-.task-error {
-    color: #ff7777;
-}
-
-.ads-panel {
-    margin-top: 20px;
-}
-
-.ads-info {
-    background: #111722;
-    border-radius: 14px;
-    padding: 14px;
-    margin-top: 15px;
-}
-
-.ads-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 7px 0;
-    color: #b5bdc9;
-    font-size: 14px;
-}
-
-.ads-row strong {
-    color: white;
-}
-
-.tasks-panel {
-    margin-top: 20px;
-}
-
-.task-card {
-    background: #111722;
-    border-radius: 15px;
-    padding: 15px;
-    margin-top: 12px;
-}
-
-.task-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 7px;
-}
-
-.task-description {
-    color: #aeb5c1;
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 10px;
-}
-
-.task-reward {
-    color: #ffd166;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.task-button {
-    width: 100%;
-    border: none;
-    background: #2d7dff;
-    color: white;
-    border-radius: 11px;
-    padding: 11px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.task-button:disabled {
-    background: #303744;
-    color: #8f98a8;
-}
-
-.no-tasks {
-    text-align: center;
-    color: #8f98a8;
-    padding: 25px 10px;
-    line-height: 1.7;
-}
-
-.referral-panel {
-    margin-top: 20px;
-    width: 100%;
-}
-
-.referral-box {
-    background: #111722;
-    border-radius: 14px;
-    padding: 15px;
-    margin-top: 12px;
-}
-
-.referral-label {
-    color: #aeb5c1;
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.referral-value {
-    background: #191e29;
-    border-radius: 10px;
-    padding: 12px;
-    word-break: break-all;
-    font-size: 14px;
-    color: white;
-    min-height: 18px;
-}
-
-.referral-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-.referral-action-button {
-    flex: 1;
-    border: none;
-    background: #2d7dff;
-    color: white;
-    border-radius: 11px;
-    padding: 12px 10px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.referral-action-button:active {
-    transform: scale(.98);
-}
-
-.referral-message {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.referral-success {
-    color: #58d68d;
-}
-
-.referral-error {
-    color: #ff7777;
-}
-
-.referral-reward-info {
-    background: #191e29;
-    border-radius: 10px;
-    padding: 11px;
-    margin-top: 12px;
-    text-align: center;
-    color: #ffd166;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.account-panel {
-    margin-top: 20px;
-    width: 100%;
-}
-
-.account-box {
-    background: #111722;
-    border-radius: 14px;
-    padding: 15px;
-    margin-top: 12px;
-}
-
-.account-label {
-    color: #aeb5c1;
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.account-value {
-    background: #191e29;
-    border-radius: 10px;
-    padding: 12px;
-    word-break: break-word;
-    font-size: 14px;
-    color: white;
-    min-height: 18px;
-}
-
-.account-message {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.account-photo {
-    width: 82px;
-    height: 82px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: none;
-    margin: 0 auto 15px;
-}
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    background: #151922;
-    border-top: 1px solid #252b36;
-    padding: 7px 4px;
-    z-index: 9999;
-}
-
-.nav-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    gap: 3px;
-}
-
-.nav-button {
-    flex: 1;
-    width: 16.666%;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    color: #8f98a8;
-    border-radius: 11px;
-    padding: 6px 1px;
-    cursor: pointer;
-    font-size: 9px;
-    line-height: 1.2;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.nav-button.active {
-    background: #252d3b;
-    color: white;
-}
-
-.nav-icon {
-    display: block;
-    font-size: 20px;
-    line-height: 22px;
-    margin-bottom: 3px;
-}
-
-@media (max-width: 360px) {
-
-    .app {
-        padding: 12px;
-    }
-
-    .nav-button {
-        font-size: 8px;
-    }
-
-    .nav-icon {
-        font-size: 18px;
-    }
-
-    .logo {
-        font-size: 21px;
-    }
-
-    .coins {
-        font-size: 27px;
-    }
-
-    .admin-menu {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="app">
-
-    <div class="top-bar">
-
-        <div class="logo">
-            EarnPool
-        </div>
-
-        <div class="top-bar-actions">
-
-            <!--
-                این دکمه فقط برای ادمین نمایش داده می‌شود.
-                بررسی واقعی دسترسی بعداً در Backend انجام می‌شود.
-            -->
-
-            <button
-                type="button"
-                class="admin-button"
-                id="adminButton"
-            >
-                ⚙️ پنل ادمین
-            </button>
-
-            <button
-                type="button"
-                class="language-button"
-                id="languageButton"
-            >
-                🌐 EN
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- =================================================
-         ADMIN PANEL
-         ================================================= -->
-
-    <div
-        id="adminPanel"
-        class="admin-panel"
-    >
-
-        <div class="admin-header">
-
-            <div class="admin-title">
-                ⚙️ پنل مدیریت
-            </div>
-
-            <button
-                type="button"
-                class="admin-close-button"
-                id="adminCloseButton"
-            >
-                ✕
-            </button>
-
-        </div>
-
-
-        <div class="admin-subtitle">
-            مدیریت EarnPool
-        </div>
-
-
-        <!-- =============================================
-             ADMIN MAIN MENU
-             ============================================= -->
-
-        <div
-            id="adminMainMenu"
-            class="admin-menu"
-        >
-
-            <button
-                type="button"
-                class="admin-menu-button"
-                data-admin-section="rewards"
-            >
-                <span class="admin-menu-icon">
-                    🎁
-                </span>
-
-                <span class="admin-menu-text">
-                    مدیریت پاداش‌ها
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-menu-button"
-                data-admin-section="coin-value"
-            >
-                <span class="admin-menu-icon">
-                    🪙
-                </span>
-
-                <span class="admin-menu-text">
-                    ارزش سکه
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-menu-button"
-                data-admin-section="message"
-            >
-                <span class="admin-menu-icon">
-                    📢
-                </span>
-
-                <span class="admin-menu-text">
-                    ارسال پیام
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-menu-button"
-                data-admin-section="stats"
-            >
-                <span class="admin-menu-icon">
-                    📊
-                </span>
-
-                <span class="admin-menu-text">
-                    آمار ربات
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-menu-button"
-                data-admin-section="tasks"
-            >
-                <span class="admin-menu-icon">
-                    🎯
-                </span>
-
-                <span class="admin-menu-text">
-                    افزودن تسک
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-menu-button"
-                data-admin-section="withdrawals"
-            >
-                <span class="admin-menu-icon">
-                    💸
-                </span>
-
-                <span class="admin-menu-text">
-                    درخواست‌های برداشت
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-menu-button"
-                data-admin-section="admins"
-            >
-                <span class="admin-menu-icon">
-                    👑
-                </span>
-
-                <span class="admin-menu-text">
-                    مدیریت ادمین‌ها
-                </span>
-            </button>
-
-        </div>
-
-
-        <!-- =============================================
-             REWARDS SECTION
-             ============================================= -->
-
-        <div
-            id="adminSectionRewards"
-            class="admin-section"
-        >
-
-            <div class="admin-section-title">
-                🎁 مدیریت پاداش‌ها
-            </div>
-
-            <div class="admin-form-box">
-
-                <label class="admin-label">
-                    پاداش روزانه
-                </label>
-
-                <input
-                    type="number"
-                    id="adminDailyReward"
-                    class="admin-input"
-                    min="0"
-                    placeholder="مثلاً 1000"
-                >
-
-
-                <label
-                    class="admin-label"
-                    style="margin-top:12px;"
-                >
-                    پاداش هر تبلیغ
-                </label>
-
-                <input
-                    type="number"
-                    id="adminAdReward"
-                    class="admin-input"
-                    min="0"
-                    placeholder="مثلاً 2000"
-                >
-
-
-                <label
-                    class="admin-label"
-                    style="margin-top:12px;"
-                >
-                    پاداش هر تسک
-                </label>
-
-                <input
-                    type="number"
-                    id="adminTaskReward"
-                    class="admin-input"
-                    min="0"
-                    placeholder="مثلاً 1000"
-                >
-
-
-                <label
-                    class="admin-label"
-                    style="margin-top:12px;"
-                >
-                    پاداش هر رفرال
-                </label>
-
-                <input
-                    type="number"
-                    id="adminReferralReward"
-                    class="admin-input"
-                    min="0"
-                    placeholder="مثلاً 5000"
-                >
-
-
-                <button
-                    type="button"
-                    class="admin-save-button"
-                    id="adminSaveRewards"
-                >
-                    💾 ذخیره تغییرات
-                </button>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-back-button"
-                data-admin-back
-            >
-                ↩️ بازگشت
-            </button>
-
-        </div>
-
-
-        <!-- =============================================
-             COIN VALUE SECTION
-             ============================================= -->
-
-        <div
-            id="adminSectionCoinValue"
-            class="admin-section"
-        >
-
-            <div class="admin-section-title">
-                🪙 ارزش سکه به دلار
-            </div>
-
-            <div class="admin-form-box">
-
-                <label class="admin-label">
-                    تعداد سکه معادل ۱ دلار
-                </label>
-
-                <input
-                    type="number"
-                    id="adminCoinsPerUsd"
-                    class="admin-input"
-                    min="1"
-                    placeholder="مثلاً 1000000"
-                >
-
-                <button
-                    type="button"
-                    class="admin-save-button"
-                    id="adminSaveCoinValue"
-                >
-                    💾 ذخیره ارزش سکه
-                </button>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-back-button"
-                data-admin-back
-            >
-                ↩️ بازگشت
-            </button>
-
-        </div>
-
-
-        <!-- =============================================
-             MESSAGE SECTION
-             ============================================= -->
-
-        <div
-            id="adminSectionMessage"
-            class="admin-section"
-        >
-
-            <div class="admin-section-title">
-                📢 ارسال پیام به کاربران
-            </div>
-
-            <div class="admin-message-box">
-
-                <label class="admin-label">
-                    گیرنده
-                </label>
-
-                <select
-                    id="adminMessageTarget"
-                    class="admin-select"
-                >
-
-                    <option value="all">
-                        همه کاربران
-                    </option>
-
-                    <option value="active">
-                        کاربران فعال
-                    </option>
-
-                </select>
-
-
-                <label
-                    class="admin-label"
-                    style="margin-top:12px;"
-                >
-                    متن پیام
-                </label>
-
-                <textarea
-                    id="adminBroadcastMessage"
-                    class="admin-textarea"
-                    placeholder="متن پیام را بنویسید..."
-                ></textarea>
-
-
-                <button
-                    type="button"
-                    class="admin-save-button"
-                    id="adminSendMessage"
-                >
-                    📤 ارسال پیام
-                </button>
-
-
-                <div
-                    id="adminMessageStatus"
-                    class="admin-action-message"
-                ></div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-back-button"
-                data-admin-back
-            >
-                ↩️ بازگشت
-            </button>
-
-        </div>
-
-
-        <!-- =============================================
-             STATS SECTION
-             ============================================= -->
-
-        <div
-            id="adminSectionStats"
-            class="admin-section"
-        >
-
-            <div class="admin-section-title">
-                📊 آمار ربات
-            </div>
-
-            <div class="admin-stats-grid">
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        کاربران امروز
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statTodayUsers"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        کاربران ۷ روز اخیر
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statWeekUsers"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        کاربران ۳۰ روز اخیر
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statMonthUsers"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        مجموع کاربران
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statTotalUsers"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        کاربران فعال
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statActiveUsers"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        تبلیغات دیده‌شده
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statAdsWatched"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        تسک‌های انجام‌شده
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statTasksCompleted"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        پاداش تبلیغات
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statAdRewards"
-                    >
-                        0 🪙
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        پاداش تسک‌ها
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statTaskRewards"
-                    >
-                        0 🪙
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        پاداش روزانه
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statDailyRewards"
-                    >
-                        0 🪙
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        پاداش رفرال
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statReferralRewards"
-                    >
-                        0 🪙
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        برداشت‌های در صف
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statPendingWithdrawals"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        برداشت‌های موفق
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statSuccessfulWithdrawals"
-                    >
-                        0
-                    </div>
-                </div>
-
-
-                <div class="admin-stat-card">
-                    <div class="admin-stat-title">
-                        برداشت‌های تأیید و پرداخت‌شده
-                    </div>
-                    <div
-                        class="admin-stat-value"
-                        id="statPaidWithdrawals"
-                    >
-                        0
-                    </div>
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-back-button"
-                data-admin-back
-            >
-                ↩️ بازگشت
-            </button>
-
-        </div>
-
-
-        <!-- =============================================
-             MANUAL TASK SECTION
-             ============================================= -->
-
-        <div
-            id="adminSectionTasks"
-            class="admin-section"
-        >
-
-            <div class="admin-section-title">
-                🎯 افزودن تسک دستی
-            </div>
-
-            <div class="admin-form-box">
-
-                <div class="admin-task-type-buttons">
-
-                    <button
-                        type="button"
-                        class="admin-task-type-button active"
-                        data-task-type="site"
-                    >
-                        🌐 سایت
-                    </button>
-
-                    <button
-                        type="button"
-                        class="admin-task-type-button"
-                        data-task-type="channel"
-                    >
-                        📢 کانال
-                    </button>
-
-                    <button
-                        type="button"
-                        class="admin-task-type-button"
-                        data-task-type="bot"
-                    >
-                        🤖 ربات
-                    </button>
-
-                </div>
-
-
-                <input
-                    type="hidden"
-                    id="adminTaskType"
-                    value="site"
-                >
-
-
-                <label class="admin-label">
-                    عنوان تسک
-                </label>
-
-                <input
-                    type="text"
-                    id="adminTaskTitle"
-                    class="admin-input"
-                    placeholder="مثلاً عضویت در کانال"
-                >
-
-
-                <label
-                    class="admin-label"
-                    style="margin-top:12px;"
-                >
-                    توضیحات
-                </label>
-
-                <textarea
-                    id="adminTaskDescription"
-                    class="admin-textarea"
-                    placeholder="توضیحات تسک..."
-                ></textarea>
-
-
-                <label
-                    class="admin-label"
-                    style="margin-top:12px;"
-                >
-                    لینک تسک
-                </label>
-
-                <input
-                    type="url"
-                    id="adminTaskUrl"
-                    class="admin-input"
-                    placeholder="https://..."
-                >
-
-
-                <label
-                    class="admin-label"
-                    style="margin-top:12px;"
-                >
-                    پاداش
-                </label>
-
-                <input
-                    type="number"
-                    id="adminTaskReward"
-                    class="admin-input"
-                    min="0"
-                    placeholder="مثلاً 1000"
-                >
-
-
-                <button
-                    type="button"
-                    class="admin-save-button"
-                    id="adminAddTask"
-                >
-                    ➕ افزودن تسک
-                </button>
-
-
-                <div
-                    id="adminTaskStatus"
-                    class="admin-action-message"
-                ></div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-back-button"
-                data-admin-back
-            >
-                ↩️ بازگشت
-            </button>
-
-        </div>
-
-
-        <!-- =============================================
-             WITHDRAWALS SECTION
-             ============================================= -->
-
-        <div
-            id="adminSectionWithdrawals"
-            class="admin-section"
-        >
-
-            <div class="admin-section-title">
-                💸 درخواست‌های برداشت
-            </div>
-
-            <div id="adminWithdrawalsList">
-
-                <div class="admin-withdrawal-card">
-
-                    <div class="admin-withdrawal-row">
-                        <span class="admin-withdrawal-label">
-                            وضعیت
-                        </span>
-
-                        <span class="admin-withdrawal-value">
-                            در انتظار اطلاعات
-                        </span>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-back-button"
-                data-admin-back
-            >
-                ↩️ بازگشت
-            </button>
-
-        </div>
-
-
-        <!-- =============================================
-             ADMIN MANAGEMENT SECTION
-             ============================================= -->
-
-        <div
-            id="adminSectionAdmins"
-            class="admin-section"
-        >
-
-            <div class="admin-section-title">
-                👑 مدیریت ادمین‌ها
-            </div>
-
-
-            <div class="admin-form-box">
-
-                <label class="admin-label">
-                    آیدی تلگرام ادمین جدید
-                </label>
-
-                <input
-                    type="number"
-                    id="newAdminTelegramId"
-                    class="admin-input"
-                    placeholder="Telegram ID"
-                >
-
-
-                <button
-                    type="button"
-                    class="admin-save-button"
-                    id="addAdminButton"
-                >
-                    ➕ اضافه کردن ادمین
-                </button>
-
-
-                <div
-                    id="adminManagementStatus"
-                    class="admin-action-message"
-                ></div>
-
-            </div>
-
-
-            <div
-                id="adminList"
-                style="margin-top:12px;"
-            ></div>
-
-
-            <button
-                type="button"
-                class="admin-back-button"
-                data-admin-back
-            >
-                ↩️ بازگشت
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- =================================================
-         LANGUAGE MENU
-         ================================================= -->
-
-    <div
-        class="language-menu"
-        id="languageMenu"
-    >
-
-        <button
-            type="button"
-            class="language-option"
-            data-language="en"
-        >
-            🇬🇧 English
-        </button>
-
-        <button
-            type="button"
-            class="language-option"
-            data-language="fa"
-        >
-            🇦🇫 فارسی
-        </button>
-
-        <button
-            type="button"
-            class="language-option"
-            data-language="ar"
-        >
-            🇸🇦 العربية
-        </button>
-
-    </div>
-    <style>
-
-/* =====================================================
-   ADMIN PANEL
-===================================================== */
-
-#adminPanel {
-    width: 100%;
-    margin-top: 18px;
-    direction: rtl;
-    text-align: right;
-}
-
-
-/* =====================================================
-   ADMIN HEADER
-===================================================== */
-
-.admin-header {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    margin-bottom: 10px;
-}
-
-
-.admin-header-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-
-.admin-toggle-button {
-    width: 100%;
-    border: none;
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.12);
-    color: inherit;
-}
-
-
-/* =====================================================
-   ADMIN CONTENT
-===================================================== */
-
-.admin-content {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-
-/* =====================================================
-   ADMIN CARD
-===================================================== */
-
-.admin-card {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 16px;
-    margin-bottom: 14px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-}
-
-
-.admin-card-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 14px;
-}
-
-
-/* =====================================================
-   ADMIN FIELDS
-===================================================== */
-
-.admin-field {
-    width: 100%;
-    margin-bottom: 12px;
-}
-
-
-.admin-field label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-
-.admin-field input,
-.admin-field textarea,
-.admin-field select {
-    width: 100%;
-    box-sizing: border-box;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    padding: 11px;
-    font-size: 14px;
-    background: rgba(255, 255, 255, 0.10);
-    color: inherit;
-}
-
-
-.admin-field textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-
-.admin-field select {
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   ADMIN BUTTON
-===================================================== */
-
-.admin-action-button {
-    width: 100%;
-    border: none;
-    border-radius: 11px;
-    padding: 12px;
-    margin-top: 5px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.14);
-    color: inherit;
-}
-
-
-.admin-action-button.secondary {
-    margin-top: 10px;
-}
-
-
-/* =====================================================
-   ADMIN MESSAGE
-===================================================== */
-
-.admin-message {
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 10px;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-
-.admin-success {
-    color: #36d399;
-}
-
-
-.admin-error {
-    color: #ff6b6b;
-}
-
-
-.admin-info {
-    opacity: 0.75;
-}
-
-
-/* =====================================================
-   ADMIN STATISTICS GRID
-===================================================== */
-
-.admin-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 14px;
-}
-
-
-.admin-stat {
-    min-width: 0;
-    box-sizing: border-box;
-    padding: 12px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.06);
-}
-
-
-.admin-stat-title {
-    font-size: 11px;
-    line-height: 1.5;
-    opacity: 0.75;
-    margin-bottom: 7px;
-}
-
-
-.admin-stat-value {
-    font-size: 17px;
-    font-weight: 700;
-    word-break: break-word;
-}
-
-
-/* =====================================================
-   WITHDRAWAL LIST
-===================================================== */
-
-.admin-withdrawals-list {
-    width: 100%;
-    margin-top: 12px;
-}
-
-
-.admin-withdrawal-card {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.06);
-}
-
-
-.admin-withdrawal-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 6px;
-    font-size: 13px;
-}
-
-
-.admin-withdrawal-label {
-    opacity: 0.65;
-}
-
-
-.admin-withdrawal-value {
-    font-weight: 600;
-    word-break: break-word;
-}
-
-
-.admin-empty {
-    text-align: center;
-    padding: 14px;
-    font-size: 13px;
-    opacity: 0.6;
-}
-
-
-/* =====================================================
-   ADMINS LIST
-===================================================== */
-
-.admins-list {
-    width: 100%;
-    margin-top: 14px;
-}
-
-
-.admin-item {
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 11px;
-    margin-bottom: 8px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.06);
-}
-
-
-.admin-item-info {
-    min-width: 0;
-}
-
-
-.admin-item-name {
-    font-size: 13px;
-    font-weight: 700;
-}
-
-
-.admin-item-id {
-    font-size: 11px;
-    opacity: 0.65;
-    margin-top: 3px;
-}
-
-
-.admin-remove-button {
-    flex-shrink: 0;
-    border: none;
-    border-radius: 9px;
-    padding: 8px 10px;
-    font-size: 12px;
-    cursor: pointer;
-    background: rgba(255, 80, 80, 0.16);
-    color: inherit;
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 420px) {
-
-    .admin-stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .admin-card {
-        padding: 13px;
-    }
-
-    .admin-header {
-        padding: 13px;
-    }
-
-}
-
-
-/* =====================================================
-   DARK / LIGHT COMPATIBILITY
-===================================================== */
-
-#adminPanel button,
-#adminPanel input,
-#adminPanel textarea,
-#adminPanel select {
-    font-family: inherit;
-}
-
-</style>
-
-
-<script>
-
-/* =====================================================
-   FINAL ADMIN INITIALIZATION
-===================================================== */
-
-(function () {
-
-    function initAdminPanelSafe() {
-
-        try {
-
-            initializeAdminPanel();
-
-        } catch (error) {
-
-            console.error(
-                "Admin panel initialization error:",
-                error
-            );
-
-        }
-
-    }
-
-
-    /*
-     اگر Telegram user قبلاً آماده باشد
-    */
-
-    if (
-        typeof user !== "undefined" &&
-        user
-    ) {
-
-        initAdminPanelSafe();
-
-        return;
-
-    }
-
-
-    /*
-     اگر user کمی دیرتر آماده شود
-    */
-
-    let attempts = 0;
-
-    const timer =
-        setInterval(
-            function () {
-
-                attempts++;
-
-
-                if (
-                    typeof user !== "undefined" &&
-                    user
-                ) {
-
-                    initAdminPanelSafe();
-
-                    clearInterval(timer);
-
-                    return;
-
-                }
-
-
-                if (attempts >= 20) {
-
-                    clearInterval(timer);
-
-                }
-
-            },
-            500
-        );
-
-})();
-
-</script>
-<!-- =====================================================
-     ADMIN PANEL
-     فقط برای ادمین‌ها
-===================================================== -->
-
-<div
-    id="adminPanel"
-    style="display:none;"
->
-
-    <!-- =================================================
-         ADMIN HEADER
-    ================================================== -->
-
-    <div class="admin-header">
-
-        <div class="admin-header-title">
-            🛠️ پنل مدیریت
-        </div>
-
-        <button
-            type="button"
-            id="adminPanelToggle"
-            class="admin-toggle-button"
-            onclick="toggleAdminPanel()"
-        >
-            ⚙️ امکانات مدیریت
-        </button>
-
-    </div>
-
-
-    <!-- =================================================
-         ADMIN CONTENT
-    ================================================== -->
-
-    <div
-        id="adminContent"
-        class="admin-content"
-        style="display:none;"
-    >
-
-        <!-- =================================================
-             REWARD SETTINGS
-        ================================================== -->
-
-        <div class="admin-card">
-
-            <div class="admin-card-title">
-                💰 تنظیم پاداش‌ها
-            </div>
-
-            <div class="admin-field">
-
-                <label>
-                    پاداش روزانه
-                </label>
-
-                <input
-                    type="number"
-                    id="adminDailyReward"
-                    min="0"
-                    step="1"
-                    placeholder="مثلاً 1000"
-                >
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    پاداش هر تبلیغات
-                </label>
-
-                <input
-                    type="number"
-                    id="adminAdReward"
-                    min="0"
-                    step="1"
-                    placeholder="مثلاً 2000"
-                >
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    پاداش هر تسک
-                </label>
-
-                <input
-                    type="number"
-                    id="adminTaskReward"
-                    min="0"
-                    step="1"
-                    placeholder="مثلاً 1000"
-                >
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    پاداش رفرال
-                </label>
-
-                <input
-                    type="number"
-                    id="adminReferralReward"
-                    min="0"
-                    step="1"
-                    placeholder="مثلاً 5000"
-                >
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button"
-                onclick="saveAdminRewards()"
-            >
-                💾 ذخیره پاداش‌ها
-            </button>
-
-
-            <div
-                id="adminRewardMessage"
-                class="admin-message"
-            ></div>
-
-        </div>
-
-
-        <!-- =================================================
-             COIN / USD VALUE
-        ================================================== -->
-
-        <div class="admin-card">
-
-            <div class="admin-card-title">
-                💵 ارزش سکه
-            </div>
-
-            <div class="admin-field">
-
-                <label>
-                    چند سکه برابر 1 دلار باشد؟
-                </label>
-
-                <input
-                    type="number"
-                    id="adminCoinsPerUsd"
-                    min="1"
-                    step="1"
-                    placeholder="1000000"
-                >
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button"
-                onclick="saveAdminCoinValue()"
-            >
-                💾 ذخیره ارزش سکه
-            </button>
-
-
-            <div
-                id="adminCoinMessage"
-                class="admin-message"
-            ></div>
-
-        </div>
-
-
-        <!-- =================================================
-             SEND MESSAGE
-        ================================================== -->
-
-        <div class="admin-card">
-
-            <div class="admin-card-title">
-                📢 ارسال پیام به کاربران
-            </div>
-
-            <div class="admin-field">
-
-                <label>
-                    متن پیام
-                </label>
-
-                <textarea
-                    id="adminBroadcastMessage"
-                    rows="5"
-                    placeholder="پیام خود را اینجا بنویسید..."
-                ></textarea>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button"
-                onclick="sendAdminBroadcast()"
-            >
-                📤 ارسال پیام
-            </button>
-
-
-            <div
-                id="adminBroadcastMessageStatus"
-                class="admin-message"
-            ></div>
-
-        </div>
-
-
-        <!-- =================================================
-             BOT STATISTICS
-        ================================================== -->
-
-        <div class="admin-card">
-
-            <div class="admin-card-title">
-                📊 آمار ربات
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button"
-                onclick="loadAdminStats()"
-            >
-                🔄 دریافت آخرین آمار
-            </button>
-
-
-            <div class="admin-stats-grid">
-
-
-                <!-- TODAY USERS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        👤 کاربران امروز
-                    </div>
-
-                    <div
-                        id="adminStatTodayUsers"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- WEEK USERS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        📅 کاربران ۷ روز اخیر
-                    </div>
-
-                    <div
-                        id="adminStatWeekUsers"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- MONTH USERS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        🗓️ کاربران ۳۰ روز اخیر
-                    </div>
-
-                    <div
-                        id="adminStatMonthUsers"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- TOTAL USERS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        👥 مجموع کاربران
-                    </div>
-
-                    <div
-                        id="adminStatTotalUsers"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- ACTIVE USERS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        🟢 کاربران فعال
-                    </div>
-
-                    <div
-                        id="adminStatActiveUsers"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- ADS WATCHED -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        📺 تبلیغات دیده شده
-                    </div>
-
-                    <div
-                        id="adminStatAdsWatched"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- TASKS COMPLETED -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        ✅ تسک‌های انجام شده
-                    </div>
-
-                    <div
-                        id="adminStatTasksCompleted"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- AD REWARDS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        💰 مجموع پاداش تبلیغات
-                    </div>
-
-                    <div
-                        id="adminStatAdRewards"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- TASK REWARDS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        💰 مجموع پاداش تسک‌ها
-                    </div>
-
-                    <div
-                        id="adminStatTaskRewards"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- DAILY REWARDS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        🎁 مجموع پاداش روزانه
-                    </div>
-
-                    <div
-                        id="adminStatDailyRewards"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- REFERRAL REWARDS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        🤝 مجموع پاداش رفرال
-                    </div>
-
-                    <div
-                        id="adminStatReferralRewards"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- PENDING WITHDRAWALS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        ⏳ برداشت‌های در صف
-                    </div>
-
-                    <div
-                        id="adminStatPendingWithdrawals"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- SUCCESSFUL WITHDRAWALS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        ✅ برداشت‌های موفق
-                    </div>
-
-                    <div
-                        id="adminStatSuccessfulWithdrawals"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <!-- ADMIN APPROVED WITHDRAWALS -->
-
-                <div class="admin-stat">
-
-                    <div class="admin-stat-title">
-                        💳 برداشت‌های تأیید و پرداخت شده
-                    </div>
-
-                    <div
-                        id="adminStatPaidWithdrawals"
-                        class="admin-stat-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div
-                id="adminStatsMessage"
-                class="admin-message"
-            ></div>
-
-        </div>
-
-
-        <!-- =================================================
-             MANUAL TASK
-        ================================================== -->
-
-        <div class="admin-card">
-
-            <div class="admin-card-title">
-                ➕ اضافه کردن تسک دستی
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    نوع تسک
-                </label>
-
-                <select
-                    id="adminTaskType"
-                >
-
-                    <option value="website">
-                        🌐 سایت
-                    </option>
-
-                    <option value="channel">
-                        📢 کانال
-                    </option>
-
-                    <option value="bot">
-                        🤖 ربات
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    عنوان تسک
-                </label>
-
-                <input
-                    type="text"
-                    id="adminTaskTitle"
-                    placeholder="مثلاً عضویت در کانال"
-                >
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    توضیحات تسک
-                </label>
-
-                <textarea
-                    id="adminTaskDescription"
-                    rows="3"
-                    placeholder="توضیحات تسک..."
-                ></textarea>
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    لینک تسک
-                </label>
-
-                <input
-                    type="text"
-                    id="adminTaskUrl"
-                    placeholder="https://..."
-                >
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    پاداش تسک
-                </label>
-
-                <input
-                    type="number"
-                    id="adminTaskReward"
-                    min="0"
-                    step="1"
-                    placeholder="مثلاً 1000"
-                >
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button"
-                onclick="createAdminTask()"
-            >
-                ➕ ایجاد تسک
-            </button>
-
-
-            <div
-                id="adminTaskMessage"
-                class="admin-message"
-            ></div>
-
-        </div>
-
-
-        <!-- =================================================
-             WITHDRAWAL REQUESTS
-        ================================================== -->
-
-        <div class="admin-card">
-
-            <div class="admin-card-title">
-                💸 درخواست‌های برداشت
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button"
-                onclick="loadAdminWithdrawals()"
-            >
-                🔄 دریافت درخواست‌ها
-            </button>
-
-
-            <div
-                id="adminWithdrawalsList"
-                class="admin-withdrawals-list"
-            >
-
-                <div class="admin-empty">
-                    هنوز اطلاعاتی دریافت نشده است.
-                </div>
-
-            </div>
-
-
-            <div
-                id="adminWithdrawalsMessage"
-                class="admin-message"
-            ></div>
-
-        </div>
-
-
-        <!-- =================================================
-             ADMIN MANAGEMENT
-        ================================================== -->
-
-        <div class="admin-card">
-
-            <div class="admin-card-title">
-                👑 مدیریت ادمین‌ها
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    آیدی عددی ادمین جدید
-                </label>
-
-                <input
-                    type="number"
-                    id="newAdminTelegramId"
-                    min="1"
-                    step="1"
-                    placeholder="Telegram ID"
-                >
-
-            </div>
-
-
-            <div class="admin-field">
-
-                <label>
-                    نام ادمین
-                </label>
-
-                <input
-                    type="text"
-                    id="newAdminName"
-                    placeholder="نام ادمین"
-                >
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button"
-                onclick="addAdmin()"
-            >
-                ➕ اضافه کردن ادمین
-            </button>
-
-
-            <div
-                id="adminManagementMessage"
-                class="admin-message"
-            ></div>
-
-
-            <div
-                id="adminsList"
-                class="admins-list"
-            >
-
-                <div class="admin-empty">
-                    برای مشاهده ادمین‌ها، دریافت لیست را بزنید.
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="admin-action-button secondary"
-                onclick="loadAdmins()"
-            >
-                🔄 دریافت لیست ادمین‌ها
-            </button>
-
-        </div>
-
-
-    </div>
+<!DOCTYPE html>  <html lang="en" dir="ltr">  <head>  <meta charset="UTF-8">  <meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+
+> 
+
+<title>EarnPool</title>  <script src="https://telegram.org/js/telegram-web-app.js"></script>  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>  <style>  
+  
+* {  
+    box-sizing: border-box;  
+}  
+  
+html,  
+body {  
+    margin: 0;  
+    padding: 0;  
+    width: 100%;  
+    min-height: 100%;  
+    font-family: Arial, sans-serif;  
+    background: #10131a;  
+    color: white;  
+}  
+  
+body {  
+    padding-bottom: 88px;  
+}  
+  
+button {  
+    font-family: inherit;  
+}  
+  
+.app {  
+    width: 100%;  
+    max-width: 600px;  
+    margin: 0 auto;  
+    padding: 15px;  
+}  
+  
+.top-bar {  
+    display: flex;  
+    align-items: center;  
+    justify-content: space-between;  
+    margin-bottom: 18px;  
+}  
+  
+.logo {  
+    font-size: 23px;  
+    font-weight: bold;  
+}  
+  
+.language-button {  
+    border: none;  
+    background: #1c2330;  
+    color: white;  
+    border-radius: 10px;  
+    padding: 8px 11px;  
+    font-size: 13px;  
+    cursor: pointer;  
+}  
+  
+.language-menu {  
+    display: none;  
+    position: absolute;  
+    top: 58px;  
+    right: 15px;  
+    background: #1c2330;  
+    border-radius: 12px;  
+    padding: 6px;  
+    z-index: 100;  
+    box-shadow: 0 8px 25px rgba(0,0,0,.35);  
+}  
+  
+.language-menu.show {  
+    display: block;  
+}  
+  
+.language-option {  
+    display: block;  
+    width: 125px;  
+    border: none;  
+    background: transparent;  
+    color: white;  
+    padding: 10px;  
+    text-align: center;  
+    border-radius: 8px;  
+    cursor: pointer;  
+}  
+  
+.language-option:active {  
+    background: #293242;  
+}  
+  
+.balance-card {  
+    background: #191e29;  
+    border-radius: 20px;  
+    padding: 22px;  
+    text-align: center;  
+    margin-bottom: 18px;  
+}  
+  
+.balance-title {  
+    color: #9da5b4;  
+    font-size: 14px;  
+    margin-bottom: 8px;  
+}  
+  
+.coins {  
+    font-size: 30px;  
+    font-weight: bold;  
+}  
+  
+.usd-value {  
+    margin-top: 6px;  
+    color: #8f98a8;  
+    font-size: 15px;  
+}  
+  
+.content-card {  
+    background: #191e29;  
+    border-radius: 20px;  
+    padding: 22px;  
+    min-height: 330px;  
+}  
+  
+.content-icon {  
+    font-size: 42px;  
+    margin-bottom: 12px;  
+}  
+  
+.content-title {  
+    font-size: 22px;  
+    font-weight: bold;  
+    margin-bottom: 12px;  
+}  
+  
+.content-text {  
+    color: #aeb5c1;  
+    line-height: 1.8;  
+    font-size: 15px;  
+}  
+  
+.reward-button,  
+.watch-ad-button {  
+    width: 100%;  
+    border: none;  
+    background: #2d7dff;  
+    color: white;  
+    border-radius: 14px;  
+    padding: 15px;  
+    margin-top: 18px;  
+    font-size: 16px;  
+    font-weight: bold;  
+    cursor: pointer;  
+}  
+  
+.reward-button:disabled,  
+.watch-ad-button:disabled {  
+    background: #303744;  
+    color: #8f98a8;  
+    cursor: not-allowed;  
+}  
+  
+.reward-status,  
+.ads-message,  
+.task-message {  
+    text-align: center;  
+    margin-top: 14px;  
+    font-size: 14px;  
+    line-height: 1.6;  
+}  
+  
+.reward-success,  
+.ads-success,  
+.task-success {  
+    color: #58d68d;  
+}  
+  
+.reward-waiting,  
+.ads-waiting {  
+    color: #aeb5c1;  
+}  
+  
+.reward-error,  
+.ads-error,  
+.task-error {  
+    color: #ff7777;  
+}  
+  
+.ads-panel {  
+    margin-top: 20px;  
+}  
+  
+.ads-info {  
+    background: #111722;  
+    border-radius: 14px;  
+    padding: 14px;  
+    margin-top: 15px;  
+}  
+  
+.ads-row {  
+    display: flex;  
+    justify-content: space-between;  
+    align-items: center;  
+    padding: 7px 0;  
+    color: #b5bdc9;  
+    font-size: 14px;  
+}  
+  
+.ads-row strong {  
+    color: white;  
+}  
+  
+.tasks-panel {  
+    margin-top: 20px;  
+}  
+  
+.task-card {  
+    background: #111722;  
+    border-radius: 15px;  
+    padding: 15px;  
+    margin-top: 12px;  
+}  
+  
+.task-title {  
+    font-size: 16px;  
+    font-weight: bold;  
+    margin-bottom: 7px;  
+}  
+  
+.task-description {  
+    color: #aeb5c1;  
+    font-size: 13px;  
+    line-height: 1.6;  
+    margin-bottom: 10px;  
+}  
+  
+.task-reward {  
+    color: #ffd166;  
+    font-weight: bold;  
+    font-size: 14px;  
+    margin-bottom: 10px;  
+}  
+  
+.task-button {  
+    width: 100%;  
+    border: none;  
+    background: #2d7dff;  
+    color: white;  
+    border-radius: 11px;  
+    padding: 11px;  
+    font-weight: bold;  
+    cursor: pointer;  
+}  
+  
+.task-button:disabled {  
+    background: #303744;  
+    color: #8f98a8;  
+}  
+  
+.no-tasks {  
+    text-align: center;  
+    color: #8f98a8;  
+    padding: 25px 10px;  
+    line-height: 1.7;  
+}  
+  
+.referral-panel {  
+    margin-top: 20px;  
+    width: 100%;  
+}  
+  
+.referral-box {  
+    background: #111722;  
+    border-radius: 14px;  
+    padding: 15px;  
+    margin-top: 12px;  
+}  
+  
+.referral-label {  
+    color: #aeb5c1;  
+    font-size: 14px;  
+    margin-bottom: 8px;  
+}  
+  
+.referral-value {  
+    background: #191e29;  
+    border-radius: 10px;  
+    padding: 12px;  
+    word-break: break-all;  
+    font-size: 14px;  
+    color: white;  
+    min-height: 18px;  
+}  
+  
+.referral-actions {  
+    display: flex;  
+    gap: 10px;  
+    margin-top: 12px;  
+}  
+  
+.referral-action-button {  
+    flex: 1;  
+    border: none;  
+    background: #2d7dff;  
+    color: white;  
+    border-radius: 11px;  
+    padding: 12px 10px;  
+    font-size: 14px;  
+    font-weight: bold;  
+    cursor: pointer;  
+}  
+  
+.referral-action-button:active {  
+    transform: scale(.98);  
+}  
+  
+.referral-message {  
+    text-align: center;  
+    margin-top: 12px;  
+    font-size: 13px;  
+    line-height: 1.5;  
+}  
+  
+.referral-success {  
+    color: #58d68d;  
+}  
+  
+.referral-error {  
+    color: #ff7777;  
+}  
+  
+.referral-reward-info {  
+    background: #191e29;  
+    border-radius: 10px;  
+    padding: 11px;  
+    margin-top: 12px;  
+    text-align: center;  
+    color: #ffd166;  
+    font-size: 14px;  
+    font-weight: bold;  
+}  
+  
+.account-panel {  
+    margin-top: 20px;  
+    width: 100%;  
+}  
+  
+.account-box {  
+    background: #111722;  
+    border-radius: 14px;  
+    padding: 15px;  
+    margin-top: 12px;  
+}  
+  
+.account-label {  
+    color: #aeb5c1;  
+    font-size: 14px;  
+    margin-bottom: 8px;  
+}  
+  
+.account-value {  
+    background: #191e29;  
+    border-radius: 10px;  
+    padding: 12px;  
+    word-break: break-word;  
+    font-size: 14px;  
+    color: white;  
+    min-height: 18px;  
+}  
+  
+.account-message {  
+    text-align: center;  
+    margin-top: 12px;  
+    font-size: 13px;  
+    line-height: 1.5;  
+}  
+  
+.account-photo {  
+    width: 82px;  
+    height: 82px;  
+    border-radius: 50%;  
+    object-fit: cover;  
+    display: none;  
+    margin: 0 auto 15px;  
+}  
+  
+.bottom-nav {  
+    position: fixed;  
+    bottom: 0;  
+    left: 0;  
+    right: 0;  
+    width: 100%;  
+    background: #151922;  
+    border-top: 1px solid #252b36;  
+    padding: 7px 4px;  
+    z-index: 9999;  
+}  
+  
+.nav-container {  
+    width: 100%;  
+    max-width: 600px;  
+    margin: 0 auto;  
+    display: flex;  
+    gap: 3px;  
+}  
+  
+.nav-button {  
+    flex: 1;  
+    width: 16.666%;  
+    min-width: 0;  
+    border: none;  
+    background: transparent;  
+    color: #8f98a8;  
+    border-radius: 11px;  
+    padding: 6px 1px;  
+    cursor: pointer;  
+    font-size: 9px;  
+    line-height: 1.2;  
+    -webkit-tap-highlight-color: transparent;  
+}  
+  
+.nav-button.active {  
+    background: #252d3b;  
+    color: white;  
+}  
+  
+.nav-icon {  
+    display: block;  
+    font-size: 20px;  
+    line-height: 22px;  
+    margin-bottom: 3px;  
+}  
+  
+@media (max-width: 360px) {  
+  
+    .app {  
+        padding: 12px;  
+    }  
+  
+    .nav-button {  
+        font-size: 8px;  
+    }  
+  
+    .nav-icon {  
+        font-size: 18px;  
+    }  
+  
+    .logo {  
+        font-size: 21px;  
+    }  
+  
+    .coins {  
+        font-size: 27px;  
+    }  
+  
+}  
+  
+</style>  </head>  <body>  <div class="app">  <div class="top-bar">  
+
+    <div class="logo">  
+        EarnPool  
+    </div>  
+
+    <button  
+        type="button"  
+        class="language-button"  
+        id="languageButton"  
+    >  
+        🌐 EN  
+    </button>  
+
+</div>  
+
+
+<div  
+    class="language-menu"  
+    id="languageMenu"  
+>  
+
+    <button  
+        type="button"  
+        class="language-option"  
+        data-language="en"  
+    >  
+        🇬🇧 English  
+    </button>  
+
+    <button  
+        type="button"  
+        class="language-option"  
+        data-language="fa"  
+    >  
+        🇦🇫 فارسی  
+    </button>  
+
+    <button  
+        type="button"  
+        class="language-option"  
+        data-language="ar"  
+    >  
+        🇸🇦 العربية  
+    </button>  
+
+</div>  
+
+
+<div class="balance-card">  
+
+    <div  
+        class="balance-title"  
+        id="balanceTitle"  
+    >  
+        Your Balance  
+    </div>  
+
+    <div class="coins">  
+
+        <span id="coins">0</span> 🪙  
+
+    </div>  
+
+    <div  
+        class="usd-value"  
+        id="usdValue"  
+    >  
+        ≈ $0.000000  
+    </div>  
+
+</div>  
+
+
+<div class="content-card">  
+
+    <div  
+        class="content-icon"  
+        id="contentIcon"  
+    >  
+        🎁  
+    </div>  
+
+    <div  
+        class="content-title"  
+        id="contentTitle"  
+    >  
+        Daily Reward  
+    </div>  
+
+    <div  
+        class="content-text"  
+        id="contentText"  
+    >  
+        Claim your daily reward and earn coins every 12 hours.  
+    </div>  
+
+
+    <button  
+        type="button"  
+        id="rewardButton"  
+        class="reward-button"  
+    >  
+        🎁 Claim 1,000 Coins  
+    </button>  
+
+    <div  
+        id="rewardStatus"  
+        class="reward-status"  
+    ></div>  
+
+
+    <div  
+        id="adsPanel"  
+        class="ads-panel"  
+        style="display:none;"  
+    >  
+
+        <div class="ads-info">  
+
+            <div class="ads-row">  
+
+                <span id="adsWatchedLabel">  
+                    Ads watched  
+                </span>  
+
+                <strong>  
+
+                    <span id="adsWatched">0</span>  
+                    /  
+                    <span id="adsLimit">10</span>  
+
+                </strong>  
+
+            </div>  
+
+            <div class="ads-row">  
+
+                <span id="adsRemainingLabel">  
+                    Ads remaining  
+                </span>  
+
+                <strong id="adsRemaining">  
+                    10  
+                </strong>  
+
+            </div>  
+
+            <div class="ads-row">  
+
+                <span id="adsRewardLabel">  
+                    Reward  
+                </span>  
+
+                <strong>  
+                    2,000 🪙  
+                </strong>  
+
+            </div>  
+
+        </div>  
+
+
+        <button  
+            type="button"  
+            id="watchAdButton"  
+            class="watch-ad-button"  
+        >  
+            📺 Watch Ad +2,000  
+        </button>  
+
+        <div  
+            id="adsMessage"  
+            class="ads-message"  
+        ></div>  
+
+    </div>  
+
+
+    <div  
+        id="tasksPanel"  
+        class="tasks-panel"  
+        style="display:none;"  
+    >  
+
+        <div id="tasksList"></div>  
+
+        <div  
+            id="taskMessage"  
+            class="task-message"  
+        ></div>  
+
+    </div>  
+
+
+    <div  
+        id="referralPanel"  
+        class="referral-panel"  
+        style="display:none;"  
+    >  
+
+        <div class="referral-box">  
+
+            <div  
+                class="referral-label"  
+                data-key="referralLink"  
+            >  
+                Referral Link  
+            </div>  
+
+            <div  
+                id="referralLink"  
+                class="referral-value"  
+            >  
+                Loading...  
+            </div>  
+
+            <div class="referral-actions">  
+
+                <button  
+                    type="button"  
+                    id="copyReferralButton"  
+                    class="referral-action-button"  
+                >  
+                    📋 Copy  
+                </button>  
+
+                <button  
+                    type="button"  
+                    id="shareReferralButton"  
+                    class="referral-action-button"  
+                >  
+                    📤 Share  
+                </button>  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="referral-box">  
+
+            <div  
+                class="referral-label"  
+                data-key="referralCount"  
+            >  
+                Referrals  
+            </div>  
+
+            <div  
+                id="referralCount"  
+                class="referral-value"  
+            >  
+                0  
+            </div>  
+
+        </div>  
+
+
+        <div  
+            class="referral-reward-info"  
+            id="referralRewardInfo"  
+        >  
+            🎁 5,000 🪙 per referral  
+        </div>  
+
+
+        <div  
+            id="referralMessage"  
+            class="referral-message"  
+        ></div>  
+
+    </div>  
+
+
+    <div  
+        id="accountPanel"  
+        class="account-panel"  
+        style="display:none;"  
+    >  
+
+        <img  
+            id="accountPhoto"  
+            class="account-photo"  
+            alt="Profile"  
+        >  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountName"  
+            >  
+                Name  
+            </div>  
+
+            <div  
+                id="accountName"  
+                class="account-value"  
+            >  
+                -  
+            </div>  
+
+        </div>  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountUsername"  
+            >  
+                Username  
+            </div>  
+
+            <div  
+                id="accountUsername"  
+                class="account-value"  
+            >  
+                -  
+            </div>  
+
+        </div>  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountTelegramId"  
+            >  
+                Telegram ID  
+            </div>  
+
+            <div  
+                id="accountTelegramId"  
+                class="account-value"  
+            >  
+                -  
+            </div>  
+
+        </div>  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountBalance"  
+            >  
+                Balance  
+            </div>  
+
+            <div  
+                id="accountBalance"  
+                class="account-value"  
+            >  
+                0 🪙  
+            </div>  
+
+        </div>  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountUsd"  
+            >  
+                USD Value  
+            </div>  
+
+            <div  
+                id="accountUsd"  
+                class="account-value"  
+            >  
+                $0.000000  
+            </div>  
+
+        </div>  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountReferrals"  
+            >  
+                Referrals  
+            </div>  
+
+            <div  
+                id="accountReferrals"  
+                class="account-value"  
+            >  
+                0  
+            </div>  
+
+        </div>  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountAdsWatched"  
+            >  
+                Ads Watched  
+            </div>  
+
+            <div  
+                id="accountAdsWatched"  
+                class="account-value"  
+            >  
+                0  
+            </div>  
+
+        </div>  
+
+        <div class="account-box">  
+
+            <div  
+                class="account-label"  
+                data-key="accountLanguage"  
+            >  
+                Language  
+            </div>  
+
+            <div  
+                id="accountLanguage"  
+                class="account-value"  
+            >  
+                en  
+            </div>  
+
+        </div>  
+
+        <div  
+            id="accountMessage"  
+            class="account-message"  
+        ></div>  
+
+    </div>  
 
 </div>
 
-
-<!-- =====================================================
-     ADMIN PANEL JAVASCRIPT
-     فعلاً فقط رابط کاربری و توابع Frontend
-     Backend در مرحله app.py وصل خواهد شد.
-===================================================== -->
-
-<script>
-
-/* =====================================================
-   MAIN ADMIN ID
-===================================================== */
-
-const MAIN_ADMIN_ID =
-    "8009297169";
-
-
-/* =====================================================
-   CHECK ADMIN
-===================================================== */
-
-function isAdminUser() {
-
-    if (!user) {
-        return false;
-    }
-
-    return String(user.id) ===
-        MAIN_ADMIN_ID;
-
-}
-
-
-/* =====================================================
-   SHOW ADMIN PANEL
-===================================================== */
-
-function initializeAdminPanel() {
-
-    const panel =
-        document.getElementById(
-            "adminPanel"
-        );
-
-    if (!panel) {
-        return;
-    }
-
-
-    if (isAdminUser()) {
-
-        panel.style.display =
-            "block";
-
-    } else {
-
-        panel.style.display =
-            "none";
-
-    }
-
-}
-
-
-/* =====================================================
-   TOGGLE ADMIN PANEL
-===================================================== */
-
-function toggleAdminPanel() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    const content =
-        document.getElementById(
-            "adminContent"
-        );
-
-
-    const button =
-        document.getElementById(
-            "adminPanelToggle"
-        );
-
-
-    if (!content) {
-        return;
-    }
-
-
-    if (
-        content.style.display ===
-        "none" ||
-        !content.style.display
-    ) {
-
-        content.style.display =
-            "block";
-
-
-        if (button) {
-
-            button.textContent =
-                "🔽 بستن امکانات مدیریت";
-
-        }
-
-    } else {
-
-        content.style.display =
-            "none";
-
-
-        if (button) {
-
-            button.textContent =
-                "⚙️ امکانات مدیریت";
-
-        }
-
-    }
-
-}
-
-
-/* =====================================================
-   ADMIN MESSAGE HELPER
-===================================================== */
-
-function showAdminMessage(
-    elementId,
-    message,
-    type
-) {
-
-    const element =
-        document.getElementById(
-            elementId
-        );
-
-
-    if (!element) {
-        return;
-    }
-
-
-    element.className =
-        "admin-message";
-
-
-    if (type === "success") {
-
-        element.classList.add(
-            "admin-success"
-        );
-
-    } else if (type === "error") {
-
-        element.classList.add(
-            "admin-error"
-        );
-
-    } else {
-
-        element.classList.add(
-            "admin-info"
-        );
-
-    }
-
-
-    element.textContent =
-        message;
-
-}
-
-
-/* =====================================================
-   SAVE ADMIN REWARDS
-   Backend در app.py وصل خواهد شد.
-===================================================== */
-
-async function saveAdminRewards() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    const daily =
-        document.getElementById(
-            "adminDailyReward"
-        )?.value;
-
-
-    const ads =
-        document.getElementById(
-            "adminAdReward"
-        )?.value;
-
-
-    const tasks =
-        document.getElementById(
-            "adminTaskReward"
-        )?.value;
-
-
-    const referral =
-        document.getElementById(
-            "adminReferralReward"
-        )?.value;
-
-
-    if (
-        daily === "" ||
-        ads === "" ||
-        tasks === "" ||
-        referral === ""
-    ) {
-
-        showAdminMessage(
-            "adminRewardMessage",
-            "لطفاً تمام مقدارهای پاداش را وارد کنید.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    showAdminMessage(
-        "adminRewardMessage",
-        "ذخیره پاداش‌ها بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   SAVE COIN VALUE
-===================================================== */
-
-async function saveAdminCoinValue() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    const value =
-        document.getElementById(
-            "adminCoinsPerUsd"
-        )?.value;
-
-
-    if (
-        !value ||
-        Number(value) <= 0
-    ) {
-
-        showAdminMessage(
-            "adminCoinMessage",
-            "لطفاً مقدار معتبر وارد کنید.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    showAdminMessage(
-        "adminCoinMessage",
-        "ذخیره ارزش سکه بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   SEND BROADCAST
-===================================================== */
-
-async function sendAdminBroadcast() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    const message =
-        document.getElementById(
-            "adminBroadcastMessage"
-        )?.value.trim();
-
-
-    if (!message) {
-
-        showAdminMessage(
-            "adminBroadcastMessageStatus",
-            "لطفاً متن پیام را وارد کنید.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    showAdminMessage(
-        "adminBroadcastMessageStatus",
-        "ارسال پیام بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   ADMIN STATS
-===================================================== */
-
-async function loadAdminStats() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    showAdminMessage(
-        "adminStatsMessage",
-        "دریافت آمار بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   CREATE MANUAL TASK
-===================================================== */
-
-async function createAdminTask() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    const type =
-        document.getElementById(
-            "adminTaskType"
-        )?.value;
-
-
-    const title =
-        document.getElementById(
-            "adminTaskTitle"
-        )?.value.trim();
-
-
-    const description =
-        document.getElementById(
-            "adminTaskDescription"
-        )?.value.trim();
-
-
-    const url =
-        document.getElementById(
-            "adminTaskUrl"
-        )?.value.trim();
-
-
-    const reward =
-        document.getElementById(
-            "adminTaskReward"
-        )?.value;
-
-
-    if (
-        !title ||
-        !url ||
-        !reward
-    ) {
-
-        showAdminMessage(
-            "adminTaskMessage",
-            "لطفاً اطلاعات تسک را کامل وارد کنید.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    showAdminMessage(
-        "adminTaskMessage",
-        "ایجاد تسک بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   LOAD WITHDRAWALS
-===================================================== */
-
-async function loadAdminWithdrawals() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    showAdminMessage(
-        "adminWithdrawalsMessage",
-        "دریافت درخواست‌های برداشت بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   ADD ADMIN
-===================================================== */
-
-async function addAdmin() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    const telegramId =
-        document.getElementById(
-            "newAdminTelegramId"
-        )?.value;
-
-
-    const name =
-        document.getElementById(
-            "newAdminName"
-        )?.value.trim();
-
-
-    if (
-        !telegramId
-    ) {
-
-        showAdminMessage(
-            "adminManagementMessage",
-            "لطفاً آیدی عددی ادمین را وارد کنید.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    showAdminMessage(
-        "adminManagementMessage",
-        "افزودن ادمین بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   LOAD ADMINS
-===================================================== */
-
-async function loadAdmins() {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    showAdminMessage(
-        "adminManagementMessage",
-        "دریافت لیست ادمین‌ها بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   REMOVE ADMIN
-   ادمین اصلی هرگز از Frontend قابل حذف نیست.
-===================================================== */
-
-async function removeAdmin(adminId) {
-
-    if (!isAdminUser()) {
-        return;
-    }
-
-
-    if (
-        String(adminId) ===
-        MAIN_ADMIN_ID
-    ) {
-
-        showAdminMessage(
-            "adminManagementMessage",
-            "ادمین اصلی قابل حذف نیست.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    showAdminMessage(
-        "adminManagementMessage",
-        "حذف ادمین بعد از اتصال Backend فعال می‌شود.",
-        "info"
-    );
-
-}
-
-
-/* =====================================================
-   INITIALIZE ADMIN PANEL
-===================================================== */
-
-initializeAdminPanel();
-
+</div>  <div class="bottom-nav">  <div class="nav-container">  
+
+    <button  
+        type="button"  
+        class="nav-button active"  
+        data-section="daily"  
+    >  
+        <span class="nav-icon">🎁</span>  
+        <span data-key="daily">Daily</span>  
+    </button>  
+
+
+    <button  
+        type="button"  
+        class="nav-button"  
+        data-section="ads"  
+    >  
+        <span class="nav-icon">📺</span>  
+        <span data-key="ads">Ads</span>  
+    </button>  
+
+
+    <button  
+        type="button"  
+        class="nav-button"  
+        data-section="tasks"  
+    >  
+        <span class="nav-icon">🎯</span>  
+        <span data-key="tasks">Tasks</span>  
+    </button>  
+
+
+    <button  
+        type="button"  
+        class="nav-button"  
+        data-section="referral"  
+    >  
+        <span class="nav-icon">👥</span>  
+        <span data-key="referral">Referral</span>  
+    </button>  
+
+
+    <button  
+        type="button"  
+        class="nav-button"  
+        data-section="withdraw"  
+    >  
+        <span class="nav-icon">💰</span>  
+        <span data-key="withdraw">Withdraw</span>  
+    </button>  
+
+
+    <button  
+        type="button"  
+        class="nav-button"  
+        data-section="account"  
+    >  
+        <span class="nav-icon">👤</span>  
+        <span data-key="account">Account</span>  
+    </button>  
+
+</div>
+
+</div>  <script>  
+  
+/* =====================================================  
+   TELEGRAM  
+===================================================== */  
+  
+const tg =  
+    window.Telegram &&  
+    window.Telegram.WebApp  
+        ? window.Telegram.WebApp  
+        : null;  
+  
+if (tg) {  
+    tg.ready();  
+    tg.expand();  
+}  
+  
+const user =  
+    tg &&  
+    tg.initDataUnsafe &&  
+    tg.initDataUnsafe.user  
+        ? tg.initDataUnsafe.user  
+        : null;  
+  
+  
+/* =====================================================  
+   ADSGRAM  
+===================================================== */  
+  
+let AdController = null;  
+  
+try {  
+  
+    if (  
+        window.Adsgram &&  
+        typeof window.Adsgram.init === "function"  
+    ) {  
+  
+        AdController =  
+            window.Adsgram.init({  
+                blockId: "44182"  
+            });  
+  
+    }  
+  
+} catch (error) {  
+  
+    console.error(  
+        "AdsGram initialization error:",  
+        error  
+    );  
+  
+}  
+  
+  
+/* =====================================================  
+   GLOBAL  
+===================================================== */  
+  
+let coins = 0;  
+  
+const DAILY_REWARD = 1000;  
+const AD_REWARD = 2000;  
+const TASK_REWARD = 1000;  
+const AD_LIMIT = 10;  
+  
+  
+/* =====================================================  
+   TRANSLATIONS  
+===================================================== */  
+  
+const translations = {  
+  
+    en: {  
+  
+        balance: "Your Balance",  
+  
+        daily: "Daily",  
+        ads: "Ads",  
+        tasks: "Tasks",  
+        referral: "Referral",  
+        withdraw: "Withdraw",  
+        account: "Account",  
+  
+        accountName: "Name",  
+        accountUsername: "Username",  
+        accountTelegramId: "Telegram ID",  
+        accountBalance: "Balance",  
+        accountUsd: "USD Value",  
+        accountReferrals: "Referrals",  
+        accountAdsWatched: "Ads Watched",  
+        accountLanguage: "Language",  
+  
+        referralLink: "Referral Link",  
+        referralCount: "Referrals",  
+        referralCopy: "📋 Copy",  
+        referralShare: "📤 Share",  
+        referralReward: "🎁 5,000 🪙 per referral",  
+  
+        dailyTitle: "Daily Reward",  
+        dailyText:  
+            "Claim your daily reward and earn coins every 12 hours.",  
+  
+        adsTitle: "Watch Ads",  
+        adsText:  
+            "Watch advertisements and earn coins.",  
+  
+        tasksTitle: "Tasks",  
+        tasksText:  
+            "Complete available tasks and earn rewards.",  
+  
+        referralTitle: "Referral",  
+        referralText:  
+            "Invite friends and earn referral rewards.",  
+  
+        withdrawTitle: "Withdraw",  
+        withdrawText:  
+            "Withdraw your available balance.",  
+  
+        accountTitle: "Account",  
+        accountText:  
+            "View your account information and statistics.",  
+  
+        claim: "🎁 Claim 1,000 Coins",  
+        claimed: "✅ Reward Claimed",  
+  
+        congratulations:  
+            "🎉 Congratulations! You received 1,000 coins.",  
+  
+        waiting:  
+            "⏳ Next reward in",  
+  
+        adsWatched: "Ads watched",  
+        adsRemaining: "Ads remaining",  
+        adsReward: "Reward",  
+  
+        watchAd:  
+            "📺 Watch Ad +2,000",  
+  
+        adSuccess:  
+            "🎉 Congratulations! You received 2,000 coins.",  
+  
+        adLimit:  
+            "⏳ You have reached your 10-ad limit.",  
+  
+        adError:  
+            "❌ The ad could not be completed. No coins were added.",  
+  
+        adsReset:  
+            "Next ads available in",  
+  
+        taskReward:  
+            "Reward: 1,000 🪙",  
+  
+        taskSuccess:  
+            "🎉 Task completed! You received 1,000 coins.",  
+  
+        taskAlready:  
+            "This task has already been completed.",  
+  
+        noTasks:  
+            "🎯 No new tasks available right now.",  
+  
+        tasksLoading:  
+            "⏳ Loading tasks...",  
+  
+        error:  
+            "Something went wrong. Please try again."  
+  
+    },  
+  
+  
+    fa: {  
+  
+        balance: "موجودی شما",  
+  
+        daily: "روزانه",  
+        ads: "تبلیغات",  
+        tasks: "تسک‌ها",  
+        referral: "رفرال",  
+        withdraw: "برداشت",  
+        account: "حساب",  
+  
+        accountName: "نام",  
+        accountUsername: "نام کاربری",  
+        accountTelegramId: "آیدی تلگرام",  
+        accountBalance: "موجودی",  
+        accountUsd: "ارزش دلاری",  
+        accountReferrals: "تعداد دعوت‌ها",  
+        accountAdsWatched: "تبلیغات دیده‌شده",  
+        accountLanguage: "زبان",  
+  
+        referralLink: "لینک رفرال",  
+        referralCount: "تعداد دعوت‌ها",  
+        referralCopy: "📋 کپی",  
+        referralShare: "📤 اشتراک‌گذاری",  
+        referralReward: "🎁 برای هر دعوت ۵,۰۰۰ 🪙",  
+  
+        dailyTitle: "پاداش روزانه",  
+        dailyText:  
+            "هر ۱۲ ساعت پاداش خود را دریافت کنید.",  
+  
+        adsTitle: "دیدن تبلیغات",  
+        adsText:  
+            "تبلیغات را تماشا کنید و سکه دریافت کنید.",  
+  
+        tasksTitle: "تسک‌ها",  
+        tasksText:  
+            "تسک‌های موجود را انجام دهید و پاداش دریافت کنید.",  
+  
+        referralTitle: "رفرال",  
+        referralText:  
+            "دوستان خود را دعوت کنید و پاداش رفرال دریافت کنید.",  
+  
+        withdrawTitle: "برداشت",  
+        withdrawText:  
+            "موجودی قابل برداشت خود را برداشت کنید.",  
+  
+        accountTitle: "حساب کاربری",  
+        accountText:  
+            "اطلاعات حساب و آمار خود را مشاهده کنید.",  
+  
+        claim: "🎁 دریافت ۱,۰۰۰ سکه",  
+        claimed: "✅ پاداش دریافت شد",  
+  
+        congratulations:  
+            "🎉 تبریک! شما ۱,۰۰۰ سکه دریافت کردید.",  
+  
+        waiting:  
+            "⏳ پاداش بعدی تا",  
+  
+        adsWatched: "تبلیغات دیده‌شده",  
+        adsRemaining: "تبلیغات باقی‌مانده",  
+        adsReward: "پاداش",  
+  
+        watchAd:  
+            "📺 دیدن تبلیغ +۲,۰۰۰",  
+  
+        adSuccess:  
+            "🎉 تبریک! شما ۲,۰۰۰ سکه دریافت کردید.",  
+  
+        adLimit:  
+            "⏳ شما به محدودیت ۱۰ تبلیغ رسیده‌اید.",  
+  
+        adError:  
+            "❌ تبلیغ کامل نشد. سکه‌ای اضافه نشد.",  
+  
+        adsReset:  
+            "تبلیغات بعدی تا",  
+  
+        taskReward:  
+            "پاداش: ۱,۰۰۰ 🪙",  
+  
+        taskSuccess:  
+            "🎉 تسک انجام شد! ۱,۰۰۰ سکه دریافت کردید.",  
+  
+        taskAlready:  
+            "این تسک قبلاً انجام شده است.",  
+  
+        noTasks:  
+            "🎯 فعلاً تسک جدیدی وجود ندارد.",  
+  
+        tasksLoading:  
+            "⏳ در حال دریافت تسک‌ها...",  
+  
+        error:  
+            "خطایی رخ داد. دوباره تلاش کنید."  
+  
+    },  
+  
+  
+    ar: {  
+  
+        balance: "رصيدك",  
+  
+        daily: "اليومي",  
+        ads: "الإعلانات",  
+        tasks: "المهام",  
+        referral: "الإحالة",  
+        withdraw: "السحب",  
+        account: "الحساب",  
+  
+        accountName: "الاسم",  
+        accountUsername: "اسم المستخدم",  
+        accountTelegramId: "معرف Telegram",  
+        accountBalance: "الرصيد",  
+        accountUsd: "القيمة بالدولار",  
+        accountReferrals: "الإحالات",  
+        accountAdsWatched: "الإعلانات المشاهدة",  
+        accountLanguage: "اللغة",  
+  
+        referralLink: "رابط الإحالة",  
+        referralCount: "عدد الإحالات",  
+        referralCopy: "📋 نسخ",  
+        referralShare: "📤 مشاركة",  
+        referralReward: "🎁 5,000 🪙 لكل إحالة",  
+  
+        dailyTitle: "المكافأة اليومية",  
+        dailyText:  
+            "احصل على مكافأتك كل 12 ساعة.",  
+  
+        adsTitle: "مشاهدة الإعلانات",  
+        adsText:  
+            "شاهد الإعلانات واربح العملات.",  
+  
+        tasksTitle: "المهام",  
+        tasksText:  
+            "أكمل المهام المتاحة واحصل على المكافآت.",  
+  
+        referralTitle: "الإحالة",  
+        referralText:  
+            "ادعُ أصدقاءك واربح مكافآت الإحالة.",  
+  
+        withdrawTitle: "السحب",  
+        withdrawText:  
+            "اسحب رصيدك المتاح.",  
+  
+        accountTitle: "الحساب",  
+        accountText:  
+            "عرض معلومات حسابك وإحصائياتك.",  
+  
+        claim: "🎁 احصل على 1,000 عملة",  
+        claimed: "✅ تم استلام المكافأة",  
+  
+        congratulations:  
+            "🎉 مبروك! حصلت على 1,000 عملة.",  
+  
+        waiting:  
+            "⏳ المكافأة التالية خلال",  
+  
+        adsWatched: "الإعلانات المشاهدة",  
+        adsRemaining: "الإعلانات المتبقية",  
+        adsReward: "المكافأة",  
+  
+        watchAd:  
+            "📺 شاهد الإعلان +2,000",  
+  
+        adSuccess:  
+            "🎉 مبروك! حصلت على 2,000 عملة.",  
+  
+        adLimit:  
+            "⏳ وصلت إلى حد 10 إعلانات.",  
+  
+        adError:  
+            "❌ لم تكتمل مشاهدة الإعلان. لم تتم إضافة العملات.",  
+  
+        adsReset:  
+            "الإعلانات التالية خلال",  
+  
+        taskReward:  
+            "المكافأة: 1,000 🪙",  
+  
+        taskSuccess:  
+            "🎉 تم إكمال المهمة! حصلت على 1,000 عملة.",  
+  
+        taskAlready:  
+            "تم إكمال هذه المهمة مسبقًا.",  
+  
+        noTasks:  
+            "🎯 لا توجد مهام جديدة حاليًا.",  
+  
+        tasksLoading:  
+            "⏳ جارٍ تحميل المهام...",  
+  
+        error:  
+            "حدث خطأ. حاول مرة أخرى."  
+  
+    }  
+  
+};  
+  
+  
+/* =====================================================  
+   SECTION ICONS  
+===================================================== */  
+  
+const sectionIcons = {  
+  
+    daily: "🎁",  
+    ads: "📺",  
+    tasks: "🎯",  
+    referral: "👥",  
+    withdraw: "💰",  
+    account: "👤"  
+  
+};  
+  
+  
+let currentSection = "daily";  
+  
+  
+/* =====================================================  
+   UPDATE BALANCE  
+===================================================== */  
+  
+function updateBalance() {  
+  
+    const coinsElement =  
+        document.getElementById("coins");  
+  
+    const usdElement =  
+        document.getElementById("usdValue");  
+  
+    const amount =  
+        Number(coins || 0);  
+  
+    if (coinsElement) {  
+  
+        coinsElement.textContent =  
+            amount.toLocaleString();  
+  
+    }  
+  
+    if (usdElement) {  
+  
+        usdElement.textContent =  
+            "≈ $" +  
+            (amount / 1000000).toFixed(6);  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   LANGUAGE  
+===================================================== */  
+  
+function detectLanguage() {  
+  
+    if (!user) {  
+        return "en";  
+    }  
+  
+    const code =  
+        String(  
+            user.language_code || ""  
+        ).toLowerCase();  
+  
+    if (  
+        code === "fa" ||  
+        code.startsWith("fa-")  
+    ) {  
+        return "fa";  
+    }  
+  
+    if (  
+        code === "ar" ||  
+        code.startsWith("ar-")  
+    ) {  
+        return "ar";  
+    }  
+  
+    return "en";  
+}  
+  
+  
+function getLanguage() {  
+  
+    const saved =  
+        localStorage.getItem("language");  
+  
+    if (  
+        saved &&  
+        translations[saved]  
+    ) {  
+        return saved;  
+    }  
+  
+    return detectLanguage();  
+}  
+  
+  
+/* =====================================================  
+   APPLY LANGUAGE  
+===================================================== */  
+  
+function applyLanguage(lang) {  
+  
+    if (!translations[lang]) {  
+        lang = "en";  
+    }  
+  
+    localStorage.setItem(  
+        "language",  
+        lang  
+    );  
+  
+    const t =  
+        translations[lang];  
+  
+    document.documentElement.lang =  
+        lang;  
+  
+    document.documentElement.dir =  
+        lang === "en"  
+            ? "ltr"  
+            : "rtl";  
+  
+  
+    const balanceTitle =  
+        document.getElementById(  
+            "balanceTitle"  
+        );  
+  
+    if (balanceTitle) {  
+        balanceTitle.textContent =  
+            t.balance;  
+    }  
+  
+  
+    document  
+        .querySelectorAll("[data-key]")  
+        .forEach(function(element) {  
+  
+            const key =  
+                element.getAttribute(  
+                    "data-key"  
+                );  
+  
+            if (  
+                Object.prototype.hasOwnProperty.call(  
+                    t,  
+                    key  
+                )  
+            ) {  
+  
+                element.textContent =  
+                    t[key];  
+  
+            }  
+  
+        });  
+  
+  
+    const languageButton =  
+        document.getElementById(  
+            "languageButton"  
+        );  
+  
+    if (languageButton) {  
+  
+        languageButton.textContent = {  
+  
+            en: "🌐 EN",  
+            fa: "🌐 FA",  
+            ar: "🌐 AR"  
+  
+        }[lang];  
+  
+    }  
+  
+  
+    updateBalance();  
+  
+  
+    /*  
+     مهم:  
+     اینجا دیگر showSection را اجرا نمی‌کنیم.  
+     چون اجرای دوباره showSection باعث  
+     تداخل با دکمه‌ها و API می‌شد.  
+    */  
+  
+    updateCurrentSectionText();  
+  
+}  
+  
+  
+/* =====================================================  
+   UPDATE CURRENT SECTION TEXT  
+===================================================== */  
+  
+function updateCurrentSectionText() {  
+  
+    const lang =  
+        getLanguage();  
+  
+    const t =  
+        translations[lang] ||  
+        translations.en;  
+  
+    const content = {  
+  
+        daily: {  
+            title: t.dailyTitle,  
+            text: t.dailyText  
+        },  
+  
+        ads: {  
+            title: t.adsTitle,  
+            text: t.adsText  
+        },  
+  
+        tasks: {  
+            title: t.tasksTitle,  
+            text: t.tasksText  
+        },  
+  
+        referral: {  
+            title: t.referralTitle,  
+            text: t.referralText  
+        },  
+  
+        withdraw: {  
+            title: t.withdrawTitle,  
+            text: t.withdrawText  
+        },  
+  
+        account: {  
+            title: t.accountTitle,  
+            text: t.accountText  
+        }  
+  
+    };  
+  
+    const item =  
+        content[currentSection] ||  
+        content.daily;  
+  
+  
+    const icon =  
+        document.getElementById(  
+            "contentIcon"  
+        );  
+  
+    const title =  
+        document.getElementById(  
+            "contentTitle"  
+        );  
+  
+    const text =  
+        document.getElementById(  
+            "contentText"  
+        );  
+  
+  
+    if (icon) {  
+  
+        icon.textContent =  
+            sectionIcons[currentSection] ||  
+            sectionIcons.daily;  
+  
+    }  
+  
+    if (title) {  
+  
+        title.textContent =  
+            item.title;  
+  
+    }  
+  
+    if (text) {  
+  
+        text.textContent =  
+            item.text;  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   CHANGE LANGUAGE  
+===================================================== */  
+  
+function changeLanguage(lang) {  
+  
+    if (!translations[lang]) {  
+        lang = "en";  
+    }  
+  
+    localStorage.setItem(  
+        "language",  
+        lang  
+    );  
+  
+    applyLanguage(lang);  
+  
+    const menu =  
+        document.getElementById(  
+            "languageMenu"  
+        );  
+  
+    if (menu) {  
+  
+        menu.classList.remove(  
+            "show"  
+        );  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   LANGUAGE MENU  
+===================================================== */  
+  
+function toggleLanguageMenu() {  
+  
+    const menu =  
+        document.getElementById(  
+            "languageMenu"  
+        );  
+  
+    if (!menu) {  
+        return;  
+    }  
+  
+    menu.classList.toggle(  
+        "show"  
+    );  
+  
+}  
+  
+  
+/* =====================================================  
+   SHOW SECTION  
+   فقط یک نسخه در کل index.html  
+===================================================== */  
+  
+function showSection(section, button) {  
+  
+    if (  
+        !sectionIcons[section] ||  
+        !translations[getLanguage()]  
+    ) {  
+  
+        section = "daily";  
+  
+    }  
+  
+  
+    currentSection =  
+        section;  
+  
+  
+    /*  
+     Active button  
+    */  
+  
+    document  
+        .querySelectorAll(".nav-button")  
+        .forEach(function(btn) {  
+  
+            btn.classList.remove(  
+                "active"  
+            );  
+  
+        });  
+  
+  
+    if (button) {  
+  
+        button.classList.add(  
+            "active"  
+        );  
+  
+    } else {  
+  
+        const active =  
+            document.querySelector(  
+                '.nav-button[data-section="' +  
+                section +  
+                '"]'  
+            );  
+  
+        if (active) {  
+  
+            active.classList.add(  
+                "active"  
+            );  
+  
+        }  
+  
+    }  
+  
+  
+    updateCurrentSectionText();  
+  
+  
+    /*  
+     Get panels  
+    */  
+  
+    const rewardButton =  
+        document.getElementById(  
+            "rewardButton"  
+        );  
+  
+    const rewardStatus =  
+        document.getElementById(  
+            "rewardStatus"  
+        );  
+  
+    const adsPanel =  
+        document.getElementById(  
+            "adsPanel"  
+        );  
+  
+    const tasksPanel =  
+        document.getElementById(  
+            "tasksPanel"  
+        );  
+  
+    const referralPanel =  
+        document.getElementById(  
+            "referralPanel"  
+        );  
+  
+    const accountPanel =  
+        document.getElementById(  
+            "accountPanel"  
+        );  
+  
+  
+    /*  
+     Hide all  
+    */  
+  
+    if (rewardButton)  
+        rewardButton.style.display = "none";  
+  
+    if (rewardStatus)  
+        rewardStatus.style.display = "none";  
+  
+    if (adsPanel)  
+        adsPanel.style.display = "none";  
+  
+    if (tasksPanel)  
+        tasksPanel.style.display = "none";  
+  
+    if (referralPanel)  
+        referralPanel.style.display = "none";  
+  
+    if (accountPanel)  
+        accountPanel.style.display = "none";  
+  
+  
+    /*  
+     DAILY  
+    */  
+  
+    if (section === "daily") {  
+  
+        if (rewardButton)  
+            rewardButton.style.display = "block";  
+  
+        if (rewardStatus)  
+            rewardStatus.style.display = "block";  
+  
+        if (  
+            typeof checkDailyReward ===  
+            "function"  
+        ) {  
+  
+            checkDailyReward();  
+  
+        }  
+  
+        return;  
+    }  
+  
+  
+    /*  
+     ADS  
+    */  
+  
+    if (section === "ads") {  
+  
+        if (adsPanel)  
+            adsPanel.style.display = "block";  
+  
+        if (  
+            typeof loadAdsStatus ===  
+            "function"  
+        ) {  
+  
+            loadAdsStatus();  
+  
+        }  
+  
+        return;  
+    }  
+  
+  
+    /*  
+     TASKS  
+    */  
+  
+    if (section === "tasks") {  
+  
+        if (tasksPanel)  
+            tasksPanel.style.display = "block";  
+  
+        if (  
+            typeof loadTasks ===  
+            "function"  
+        ) {  
+  
+            loadTasks();  
+  
+        }  
+  
+        return;  
+    }  
+  
+  
+    /*  
+     REFERRAL  
+    */  
+  
+    if (section === "referral") {  
+  
+        if (referralPanel)  
+            referralPanel.style.display = "block";  
+  
+        if (  
+            typeof loadReferralData ===  
+            "function"  
+        ) {  
+  
+            loadReferralData();  
+  
+        }  
+  
+        return;  
+    }  
+  
+  
+    /*  
+     WITHDRAW  
+    */  
+  
+    if (section === "withdraw") {  
+  
+        return;  
+    }  
+  
+  
+    /*  
+     ACCOUNT  
+    */  
+  
+    if (section === "account") {  
+  
+        if (accountPanel)  
+            accountPanel.style.display = "block";  
+  
+        if (  
+            typeof loadAccountData ===  
+            "function"  
+        ) {  
+  
+            loadAccountData();  
+  
+        }  
+  
+        return;  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   EVENT LISTENERS  
+   این بخش باعث می‌شود دکمه‌ها حتی بدون onclick  
+   هم کاملاً کار کنند.  
+===================================================== */  
+  
+document.addEventListener(  
+    "DOMContentLoaded",  
+    function() {  
+  
+        /*  
+         Bottom navigation  
+        */  
+  
+        document  
+            .querySelectorAll(".nav-button")  
+            .forEach(function(button) {  
+  
+                button.addEventListener(  
+                    "click",  
+                    function(event) {  
+  
+                        event.preventDefault();  
+                        event.stopPropagation();  
+  
+                        showSection(  
+                            button.dataset.section,  
+                            button  
+                        );  
+  
+                    }  
+                );  
+  
+            });  
+  
+  
+        /*  
+         Language button  
+        */  
+  
+        const languageButton =  
+            document.getElementById(  
+                "languageButton"  
+            );  
+  
+        if (languageButton) {  
+  
+            languageButton.addEventListener(  
+                "click",  
+                function(event) {  
+  
+                    event.preventDefault();  
+                    event.stopPropagation();  
+  
+                    toggleLanguageMenu();  
+  
+                }  
+            );  
+  
+        }  
+  
+  
+        /*  
+         Language options  
+        */  
+  
+        document  
+            .querySelectorAll(  
+                ".language-option"  
+            )  
+            .forEach(function(option) {  
+  
+                option.addEventListener(  
+                    "click",  
+                    function(event) {  
+  
+                        event.preventDefault();  
+                        event.stopPropagation();  
+  
+                        changeLanguage(  
+                            option.dataset.language  
+                        );  
+  
+                    }  
+                );  
+  
+            });  
+  
+  
+        /*  
+         Daily button  
+        */  
+  
+        const rewardButton =  
+            document.getElementById(  
+                "rewardButton"  
+            );  
+  
+        if (rewardButton) {  
+  
+            rewardButton.addEventListener(  
+                "click",  
+                function() {  
+  
+                    if (  
+                        typeof claimDailyReward ===  
+                        "function"  
+                    ) {  
+  
+                        claimDailyReward();  
+  
+                    }  
+  
+                }  
+            );  
+  
+        }  
+  
+  
+        /*  
+         Ads button  
+        */  
+  
+        const watchAdButton =  
+            document.getElementById(  
+                "watchAdButton"  
+            );  
+  
+        if (watchAdButton) {  
+  
+            watchAdButton.addEventListener(  
+                "click",  
+                function() {  
+  
+                    if (  
+                        typeof watchAd ===  
+                        "function"  
+                    ) {  
+  
+                        watchAd();  
+  
+                    }  
+  
+                }  
+            );  
+  
+        }  
+  
+  
+        /*  
+         Referral buttons  
+        */  
+  
+        const copyButton =  
+            document.getElementById(  
+                "copyReferralButton"  
+            );  
+  
+        if (copyButton) {  
+  
+            copyButton.addEventListener(  
+                "click",  
+                function() {  
+  
+                    if (  
+                        typeof copyReferralLink ===  
+                        "function"  
+                    ) {  
+  
+                        copyReferralLink();  
+  
+                    }  
+  
+                }  
+            );  
+  
+        }  
+  
+  
+        const shareButton =  
+            document.getElementById(  
+                "shareReferralButton"  
+            );  
+  
+        if (shareButton) {  
+  
+            shareButton.addEventListener(  
+                "click",  
+                function() {  
+  
+                    if (  
+                        typeof shareReferralLink ===  
+                        "function"  
+                    ) {  
+  
+                        shareReferralLink();  
+  
+                    }  
+  
+                }  
+            );  
+  
+        }  
+  
+  
+        /*  
+         Close language menu  
+        */  
+  
+        document.addEventListener(  
+            "click",  
+            function(event) {  
+  
+                const menu =  
+                    document.getElementById(  
+                        "languageMenu"  
+                    );  
+  
+                const button =  
+                    document.getElementById(  
+                        "languageButton"  
+                    );  
+  
+                if (  
+                    menu &&  
+                    button &&  
+                    !menu.contains(event.target) &&  
+                    !button.contains(event.target)  
+                ) {  
+  
+                    menu.classList.remove(  
+                        "show"  
+                    );  
+  
+                }  
+  
+            }  
+        );  
+  
+  
+        /*  
+         Initial language  
+        */  
+  
+        let language =  
+            localStorage.getItem(  
+                "language"  
+            );  
+  
+        if (  
+            !language ||  
+            !translations[language]  
+        ) {  
+  
+            language =  
+                detectLanguage();  
+  
+        }  
+  
+        applyLanguage(language);  
+  
+  
+        /*  
+         Initial section  
+        */  
+  
+        showSection(  
+            "daily",  
+            document.querySelector(  
+                '.nav-button[data-section="daily"]'  
+            )  
+        );  
+  
+    }  
+  
+);  
+  
+</script> 
+    <script>  
+  
+/* =====================================================  
+   SHOW SECTION  
+===================================================== */  
+  
+function showSection(section, button) {  
+  
+    if (!section || !sectionIcons[section]) {  
+        section = "daily";  
+    }  
+  
+    currentSection = section;  
+  
+  
+    /* =====================================================  
+       ACTIVE NAV BUTTON  
+    ===================================================== */  
+  
+    document  
+        .querySelectorAll(".nav-button")  
+        .forEach(function(btn) {  
+  
+            btn.classList.remove("active");  
+  
+        });  
+  
+  
+    if (button) {  
+  
+        button.classList.add("active");  
+  
+    } else {  
+  
+        const activeButton =  
+            document.querySelector(  
+                '.nav-button[data-section="' +  
+                section +  
+                '"]'  
+            );  
+  
+        if (activeButton) {  
+  
+            activeButton.classList.add("active");  
+  
+        }  
+  
+    }  
+  
+  
+    /* =====================================================  
+       LANGUAGE  
+    ===================================================== */  
+  
+    const lang = getLanguage();  
+  
+    const t =  
+        translations[lang] ||  
+        translations.en;  
+  
+  
+    /* =====================================================  
+       CONTENT  
+    ===================================================== */  
+  
+    const content = {  
+  
+        daily: {  
+            title: t.dailyTitle,  
+            text: t.dailyText  
+        },  
+  
+        ads: {  
+            title: t.adsTitle,  
+            text: t.adsText  
+        },  
+  
+        tasks: {  
+            title: t.tasksTitle,  
+            text: t.tasksText  
+        },  
+  
+        referral: {  
+            title: t.referralTitle,  
+            text: t.referralText  
+        },  
+  
+        withdraw: {  
+            title: t.withdrawTitle,  
+            text: t.withdrawText  
+        },  
+  
+        account: {  
+            title: t.accountTitle,  
+            text: t.accountText  
+        }  
+  
+    };  
+  
+  
+    document.getElementById(  
+        "contentIcon"  
+    ).textContent =  
+        sectionIcons[section];  
+  
+  
+    document.getElementById(  
+        "contentTitle"  
+    ).textContent =  
+        content[section].title;  
+  
+  
+    document.getElementById(  
+        "contentText"  
+    ).textContent =  
+        content[section].text;  
+  
+  
+    /* =====================================================  
+       ELEMENTS  
+    ===================================================== */  
+  
+    const rewardButton =  
+        document.getElementById(  
+            "rewardButton"  
+        );  
+  
+  
+    const rewardStatus =  
+        document.getElementById(  
+            "rewardStatus"  
+        );  
+  
+  
+    const adsPanel =  
+        document.getElementById(  
+            "adsPanel"  
+        );  
+  
+  
+    const tasksPanel =  
+        document.getElementById(  
+            "tasksPanel"  
+        );  
+  
+  
+    const referralPanel =  
+        document.getElementById(  
+            "referralPanel"  
+        );  
+  
+  
+    const accountPanel =  
+        document.getElementById(  
+            "accountPanel"  
+        );  
+  
+  
+    /* =====================================================  
+       HIDE ALL PANELS  
+    ===================================================== */  
+  
+    if (rewardButton) {  
+        rewardButton.style.display = "none";  
+    }  
+  
+    if (rewardStatus) {  
+        rewardStatus.style.display = "none";  
+    }  
+  
+    if (adsPanel) {  
+        adsPanel.style.display = "none";  
+    }  
+  
+    if (tasksPanel) {  
+        tasksPanel.style.display = "none";  
+    }  
+  
+    if (referralPanel) {  
+        referralPanel.style.display = "none";  
+    }  
+  
+    if (accountPanel) {  
+        accountPanel.style.display = "none";  
+    }  
+  
+  
+    /* =====================================================  
+       DAILY  
+    ===================================================== */  
+  
+    if (section === "daily") {  
+  
+        if (rewardButton) {  
+            rewardButton.style.display = "block";  
+        }  
+  
+        if (rewardStatus) {  
+            rewardStatus.style.display = "block";  
+        }  
+  
+        checkDailyReward();  
+  
+    }  
+  
+  
+    /* =====================================================  
+       ADS  
+    ===================================================== */  
+  
+    else if (section === "ads") {  
+  
+        if (adsPanel) {  
+            adsPanel.style.display = "block";  
+        }  
+  
+        loadAdsStatus();  
+  
+    }  
+  
+  
+    /* =====================================================  
+       TASKS  
+    ===================================================== */  
+  
+    else if (section === "tasks") {  
+  
+        if (tasksPanel) {  
+            tasksPanel.style.display = "block";  
+        }  
+  
+        loadTasks();  
+  
+    }  
+  
+  
+    /* =====================================================  
+       REFERRAL  
+    ===================================================== */  
+  
+    else if (section === "referral") {  
+  
+        if (referralPanel) {  
+            referralPanel.style.display = "block";  
+        }  
+  
+        loadReferralData();  
+  
+    }  
+  
+  
+    /* =====================================================  
+       WITHDRAW  
+    ===================================================== */  
+  
+    else if (section === "withdraw") {  
+  
+        /*  
+         فعلاً فقط محتوای Withdraw نمایش داده می‌شود.  
+         قابلیت برداشت را بعداً به Backend وصل می‌کنیم.  
+        */  
+  
+    }  
+  
+  
+    /* =====================================================  
+       ACCOUNT  
+    ===================================================== */  
+  
+    else if (section === "account") {  
+  
+        if (accountPanel) {  
+  
+            accountPanel.style.display =  
+                "block";  
+  
+            loadAccountData();  
+  
+        }  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   LOAD USER BALANCE  
+===================================================== */  
+  
+async function loadUserBalance() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/user/" +  
+                encodeURIComponent(user.id)  
+            );  
+  
+  
+        if (!response.ok) {  
+            throw new Error(  
+                "HTTP " + response.status  
+            );  
+        }  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (  
+            data.success &&  
+            data.user  
+        ) {  
+  
+            coins =  
+                Number(  
+                    data.user.coins || 0  
+                );  
+  
+            updateBalance();  
+  
+        }  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Balance loading error:",  
+            error  
+        );  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   REGISTER USER  
+===================================================== */  
+  
+async function registerUser() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    const language =  
+        getLanguage();  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/user",  
+                {  
+  
+                    method: "POST",  
+  
+                    headers: {  
+                        "Content-Type":  
+                            "application/json"  
+                    },  
+  
+                    body:  
+                        JSON.stringify({  
+  
+                            telegram_id:  
+                                user.id,  
+  
+                            first_name:  
+                                user.first_name ||  
+                                "",  
+  
+                            username:  
+                                user.username ||  
+                                "",  
+  
+                            language:  
+                                language  
+  
+                        })  
+  
+                }  
+            );  
+  
+  
+        if (!response.ok) {  
+            throw new Error(  
+                "HTTP " + response.status  
+            );  
+        }  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (data.success) {  
+  
+            console.log(  
+                "EarnPool user registered"  
+            );  
+  
+        }  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "User registration error:",  
+            error  
+        );  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   ACCOUNT DATA  
+===================================================== */  
+  
+async function loadAccountData() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    const t =  
+        translations[getLanguage()] ||  
+        translations.en;  
+  
+  
+    /* =====================================================  
+       LOADING MESSAGE  
+    ===================================================== */  
+  
+    const message =  
+        document.getElementById(  
+            "accountMessage"  
+        );  
+  
+  
+    if (message) {  
+  
+        message.className =  
+            "account-message";  
+  
+  
+        message.textContent =  
+            t.accountLoading;  
+  
+    }  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/account/" +  
+                encodeURIComponent(user.id)  
+            );  
+  
+  
+        if (!response.ok) {  
+  
+            throw new Error(  
+                "HTTP " +  
+                response.status  
+            );  
+  
+        }  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (  
+            !data.success ||  
+            !data.user  
+        ) {  
+  
+            throw new Error(  
+                "Invalid account response"  
+            );  
+  
+        }  
+  
+  
+        const account =  
+            data.user;  
+  
+  
+        /* =================================================  
+           NAME  
+        ================================================= */  
+  
+        const nameElement =  
+            document.getElementById(  
+                "accountName"  
+            );  
+  
+  
+        if (nameElement) {  
+  
+            nameElement.textContent =  
+                account.first_name ||  
+                "User";  
+  
+        }  
+  
+  
+        /* =================================================  
+           USERNAME  
+        ================================================= */  
+  
+        const usernameElement =  
+            document.getElementById(  
+                "accountUsername"  
+            );  
+  
+  
+        if (usernameElement) {  
+  
+            usernameElement.textContent =  
+                account.username  
+                    ? "@" + account.username  
+                    : "@";  
+  
+        }  
+  
+  
+        /* =================================================  
+           TELEGRAM ID  
+        ================================================= */  
+  
+        const idElement =  
+            document.getElementById(  
+                "accountTelegramId"  
+            );  
+  
+  
+        if (idElement) {  
+  
+            idElement.textContent =  
+                account.telegram_id ||  
+                user.id;  
+  
+        }  
+  
+  
+        /* =================================================  
+           BALANCE  
+        ================================================= */  
+  
+        const balance =  
+            Number(  
+                account.coins || 0  
+            );  
+  
+  
+        const balanceElement =  
+            document.getElementById(  
+                "accountBalance"  
+            );  
+  
+  
+        if (balanceElement) {  
+  
+            balanceElement.textContent =  
+                balance.toLocaleString() +  
+                " 🪙";  
+  
+        }  
+  
+  
+        /* =================================================  
+           USD  
+        ================================================= */  
+  
+        const usd =  
+            balance / 1000000;  
+  
+  
+        const usdElement =  
+            document.getElementById(  
+                "accountUsd"  
+            );  
+  
+  
+        if (usdElement) {  
+  
+            usdElement.textContent =  
+                "≈ $" +  
+                usd.toFixed(6);  
+  
+        }  
+  
+  
+        /* =================================================  
+           REFERRALS  
+        ================================================= */  
+  
+        const referralCount =  
+            Number(  
+                account.referral_count || 0  
+            );  
+  
+  
+        const referralsElement =  
+            document.getElementById(  
+                "accountReferrals"  
+            );  
+  
+  
+        if (referralsElement) {  
+  
+            referralsElement.textContent =  
+                referralCount.toLocaleString();  
+  
+        }  
+  
+  
+        /* =================================================  
+           OPTIONAL ADS WATCHED  
+        ================================================= */  
+  
+        const adsElement =  
+            document.getElementById(  
+                "accountAdsWatched"  
+            );  
+  
+  
+        if (adsElement) {  
+  
+            adsElement.textContent =  
+                Number(  
+                    account.ads_watched || 0  
+                ).toLocaleString();  
+  
+        }  
+  
+  
+        /* =================================================  
+           OPTIONAL LANGUAGE  
+        ================================================= */  
+  
+        const languageElement =  
+            document.getElementById(  
+                "accountLanguage"  
+            );  
+  
+  
+        if (languageElement) {  
+  
+            languageElement.textContent =  
+                account.language ||  
+                getLanguage();  
+  
+        }  
+  
+  
+        /* =================================================  
+           OPTIONAL PROFILE PHOTO  
+        ================================================= */  
+  
+        const photoElement =  
+            document.getElementById(  
+                "accountPhoto"  
+            );  
+  
+  
+        if (  
+            photoElement &&  
+            account.photo_url  
+        ) {  
+  
+            photoElement.src =  
+                account.photo_url;  
+  
+            photoElement.style.display =  
+                "block";  
+  
+        }  
+  
+  
+        /* =================================================  
+           UPDATE MAIN BALANCE TOO  
+        ================================================= */  
+  
+        coins =  
+            balance;  
+  
+  
+        updateBalance();  
+  
+  
+        /* =================================================  
+           CLEAR MESSAGE  
+        ================================================= */  
+  
+        if (message) {  
+  
+            message.textContent = "";  
+  
+        }  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Account loading error:",  
+            error  
+        );  
+  
+  
+        if (message) {  
+  
+            message.className =  
+                "account-message reward-error";  
+  
+  
+            message.textContent =  
+                t.accountError;  
+  
+        }  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   REFERRAL DATA  
+===================================================== */  
+  
+async function loadReferralData() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    const linkElement =  
+        document.getElementById(  
+            "referralLink"  
+        );  
+  
+  
+    const countElement =  
+        document.getElementById(  
+            "referralCount"  
+        );  
+  
+  
+    const messageElement =  
+        document.getElementById(  
+            "referralMessage"  
+        );  
+  
+  
+    if (linkElement) {  
+        linkElement.textContent =  
+            "Loading...";  
+    }  
+  
+  
+    if (countElement) {  
+        countElement.textContent =  
+            "0";  
+    }  
+  
+  
+    if (messageElement) {  
+        messageElement.textContent =  
+            "";  
+    }  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/referral/" +  
+                encodeURIComponent(user.id)  
+            );  
+  
+  
+        if (!response.ok) {  
+  
+            throw new Error(  
+                "HTTP " +  
+                response.status  
+            );  
+  
+        }  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (!data.success) {  
+  
+            throw new Error(  
+                data.message ||  
+                "Referral data unavailable"  
+            );  
+  
+        }  
+  
+  
+        if (linkElement) {  
+  
+            linkElement.textContent =  
+                data.referral_link ||  
+                "";  
+  
+        }  
+  
+  
+        if (countElement) {  
+  
+            countElement.textContent =  
+                Number(  
+                    data.referral_count || 0  
+                ).toLocaleString();  
+  
+        }  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Referral loading error:",  
+            error  
+        );  
+  
+  
+        if (linkElement) {  
+  
+            linkElement.textContent =  
+                "Unable to load";  
+  
+        }  
+  
+  
+        if (countElement) {  
+  
+            countElement.textContent =  
+                "0";  
+  
+        }  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   COPY REFERRAL LINK  
+===================================================== */  
+  
+async function copyReferralLink() {  
+  
+    const linkElement =  
+        document.getElementById(  
+            "referralLink"  
+        );  
+  
+  
+    if (!linkElement) {  
+        return;  
+    }  
+  
+  
+    const link =  
+        linkElement.textContent.trim();  
+  
+  
+    if (  
+        !link ||  
+        link === "Loading..." ||  
+        link === "Unable to load"  
+    ) {  
+  
+        return;  
+  
+    }  
+  
+  
+    try {  
+  
+        if (  
+            navigator.clipboard &&  
+            navigator.clipboard.writeText  
+        ) {  
+  
+            await navigator.clipboard.writeText(  
+                link  
+            );  
+  
+        } else {  
+  
+            const textarea =  
+                document.createElement(  
+                    "textarea"  
+                );  
+  
+  
+            textarea.value =  
+                link;  
+  
+  
+            textarea.style.position =  
+                "fixed";  
+  
+            textarea.style.opacity =  
+                "0";  
+  
+  
+            document.body.appendChild(  
+                textarea  
+            );  
+  
+  
+            textarea.select();  
+  
+  
+            document.execCommand(  
+                "copy"  
+            );  
+  
+  
+            textarea.remove();  
+  
+        }  
+  
+  
+        const t =  
+            translations[getLanguage()] ||  
+            translations.en;  
+  
+  
+        showReferralMessage(  
+            t.referralCopied  
+        );  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Copy referral error:",  
+            error  
+        );  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   SHARE REFERRAL LINK  
+===================================================== */  
+  
+function shareReferralLink() {  
+  
+    const linkElement =  
+        document.getElementById(  
+            "referralLink"  
+        );  
+  
+  
+    if (!linkElement) {  
+        return;  
+    }  
+  
+  
+    const link =  
+        linkElement.textContent.trim();  
+  
+  
+    if (  
+        !link ||  
+        link === "Loading..." ||  
+        link === "Unable to load"  
+    ) {  
+  
+        return;  
+  
+    }  
+  
+  
+    const lang =  
+        getLanguage();  
+  
+  
+    const shareTexts = {  
+  
+        en:  
+            "Join EarnPool and earn coins with me! 🚀",  
+  
+        fa:  
+            "به EarnPool بپیوند و با من سکه کسب کن! 🚀",  
+  
+        ar:  
+            "انضم إلى EarnPool واربح العملات معي! 🚀"  
+  
+    };  
+  
+  
+    const text =  
+        shareTexts[lang] ||  
+        shareTexts.en;  
+  
+  
+    const telegramShareUrl =  
+        "https://t.me/share/url?url=" +  
+        encodeURIComponent(link) +  
+        "&text=" +  
+        encodeURIComponent(text);  
+  
+  
+    if (  
+        window.Telegram &&  
+        window.Telegram.WebApp &&  
+        typeof  
+        window.Telegram.WebApp.openTelegramLink ===  
+        "function"  
+    ) {  
+  
+        window.Telegram.WebApp.openTelegramLink(  
+            telegramShareUrl  
+        );  
+  
+    } else {  
+  
+        window.open(  
+            telegramShareUrl,  
+            "_blank"  
+        );  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   REFERRAL MESSAGE  
+===================================================== */  
+  
+function showReferralMessage(message) {  
+  
+    const element =  
+        document.getElementById(  
+            "referralMessage"  
+        );  
+  
+  
+    if (!element) {  
+        return;  
+    }  
+  
+  
+    element.className =  
+        "referral-message referral-success";  
+  
+  
+    element.textContent =  
+        message;  
+  
+  
+    setTimeout(  
+        function() {  
+  
+            element.textContent =  
+                "";  
+  
+        },  
+        2500  
+    );  
+  
+}  
+  
+  
+/* =====================================================  
+   DAILY REWARD CHECK  
+===================================================== */  
+  
+async function checkDailyReward() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/user/" +  
+                encodeURIComponent(user.id)  
+            );  
+  
+  
+        if (!response.ok) {  
+  
+            throw new Error(  
+                "HTTP " +  
+                response.status  
+            );  
+  
+        }  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (  
+            !data.success ||  
+            !data.user  
+        ) {  
+  
+            return;  
+  
+        }  
+  
+  
+        /* =================================================  
+           SYNC BALANCE  
+        ================================================= */  
+  
+        coins =  
+            Number(  
+                data.user.coins || 0  
+            );  
+  
+  
+        updateBalance();  
+  
+  
+        const lastReward =  
+            data.user.last_daily_reward;  
+  
+  
+        const button =  
+            document.getElementById(  
+                "rewardButton"  
+            );  
+  
+  
+        const status =  
+            document.getElementById(  
+                "rewardStatus"  
+            );  
+  
+  
+        const t =  
+            translations[getLanguage()] ||  
+            translations.en;  
+  
+  
+        if (!button || !status) {  
+            return;  
+        }  
+  
+  
+        /* =================================================  
+           NEVER CLAIMED  
+        ================================================= */  
+  
+        if (!lastReward) {  
+  
+            button.disabled =  
+                false;  
+  
+  
+            button.textContent =  
+                t.claim;  
+  
+  
+            status.textContent =  
+                "";  
+  
+  
+            return;  
+  
+        }  
+  
+  
+        const lastTime =  
+            new Date(  
+                lastReward  
+            ).getTime();  
+  
+  
+        const nextTime =  
+            lastTime +  
+            (  
+                12 *  
+                60 *  
+                60 *  
+                1000  
+            );  
+  
+  
+        const now =  
+            Date.now();  
+  
+  
+        /* =================================================  
+           AVAILABLE  
+        ================================================= */  
+  
+        if (now >= nextTime) {  
+  
+            button.disabled =  
+                false;  
+  
+  
+            button.textContent =  
+                t.claim;  
+  
+  
+            status.textContent =  
+                "";  
+  
+  
+            return;  
+  
+        }  
+  
+  
+        /* =================================================  
+           WAITING  
+        ================================================= */  
+  
+        button.disabled =  
+            true;  
+  
+  
+        button.textContent =  
+            t.claimed;  
+  
+  
+        updateWaitingTime(  
+            nextTime  
+        );  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Daily reward check error:",  
+            error  
+        );  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   DAILY WAITING TIME  
+===================================================== */  
+  
+function updateWaitingTime(nextTime) {  
+  
+    const status =  
+        document.getElementById(  
+            "rewardStatus"  
+        );  
+  
+  
+    if (!status) {  
+        return;  
+    }  
+  
+  
+    const t =  
+        translations[getLanguage()] ||  
+        translations.en;  
+  
+  
+    function update() {  
+  
+        const remaining =  
+            nextTime -  
+            Date.now();  
+  
+  
+        if (remaining <= 0) {  
+  
+            checkDailyReward();  
+  
+            return;  
+  
+        }  
+  
+  
+        const totalMinutes =  
+            Math.ceil(  
+                remaining / 60000  
+            );  
+  
+  
+        const hours =  
+            Math.floor(  
+                totalMinutes / 60  
+            );  
+  
+  
+        const minutes =  
+            totalMinutes % 60;  
+  
+  
+        status.className =  
+            "reward-status reward-waiting";  
+  
+  
+        status.textContent =  
+            t.waiting +  
+            " " +  
+            hours +  
+            "h " +  
+            minutes +  
+            "m";  
+  
+    }  
+  
+  
+    update();  
+  
+  
+    setTimeout(  
+        update,  
+        60000  
+    );  
+  
+}  
+  
+  
+/* =====================================================  
+   CLAIM DAILY REWARD  
+===================================================== */  
+  
+async function claimDailyReward() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    const button =  
+        document.getElementById(  
+            "rewardButton"  
+        );  
+  
+  
+    const status =  
+        document.getElementById(  
+            "rewardStatus"  
+        );  
+  
+  
+    const t =  
+        translations[getLanguage()] ||  
+        translations.en;  
+  
+  
+    if (!button || !status) {  
+        return;  
+    }  
+  
+  
+    button.disabled =  
+        true;  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/daily-reward",  
+                {  
+  
+                    method: "POST",  
+  
+                    headers: {  
+                        "Content-Type":  
+                            "application/json"  
+                    },  
+  
+                    body:  
+                        JSON.stringify({  
+  
+                            telegram_id:  
+                                user.id  
+  
+                        })  
+  
+                }  
+            );  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (data.success) {  
+  
+            coins =  
+                Number(  
+                    data.user.coins  
+                );  
+  
+  
+            updateBalance();  
+  
+  
+            button.textContent =  
+                t.claimed;  
+  
+  
+            status.className =  
+                "reward-status reward-success";  
+  
+  
+            status.textContent =  
+                t.congratulations;  
+  
+  
+            setTimeout(  
+                function() {  
+  
+                    checkDailyReward();  
+  
+                },  
+                1500  
+            );  
+  
+  
+        } else {  
+  
+            button.disabled =  
+                true;  
+  
+  
+            button.textContent =  
+                t.claimed;  
+  
+  
+            status.className =  
+                "reward-status reward-waiting";  
+  
+  
+            if (data.next_reward) {  
+  
+                updateWaitingTime(  
+                    new Date(  
+                        data.next_reward  
+                    ).getTime()  
+                );  
+  
+            } else {  
+  
+                status.textContent =  
+                    data.message ||  
+                    t.error;  
+  
+            }  
+  
+        }  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Daily reward error:",  
+            error  
+        );  
+  
+  
+        button.disabled =  
+            false;  
+  
+  
+        status.className =  
+            "reward-status reward-error";  
+  
+  
+        status.textContent =  
+            t.error;  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   ADS STATUS  
+===================================================== */  
+  
+async function loadAdsStatus() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/ads/status/" +  
+                encodeURIComponent(user.id)  
+            );  
+  
+  
+        if (!response.ok) {  
+  
+            throw new Error(  
+                "HTTP " +  
+                response.status  
+            );  
+  
+        }  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (!data.success) {  
+            return;  
+        }  
+  
+  
+        document.getElementById(  
+            "adsWatched"  
+        ).textContent =  
+            Number(  
+                data.ads_watched || 0  
+            );  
+  
+  
+        document.getElementById(  
+            "adsLimit"  
+        ).textContent =  
+            Number(  
+                data.limit || AD_LIMIT  
+            );  
+  
+  
+        document.getElementById(  
+            "adsRemaining"  
+        ).textContent =  
+            Number(  
+                data.ads_remaining || 0  
+            );  
+  
+  
+        const button =  
+            document.getElementById(  
+                "watchAdButton"  
+            );  
+  
+  
+        const message =  
+            document.getElementById(  
+                "adsMessage"  
+            );  
+  
+  
+        const t =  
+            translations[getLanguage()] ||  
+            translations.en;  
+  
+  
+        if (!button || !message) {  
+            return;  
+        }  
+  
+  
+        if (  
+            Number(  
+                data.ads_remaining  
+            ) <= 0  
+        ) {  
+  
+            button.disabled =  
+                true;  
+  
+  
+            message.className =  
+                "ads-message ads-waiting";  
+  
+  
+            message.textContent =  
+                t.adLimit +  
+                " " +  
+                t.adsReset +  
+                " " +  
+                (  
+                    data.hours_until_reset ||  
+                    0  
+                ) +  
+                "h " +  
+                (  
+                    data.minutes_until_reset ||  
+                    0  
+                ) +  
+                "m";  
+  
+        } else {  
+  
+            button.disabled =  
+                false;  
+  
+  
+            message.textContent =  
+                "";  
+  
+        }  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Ads status error:",  
+            error  
+        );  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   WATCH ADSGRAM AD  
+===================================================== */  
+  
+async function watchAd() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    const button =  
+        document.getElementById(  
+            "watchAdButton"  
+        );  
+  
+  
+    const message =  
+        document.getElementById(  
+            "adsMessage"  
+        );  
+  
+  
+    const t =  
+        translations[getLanguage()] ||  
+        translations.en;  
+  
+  
+    if (!button || !message) {  
+        return;  
+    }  
+  
+  
+    if (!AdController) {  
+  
+        message.className =  
+            "ads-message ads-error";  
+  
+  
+        message.textContent =  
+            t.adError;  
+  
+  
+        return;  
+  
+    }  
+  
+  
+    button.disabled =  
+        true;  
+  
+  
+    message.className =  
+        "ads-message ads-waiting";  
+  
+  
+    message.textContent =  
+        "⏳ Loading advertisement...";  
+  
+  
+    try {  
+  
+        const result =  
+            await AdController.show();  
+  
+  
+        if (  
+            !result ||  
+            result.done !== true  
+        ) {  
+  
+            message.className =  
+                "ads-message ads-error";  
+  
+  
+            message.textContent =  
+                t.adError;  
+  
+  
+            await loadAdsStatus();  
+  
+  
+            return;  
+  
+        }  
+  
+  
+        message.textContent =  
+            "⏳ Processing reward...";  
+  
+  
+        const response =  
+            await fetch(  
+                "/api/ads/claim",  
+                {  
+  
+                    method: "POST",  
+  
+                    headers: {  
+                        "Content-Type":  
+                            "application/json"  
+                    },  
+  
+                    body:  
+                        JSON.stringify({  
+  
+                            telegram_id:  
+                                user.id  
+  
+                        })  
+  
+                }  
+            );  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (data.success) {  
+  
+            coins =  
+                Number(  
+                    data.user.coins  
+                );  
+  
+  
+            updateBalance();  
+  
+  
+            document.getElementById(  
+                "adsWatched"  
+            ).textContent =  
+                data.ads_watched;  
+  
+  
+            document.getElementById(  
+                "adsRemaining"  
+            ).textContent =  
+                data.ads_remaining;  
+  
+  
+            message.className =  
+                "ads-message ads-success";  
+  
+  
+            message.textContent =  
+                t.adSuccess;  
+  
+  
+            button.disabled =  
+                Number(  
+                    data.ads_remaining  
+                ) <= 0;  
+  
+  
+        } else {  
+  
+            message.className =  
+                "ads-message ads-error";  
+  
+  
+            message.textContent =  
+                data.message ||  
+                t.adError;  
+  
+  
+            await loadAdsStatus();  
+  
+        }  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "AdsGram error:",  
+            error  
+        );  
+  
+  
+        message.className =  
+            "ads-message ads-error";  
+  
+  
+        message.textContent =  
+            t.adError;  
+  
+  
+        await loadAdsStatus();  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   TASKS  
+===================================================== */  
+  
+async function loadTasks() {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    const list =  
+        document.getElementById(  
+            "tasksList"  
+        );  
+  
+  
+    const message =  
+        document.getElementById(  
+            "taskMessage"  
+        );  
+  
+  
+    const t =  
+        translations[getLanguage()] ||  
+        translations.en;  
+  
+  
+    if (!list || !message) {  
+        return;  
+    }  
+  
+  
+    list.innerHTML =  
+        "";  
+  
+  
+    message.className =  
+        "task-message";  
+  
+  
+    message.textContent =  
+        t.tasksLoading;  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/tasks/available/" +  
+                encodeURIComponent(user.id)  
+            );  
+  
+  
+        if (!response.ok) {  
+  
+            throw new Error(  
+                "HTTP " +  
+                response.status  
+            );  
+  
+        }  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (!data.success) {  
+  
+            message.className =  
+                "task-message task-error";  
+  
+  
+            message.textContent =  
+                data.message ||  
+                t.error;  
+  
+  
+            return;  
+  
+        }  
+  
+  
+        const tasks =  
+            Array.isArray(data.tasks)  
+                ? data.tasks  
+                : [];  
+  
+  
+        list.innerHTML =  
+            "";  
+  
+  
+        if (  
+            tasks.length === 0  
+        ) {  
+  
+            message.className =  
+                "task-message";  
+  
+  
+            message.textContent =  
+                t.noTasks;  
+  
+  
+            return;  
+  
+        }  
+  
+  
+        tasks.forEach(  
+            function(task) {  
+  
+                createTaskCard(task);  
+  
+            }  
+        );  
+  
+  
+        message.textContent =  
+            "";  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "Tasks loading error:",  
+            error  
+        );  
+  
+  
+        message.className =  
+            "task-message task-error";  
+  
+  
+        message.textContent =  
+            t.error;  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   CREATE ADSGRAM TASK CARD  
+===================================================== */  
+  
+function createTaskCard(task) {  
+  
+    const list =  
+        document.getElementById(  
+            "tasksList"  
+        );  
+  
+  
+    if (!list || !task) {  
+        return;  
+    }  
+  
+  
+    const t =  
+        translations[getLanguage()] ||  
+        translations.en;  
+  
+  
+    const card =  
+        document.createElement(  
+            "div"  
+        );  
+  
+  
+    card.className =  
+        "task-card";  
+  
+  
+    const title =  
+        document.createElement(  
+            "div"  
+        );  
+  
+  
+    title.className =  
+        "task-title";  
+  
+  
+    title.textContent =  
+        task.title ||  
+        "AdsGram Task";  
+  
+  
+    const description =  
+        document.createElement(  
+            "div"  
+        );  
+  
+  
+    description.className =  
+        "task-description";  
+  
+  
+    description.textContent =  
+        task.description ||  
+        "";  
+  
+  
+    const reward =  
+        document.createElement(  
+            "div"  
+        );  
+  
+  
+    reward.className =  
+        "task-reward";  
+  
+  
+    reward.textContent =  
+        t.taskReward;  
+  
+  
+    const adsTask =  
+        document.createElement(  
+            "adsgram-task"  
+        );  
+  
+  
+    adsTask.setAttribute(  
+        "data-block-id",  
+        "task-44183"  
+    );  
+  
+  
+    adsTask.setAttribute(  
+        "data-debug",  
+        "false"  
+    );  
+  
+  
+    adsTask.setAttribute(  
+        "data-debug-console",  
+        "false"  
+    );  
+  
+  
+    adsTask.className =  
+        "task";  
+  
+  
+    let rewardSent =  
+        false;  
+  
+  
+    adsTask.addEventListener(  
+        "reward",  
+        async function() {  
+  
+            if (rewardSent) {  
+                return;  
+            }  
+  
+  
+            rewardSent =  
+                true;  
+  
+  
+            await claimAdsGramTask(  
+                task,  
+                card,  
+                adsTask  
+            );  
+  
+        }  
+    );  
+  
+  
+    adsTask.addEventListener(  
+        "onError",  
+        function(event) {  
+  
+            console.error(  
+                "AdsGram Task error:",  
+                event  
+            );  
+  
+        }  
+    );  
+  
+  
+    card.appendChild(  
+        title  
+    );  
+  
+  
+    if (task.description) {  
+  
+        card.appendChild(  
+            description  
+        );  
+  
+    }  
+  
+  
+    card.appendChild(  
+        reward  
+    );  
+  
+  
+    card.appendChild(  
+        adsTask  
+    );  
+  
+  
+    list.appendChild(  
+        card  
+    );  
+  
+}  
+  
+  
+/* =====================================================  
+   CLAIM ADSGRAM TASK REWARD  
+===================================================== */  
+  
+async function claimAdsGramTask(  
+    task,  
+    card,  
+    adsTask  
+) {  
+  
+    if (!user) {  
+        return;  
+    }  
+  
+  
+    if (  
+        !task ||  
+        !task.id  
+    ) {  
+  
+        return;  
+  
+    }  
+  
+  
+    const message =  
+        document.getElementById(  
+            "taskMessage"  
+        );  
+  
+  
+    const t =  
+        translations[getLanguage()] ||  
+        translations.en;  
+  
+  
+    if (!message) {  
+        return;  
+    }  
+  
+  
+    message.className =  
+        "task-message";  
+  
+  
+    message.textContent =  
+        "⏳ Processing reward...";  
+  
+  
+    try {  
+  
+        const response =  
+            await fetch(  
+                "/api/tasks/claim",  
+                {  
+  
+                    method: "POST",  
+  
+                    headers: {  
+                        "Content-Type":  
+                            "application/json"  
+                    },  
+  
+                    body:  
+                        JSON.stringify({  
+  
+                            telegram_id:  
+                                user.id,  
+  
+                            task_id:  
+                                task.id  
+  
+                        })  
+  
+                }  
+            );  
+  
+  
+        const data =  
+            await response.json();  
+  
+  
+        if (data.success) {  
+  
+            coins =  
+                Number(  
+                    data.user.coins  
+                );  
+  
+  
+            updateBalance();  
+  
+  
+            message.className =  
+                "task-message task-success";  
+  
+  
+            message.textContent =  
+                t.taskSuccess;  
+  
+  
+            if (card) {  
+                card.remove();  
+            }  
+  
+  
+            const list =  
+                document.getElementById(  
+                    "tasksList"  
+                );  
+  
+  
+            if (  
+                list &&  
+                !list.children.length  
+            ) {  
+  
+                message.textContent =  
+                    t.noTasks;  
+  
+            }  
+  
+  
+        } else {  
+  
+            if (  
+                data.already_completed  
+            ) {  
+  
+                if (card) {  
+                    card.remove();  
+                }  
+  
+  
+                message.className =  
+                    "task-message";  
+  
+  
+                message.textContent =  
+                    t.taskAlready;  
+  
+  
+            } else {  
+  
+                message.className =  
+                    "task-message task-error";  
+  
+  
+                message.textContent =  
+                    data.message ||  
+                    t.error;  
+  
+            }  
+  
+        }  
+  
+  
+    } catch (error) {  
+  
+        console.error(  
+            "AdsGram task claim error:",  
+            error  
+        );  
+  
+  
+        message.className =  
+            "task-message task-error";  
+  
+  
+        message.textContent =  
+            t.error;  
+  
+    }  
+  
+}  
+  
+  
+/* =====================================================  
+   START USER  
+===================================================== */  
+  
+async function startUser() {  
+  
+    if (!user) {  
+  
+        console.warn(  
+            "Telegram user information unavailable."  
+        );  
+  
+        return;  
+  
+    }  
+  
+  
+    /*  
+     اول کاربر ثبت/به‌روزرسانی می‌شود،  
+     سپس موجودی از Backend گرفته می‌شود.  
+    */  
+  
+    await registerUser();  
+  
+    await loadUserBalance();  
+  
+    await checkDailyReward();  
+  
+}  
+  
+  
+/* =====================================================  
+   INITIAL LANGUAGE  
+===================================================== */  
+  
+let savedLanguage =  
+    localStorage.getItem(  
+        "language"  
+    );  
+  
+  
+if (  
+    !savedLanguage ||  
+    !translations[savedLanguage]  
+) {  
+  
+    savedLanguage =  
+        detectLanguage();  
+  
+}  
+  
+  
+applyLanguage(  
+    savedLanguage  
+);  
+  
+  
+/* =====================================================  
+   INITIAL BALANCE  
+===================================================== */  
+  
+updateBalance();  
+  
+  
+/* =====================================================  
+   START APPLICATION  
+===================================================== */  
+  
+startUser();  
+  
+  
+/* =====================================================  
+   DEFAULT SECTION  
+===================================================== */  
+  
+showSection(  
+    "daily",  
+    document.querySelector(  
+        '.nav-button[data-section="daily"]'  
+    )  
+);  
+  
     </script>
