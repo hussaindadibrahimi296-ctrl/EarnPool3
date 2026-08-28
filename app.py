@@ -47,7 +47,7 @@ DAILY_HOURS = 12
 
 
 # AdsGram Task Block ID
-ADSGRAM_TASK_ID = "task-44183"
+ADSGRAM_TASK_ID = "task-44910"
 
 
 # =========================================================
